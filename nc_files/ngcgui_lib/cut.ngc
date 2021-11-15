@@ -1,0 +1,57 @@
+(info: cut -- _{simple cut})
+o<cut> sub
+  #<start_x>     = #1  (=0.0 _{Start X})
+  #<start_y>     = #2  (=0.0 _{Start Y})
+  #<end_x>       = #3  (=0.0 _{End X})
+  #<end_y>       = #4  (=0.0 _{End Y})
+  #<pos_a>       = #5  (=0.0 _{A angle})
+  #<comp_cut>    = #6  (=-1 _{Cut compensation} _{[1:right, -1:left]})
+  #<comp_start>  = #7  (=0 _{Start compensation})
+  #<comp_end>    = #8  (=0 _{End compensation})
+
+  o<l01> if [#<start_x> LT -5000.0 or #<start_x> GT 5000.0 ]
+    (MSG, _{Start X} [1] _{must be} _{between} -5000 _{and} 5000 mm_{_lay})
+    m2
+  o<l01> endif
+  o<l02> if [#<start_y> LT -5000.0 or #<start_y> GT 5000.0 ]
+    (MSG, _{Start Y} [2] _{must be} _{between} -5000 _{and} 5000 mm_{_lay})
+    m2
+  o<l02> endif
+  o<l03> if [#<end_x> LT -5000.0 or #<end_x> GT 5000.0 ]
+    (MSG, _{End X} [3] _{must be} _{between} -5000 _{and} 5000 mm_{_lay})
+    m2
+  o<l03> endif
+  o<l04> if [#<end_y> LT -5000.0 or #<end_y> GT 5000.0 ]
+    (MSG, _{End Y} [4] _{must be} _{between} -5000 _{and} 5000 mm_{_lay})
+    m2
+  o<l04> endif
+  o<l05> if [#<pos_a> LT -75.0 or #<pos_a> GT 75.0 ]
+    (MSG, _{A angle} [5] _{must be} _{between} -75 _{and} 75 _{deg}_{_lay})
+    m2
+  o<l05> endif
+  o<l06> if [#<comp_cut> LT -1 or #<comp_cut> GT 1.0 ]
+    (MSG, _{Cut compensation} [6] _{must be} -1, 0 _{or} 1_{_be})
+    m2
+  o<l06> endif
+  o<l07> if [#<comp_start> LT 0.0 or #<comp_start> GT 1.0 ]
+    (MSG, _{Start compensation} [7] _{must be} 0 _{or} 1_{_be})
+    m2
+  o<l07> endif
+  o<l08> if [#<comp_end> LT 0.0 or #<comp_end> GT 1.0 ]
+    (MSG, _{End compensation} [8] _{must be} 0 _{or} 1_{_be})
+    m2
+  o<l08> endif
+
+  ( read user parameters )
+  #<start_z>     = #1005
+  #<mat_z>       = #1006
+  #<last_z>      = #1010
+  #<extra_z>     = #1015
+
+  ( process cut )
+  o<l10> if [ #<pos_a> GE 0.0 ]
+    o<cut_gen> CALL [#<start_x>][#<start_y>][#<start_z>][#<end_x>][#<end_y>][-#<mat_z>][#<extra_z>][#<pos_a>][-#<comp_cut>][#<comp_start>][#<comp_end>][0.0][#<last_z>][#<mat_z>][0.0]
+  o<l10> else
+    o<cut_gen> CALL [#<end_x>][#<end_y>][#<start_z>][#<start_x>][#<start_y>][-#<mat_z>][#<extra_z>][-#<pos_a>][#<comp_cut>][#<comp_start>][#<comp_end>][0.0][#<last_z>][#<mat_z>][0.0]
+  o<l10> endif
+o<cut> endsub

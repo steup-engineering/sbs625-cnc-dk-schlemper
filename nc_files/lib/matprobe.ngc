@@ -1,0 +1,73 @@
+o<matprobe> sub
+  ( constants )
+  #<EPSILON> = 0.05
+
+  ( parameters )
+  #<CROSS_OFFSET_X> = #2006
+  #<CROSS_OFFSET_Y> = #2007
+
+  #<MPROBE_OFFSET_X> = #2015
+  #<MPROBE_OFFSET_Y> = #2016
+
+  #<MPROBE_SEARCH_VELO> = #2017
+  #<MPROBE_SEARCH_DIST> = #2018
+  #<MPROBE_CAPT_VELO> = #2019
+  #<MPROBE_CAPT_DIST> = #2020
+
+  #<MPROBE_SWITCH_OFFSET> = #2021
+
+  ( check a/c )
+  G28.1
+  #<pos_a> = #5164
+  #<pos_c> = #5166
+  o<l11> if [ABS[#<pos_a>] GT #<EPSILON>]
+    (MSG, _{A must be at 0 for probing})
+    m2
+  o<l11> endif
+  o<l12> if [ABS[#<pos_c>] GT #<EPSILON>]
+    (MSG, _{C must be at 0 probing})
+    m2
+  o<l12> endif
+
+  ( get user pos and feedrate)
+  #<user_x> = #5420
+  #<user_y> = #5421
+  #<user_z> = #5422
+  #<user_feed> = #<_feed>
+
+  ( goto probe pos and prepare sensor)
+  G53 G0 Z0
+  #<home_z> = #5422
+  G0 X[#<user_x> - #<CROSS_OFFSET_X> + #<MPROBE_OFFSET_X>] Y[#<user_y> - #<CROSS_OFFSET_Y> + #<MPROBE_OFFSET_Y>]
+  M103 P1
+
+  ( search material )
+  F#<MPROBE_SEARCH_VELO>
+  G53 G38.3 Z[- #<MPROBE_SEARCH_DIST>]
+
+  ( capture material )
+  O<l01> if [#5070 eq 1]
+    #<pos_z> = [ #5063 + #<MPROBE_CAPT_DIST>]
+    O<l03> if [ #<pos_z> gt #<home_z>]
+      #<pos_z> = #<home_z>
+    O<l03> endif
+    F#<MPROBE_CAPT_VELO>
+    G38.5 Z[#<pos_z>]
+  O<l01> endif
+
+  ( display message )
+  O<l02> if [#5070 eq 1]
+    #<mat_z> = [ #5063 - #<home_z> + #<MPROBE_SWITCH_OFFSET> ]
+    (DEBUG, mat: #<mat_z>)
+    #<900> = #<mat_z>
+  O<l02> else
+    (MSG, _{Error while probing})
+  O<l02> endif
+
+  ( restore user pos and feedrate)
+  M103 P0
+  G0 X#<user_x> Y#<user_y>
+  G0 Z#<user_z>
+  F#<user_feed>
+o<matprobe> endsub
+

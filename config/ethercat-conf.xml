@@ -1,0 +1,59 @@
+<masters>
+  <master idx="0" appTimePeriod="1000000" refClockSyncCycles="-1">
+    <slave idx="0" type="EK1100" name="P65A1"/>
+    <slave idx="1" type="EL1018" name="P65A2"/>
+    <slave idx="2" type="EL1018" name="P65A3"/>
+    <slave idx="3" type="EL1018" name="P65A4"/>
+    <slave idx="4" type="EL2008" name="P65A5"/>
+    <slave idx="5" type="EL5101" name="P65A6"/>
+    <slave idx="6" type="EL9510" name="P65A7"/>
+    <slave idx="7" type="EL3162" name="P65A8"/>
+    <slave idx="8" type="EK1100" name="S50A1"/>
+    <slave idx="9" type="EL1018" name="S50A2"/>
+    <slave idx="10" type="EL1018" name="S50A3"/>
+    <slave idx="11" type="EL1018" name="S50A4"/>
+    <slave idx="12" type="EL2008" name="S50A5"/>
+    <slave idx="13" type="EL2008" name="S50A6"/>
+    <slave idx="14" type="EL2008" name="S50A7"/>
+    <slave idx="15" type="EL2042" name="S50A8"/>
+    <slave idx="16" type="EL5152" name="S50A9"/>
+    <slave idx="17" type="EL2008" name="S50A11"/>
+    <slave idx="18" type="EL2008" name="S50A12"/>
+    <slave idx="19" type="StMDS5k" name="S13T1">
+      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
+      <watchdog divider="2498" intervals="5000"/>
+    </slave>
+    <slave idx="20" type="StMDS5k" name="S14T1">
+      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
+      <watchdog divider="2498" intervals="5000"/>
+    </slave>
+    <slave idx="21" type="StMDS5k" name="S15T1">
+      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
+      <watchdog divider="2498" intervals="5000"/>
+    </slave>
+    <slave idx="22" type="StMDS5k" name="S16T1">
+      <modParam name="isMultiturn" value="true"/>
+      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
+      <watchdog divider="2498" intervals="5000"/>
+    </slave>
+    <slave idx="23" type="StMDS5k" name="S17T1">
+      <modParam name="isMultiturn" value="true"/>
+      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
+      <watchdog divider="2498" intervals="5000"/>
+    </slave>
+    <slave idx="24" type="StMDS5k" name="S19T1">
+      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
+      <watchdog divider="2498" intervals="5000"/>
+    </slave>
+    <slave idx="25" type="EK1100" name="P80A1"/>
+    <slave idx="26" type="EL1018" name="P80A2"/>
+    <slave idx="27" type="EL1018" name="P80A3"/>
+    <slave idx="28" type="EL2008" name="P80A4"/>
+    <slave idx="29" type="EL5152" name="P80A5"/>
+    <slave idx="30" type="EL5151" name="P80A6"/>
+    <slave idx="31" type="EL2008" name="P80A7"/>
+    <slave idx="32" type="EP2028" name="P80A8"/>
+    <slave idx="33" type="EP2028" name="P80A9"/>
+  </master>
+</masters>
+

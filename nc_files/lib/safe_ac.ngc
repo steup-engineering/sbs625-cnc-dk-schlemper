@@ -1,0 +1,36 @@
+o<safe_ac> sub
+  #<ref_z> = #1
+  #<pos_a> = #2
+  #<pos_c> = #3
+
+  ( constants )
+  #<EPSILON> = 0.000001
+
+  ( read user parameters )
+  #<blade_diam>    = #1001
+  #<blade_thick>   = #1002
+  #<safe_z>        = #1007
+
+  #<blade_rad>   = [ #<blade_diam> * 0.5 ]
+
+  ( read machine parameters )
+  #<APIVOT_TOOLAXIS>  = #2001
+  #<APIVOT_BLADEPUCK> = #2002
+
+  ( get current pos )
+  G28.1
+  #<curr_a> = #5164
+
+  #<extra_z> = 0
+  o<l01> if [ABS[#<pos_a> - #<curr_a>] GT #<EPSILON> ]
+    ( calculate vector a to tooledge vector )
+    #<y_offset> = [ #<APIVOT_BLADEPUCK> - #<blade_thick> ]
+    #<z_offset> = [ #<APIVOT_TOOLAXIS> - #<blade_rad> ]
+    #<delta> = SQRT[ [#<y_offset> * #<y_offset>] + [#<z_offset> * #<z_offset>] ]
+
+    #<extra_z> = [ #<delta> + #<z_offset> ]
+  o<l01> endif
+
+  g0 z[#<safe_z> + #<ref_z> + #<extra_z> ]
+  g53 g0 a#<pos_a> c#<pos_c>
+o<safe_ac> endsub

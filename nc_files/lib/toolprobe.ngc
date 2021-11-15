@@ -1,0 +1,85 @@
+o<toolprobe> sub
+  ( constants )
+  #<EPSILON> = 0.05
+
+  ( parameters )
+  #<TOOLPROBE_TYPE> = #1
+
+  o<l01> if [#<TOOLPROBE_TYPE> EQ 0.0]
+    ( sawblade )
+    #<TOOLPROBE_POS_X> = #2022
+    #<TOOLPROBE_POS_Y> = #2023
+    #<TOOLPROBE_POS_A> = 0.0
+    #<TOOLPROBE_POS_C> = #2024
+    #<TOOLPROBE_SEARCH_END>  = #2025
+    #<TOOLPROBE_SWITCH_OFFSET> = #2033
+  o<l01> elseif [#<TOOLPROBE_TYPE> EQ 1.0]
+    ( milling tool )
+    #<TOOLPROBE_POS_X> = #2026
+    #<TOOLPROBE_POS_Y> = #2027
+    #<TOOLPROBE_POS_A> = 90.0
+    #<TOOLPROBE_POS_C> = #2028
+    #<TOOLPROBE_SEARCH_END>  = #2029
+    #<TOOLPROBE_SWITCH_OFFSET> = #2034
+  o<l01> else
+    (MSG, _{Invalid toolprobe mode})
+    m2
+  o<l01> endif
+
+  #<TOOLPROBE_SEARCH_VELO> = #2030
+  #<TOOLPROBE_CAPT_VELO>   = #2031
+  #<TOOLPROBE_CAPT_DIST>   = #2032
+
+  ( get user pos and feedrate)
+  #<user_x> = #5420
+  #<user_y> = #5421
+  #<user_z> = #5422
+  #<user_a> = #5423
+  #<user_c> = #5425
+  #<user_feed> = #<_feed>
+
+  ( goto probe pos and prepare sensor)
+  G53 G0 Z0
+  #<home_z> = #5422
+  G53 G0 X#<TOOLPROBE_POS_X> Y#<TOOLPROBE_POS_Y>
+  G53 G0 A#<TOOLPROBE_POS_A> C#<TOOLPROBE_POS_C>
+  M103 P2
+
+  ( search tool )
+  F#<TOOLPROBE_SEARCH_VELO>
+  G53 G38.3 Z[#<TOOLPROBE_SEARCH_END>]
+
+  ( capture tool )
+  O<l02> if [#5070 eq 1]
+    #<pos_z> = [ #5063 + #<TOOLPROBE_CAPT_DIST>]
+    O<l05> if [ #<pos_z> gt #<home_z>]
+      #<pos_z> = #<home_z>
+    O<l05> endif
+    F#<TOOLPROBE_CAPT_VELO>
+    G38.4 Z[#<pos_z>]
+  O<l02> endif
+
+  ( display message )
+  O<l03> if [#5070 eq 1]
+    #<tool_z> = [ #5063 - #<home_z> + #<TOOLPROBE_SWITCH_OFFSET> ]
+    O<l04> if [#<TOOLPROBE_TYPE> EQ 0.0]
+      #<dia> = [#<tool_z> * 2.0]
+      (DEBUG, tool: r=#<tool_z>, d=#<dia>)
+    O<l04> else
+      (DEBUG, tool: len=#<tool_z>)
+    O<l04> endif
+    #<900> = #<tool_z>
+  O<l03> else
+    (MSG, _{Error while probing})
+  O<l03> endif
+
+  G53 G0 Z0
+
+  ( restore user pos and feedrate)
+  M103 P0
+  G0 A#<user_a> C#<user_c>
+  G0 X#<user_x> Y#<user_y>
+  G0 Z#<user_z>
+  F#<user_feed>
+o<toolprobe> endsub
+

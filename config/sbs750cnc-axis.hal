@@ -1,0 +1,156 @@
+###########################################################
+#
+# Steup SBS750CNC
+#
+# Axis controller HAL
+#
+###########################################################
+
+###########################################################
+# X axis
+###########################################################
+
+# position controler
+setp x-pid.Pgain [AXIS_0]P
+setp x-pid.Igain [AXIS_0]I
+setp x-pid.Dgain [AXIS_0]D
+setp x-pid.FF0 [AXIS_0]FF0
+setp x-pid.FF1 [AXIS_0]FF1
+setp x-pid.FF2 [AXIS_0]FF2
+setp x-pid.deadband [AXIS_0]DEADBAND
+setp x-pid.maxoutput [AXIS_0]MAX_OUTPUT
+net x-enable => x-pid.enable
+net x-pos-cmd => x-pid.command
+net x-pos-fb => x-pid.feedback
+net x-vel-cmd <= x-pid.output
+
+# axis interface
+net x-home => axis.0.home-sw-in
+net x-enable <= axis.0.amp-enable-out
+net x-amp-fault => axis.0.amp-fault-in
+net x-pos-cmd <= axis.0.motor-pos-cmd
+net x-pos-fb => axis.0.motor-pos-fb
+net x-pos-joint <= axis.0.joint-pos-fb
+net x-homed <= axis.0.homed
+net x-homing <= axis.0.homing
+
+###########################################################
+# Y axis
+###########################################################
+
+# position controler
+setp y-pid.Pgain [AXIS_1]P
+setp y-pid.Igain [AXIS_1]I
+setp y-pid.Dgain [AXIS_1]D
+setp y-pid.FF0 [AXIS_1]FF0
+setp y-pid.FF1 [AXIS_1]FF1
+setp y-pid.FF2 [AXIS_1]FF2
+setp y-pid.deadband [AXIS_1]DEADBAND
+setp y-pid.maxoutput [AXIS_1]MAX_OUTPUT
+net y-enable => y-pid.enable
+net y-pos-cmd => y-pid.command
+net y-pos-fb => y-pid.feedback
+net y-vel-cmd <= y-pid.output
+
+# axis interface
+net y-home => axis.1.home-sw-in
+net y-enable <= axis.1.amp-enable-out
+net y-amp-fault => axis.1.amp-fault-in
+net y-pos-cmd <= axis.1.motor-pos-cmd
+net y-pos-fb => axis.1.motor-pos-fb
+net y-pos-joint <= axis.1.joint-pos-fb
+net y-homed <= axis.1.homed
+net y-homing <= axis.1.homing
+
+###########################################################
+# Z axis
+###########################################################
+
+# position controler
+setp z-pid.Pgain [AXIS_2]P
+setp z-pid.Igain [AXIS_2]I
+setp z-pid.Dgain [AXIS_2]D
+setp z-pid.FF0 [AXIS_2]FF0
+setp z-pid.FF1 [AXIS_2]FF1
+setp z-pid.FF2 [AXIS_2]FF2
+setp z-pid.deadband [AXIS_2]DEADBAND
+setp z-pid.maxoutput [AXIS_2]MAX_OUTPUT
+net z-enable => z-pid.enable
+net z-pos-cmd => z-pid.command
+net z-pos-fb => z-pid.feedback
+net z-vel-cmd <= z-pid.output
+
+# axis interface
+net z-home => axis.2.home-sw-in
+net z-enable <= axis.2.amp-enable-out
+net z-amp-fault => axis.2.amp-fault-in
+net z-pos-cmd <= axis.2.motor-pos-cmd
+net z-pos-fb => axis.2.motor-pos-fb
+net z-pos-joint <= axis.2.joint-pos-fb
+net z-homed <= axis.2.homed
+net z-homing <= axis.2.homing
+
+###########################################################
+# A axis
+###########################################################
+
+# position controler
+setp a-pid.Pgain [AXIS_3]P
+setp a-pid.Igain [AXIS_3]I
+setp a-pid.Dgain [AXIS_3]D
+setp a-pid.FF0 [AXIS_3]FF0
+setp a-pid.FF1 [AXIS_3]FF1
+setp a-pid.FF2 [AXIS_3]FF2
+setp a-pid.deadband [AXIS_3]DEADBAND
+setp a-pid.maxoutput [AXIS_3]MAX_OUTPUT
+net a-enable => a-pid.enable
+net a-pos-cmd => a-pid.command
+net a-pos-fb => a-pid.feedback
+net a-vel-cmd <= a-pid.output
+
+# axis interface
+net a-enable <= axis.3.amp-enable-out
+net a-amp-fault => axis.3.amp-fault-in
+net a-pos-cmd <= axis.3.motor-pos-cmd
+net a-pos-fb => axis.3.motor-pos-fb
+net a-pos-joint <= axis.3.joint-pos-fb
+net a-homed <= axis.3.homed
+net a-homing <= axis.3.homing
+net a-vel-joint <= axis.3.joint-vel-cmd
+
+###########################################################
+# C axis
+###########################################################
+
+# position controler
+setp c-pid.Pgain [AXIS_5]P
+setp c-pid.Igain [AXIS_5]I
+setp c-pid.Dgain [AXIS_5]D
+setp c-pid.FF0 [AXIS_5]FF0
+setp c-pid.FF1 [AXIS_5]FF1
+setp c-pid.FF2 [AXIS_5]FF2
+setp c-pid.deadband [AXIS_5]DEADBAND
+setp c-pid.maxoutput [AXIS_5]MAX_OUTPUT
+net c-enable => c-pid.enable
+net c-pos-cmd => c-pid.command
+net c-pos-fb => c-pid.feedback
+net c-vel-cmd <= c-pid.output
+
+# axis interface
+net c-home => axis.5.home-sw-in
+net c-enable <= axis.5.amp-enable-out
+net c-amp-fault => axis.5.amp-fault-in
+net c-pos-cmd <= axis.5.motor-pos-cmd
+net c-pos-fb => axis.5.motor-pos-fb
+net c-pos-joint <= axis.5.joint-pos-fb
+net c-homed <= axis.5.homed
+net c-homing <= axis.5.homing
+net c-vel-joint <= axis.5.joint-vel-cmd
+
+###########################################################
+# Virtual axis B
+###########################################################
+
+net b-pos-cmd <= axis.4.motor-pos-cmd
+net b-pos-cmd => axis.4.motor-pos-fb
+

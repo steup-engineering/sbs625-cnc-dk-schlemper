@@ -1,0 +1,161 @@
+(info: winbench -- _{winbench processing})
+o<cape> sub
+  #<start_x>        = #1  (=0.0 _{Start X})
+  #<start_y>        = #2  (=0.0 _{Start Y})
+  #<size_x>         = #3  (=300.0 _{Length})
+  #<size_y>         = #4  (=300.0 _{Depth})
+  #<border_height>  = #5  (=20.0 _{Border height})
+  #<total_height>   = #6  (=100.0 _{Total height})
+  #<step>           = #7  (=4.0 _{Step size})
+  #<sides>          = #8  (=0.0 0=_{Both}, 1=X, 2=Y)
+  #<count>          = #9  (=1.0 _{Count})
+
+  ( constants )
+  #<EPSILON> = 0.000001
+
+  ( read machine parameters )
+  #<MOTOR_DEAD_ZONE>  = #2005
+
+  ( read user parameters )
+  #<blade_diam>    = #1001
+  #<blade_thick>   = #1002
+  #<start_z>       = #1005
+  #<safe_z>        = #1007
+  #<last_z>        = #1010
+  #<cut_feed>      = #1012
+  #<rad_comp_safe> = #1014
+  #<extra_z>       = #1015
+
+  #<blade_rad> = [ #<blade_diam> * 0.5 ]
+
+  o<l01> if [#<start_x> LT -5000.0 or #<start_x> GT 5000.0 ]
+    (MSG, _{Start X} [1] _{must be} _{between} -5000 _{and} 5000 mm_{_lay})
+    m2
+  o<l01> endif
+  o<l02> if [#<start_y> LT -5000.0 or #<start_y> GT 5000.0 ]
+    (MSG, _{Start Y} [2] _{must be} _{between} -5000 _{and} 5000 mm_{_lay})
+    m2
+  o<l02> endif
+  o<l03> if [#<size_x> LT 0 or #<size_x> GT 5000.0 ]
+    (MSG, _{Size X} [3] _{must be} _{between} 0 _{and} 5000 mm_{_lay})
+    m2
+  o<l03> endif
+  o<l04> if [#<size_y> LT 0 or #<size_y> GT 5000.0 ]
+    (MSG, _{Size Y} [4] _{must be} _{between} 0 _{and} 5000 mm_{_lay})
+    m2
+  o<l04> endif
+  o<l06> if [#<total_height> LT 0]
+    (MSG, _{Total height} [6] _{must be} _{greater than} 0)
+    m2
+  o<l06> endif
+  o<l05> if [#<border_height> LT 0 or #<border_height> GT #<total_height>]
+    (MSG, _{Back height} [5] _{must be} _{between} 0 _{and} _{Total height}_{_lay})
+    m2
+  o<l05> endif
+  o<l07> if [#<step> LT 0.1 or #<step> GT #<blade_thick> ]
+    (MSG, _{Step size} [7] _{must be} _{between} 0.1 mm _{and} _{Blade thickness}_{_lay})
+    m2
+  o<l07> endif
+  o<l08> if [#<sides> NE 0.0 and #<sides> NE 1.0 and #<sides> NE 2.0]
+    (MSG, _{Sides} [8] _{must be} 0 _{or} 1 _{or} 2_{_be})
+    m2
+  o<l08> endif
+  o<l09> if [#<count> LT 1 or #<count> GT 1000 ]
+    (MSG, _{Count} [9] _{must be} _{between} 1 _{and} 1000_{_lay})
+    m2
+  o<l09> endif
+
+  #<diff_x> = [#<size_x> * 0.5]
+  #<diff_y> = [#<size_y> * 0.5]
+  #<diff_z> = [#<total_height> - #<border_height>]
+
+  o<l10> if [#<diff_z> GT [#<blade_rad> - #<MOTOR_DEAD_ZONE>]]
+    (MSG, _{Resulting cut depth} [[6]-[5]] _{must be} _{lesser than} _{Blade radius})
+    m2
+  o<l10> endif
+
+  #<ref_x> = [#<start_x> + #<diff_x>]
+  #<ref_y> = [#<start_y> + #<diff_y>]
+
+  o<l34> if [#<count> GT 1]
+    #<size_x_step> = [#<size_x> + #<blade_thick>]
+  o<l34> else
+    #<size_x_step> = #<size_x>
+  o<l34> endif
+
+  o<l31> if [#<sides> EQ 0 or #<sides> EQ 1]
+    #<pos_a> = ATAN[#<diff_z>]/[#<diff_y>]
+    #<end_x> = [ #<start_x> + [#<size_x_step> * #<count>]]
+    #<pos_y> = [ #<ref_y> ]
+    #<end_y> = [ #<ref_y> - #<diff_y>]
+    #<pos_z> = 0.0
+    #<step_y> = [#<step> * COS[#<pos_a>]]
+    #<step_z> = [[#<diff_z> / #<diff_y>] * #<step_y>]
+    #<reverse> = -1.0
+    o<l20> while [#<pos_y> GT [#<end_y> + #<EPSILON>]]
+      o<cut_gen> CALL [#<start_x>][#<pos_y>][#<start_z>][#<end_x>][#<pos_y>][#<pos_z>][0.0][#<pos_a>][-2.0][0.0][0.0][#<reverse>][0.0][#<total_height>][#<pos_z>]
+      #<pos_y> = [#<pos_y> - #<step_y>]
+      #<pos_z> = [#<pos_z> - #<step_z>]
+      #<reverse> = -#<reverse>
+    o<l20> endwhile
+
+    #<pos_y> = [ #<ref_y> ]
+    #<end_y> = [ #<ref_y> + #<diff_y>]
+    #<pos_z> = 0.0
+    #<reverse> = -1.0
+    o<l21> while [#<pos_y> LT [#<end_y> - #<EPSILON>]]
+      o<cut_gen> CALL [#<end_x>][#<pos_y>][#<start_z>][#<start_x>][#<pos_y>][#<pos_z>][0.0][#<pos_a>][-2.0][0.0][0.0][#<reverse>][0.0][#<total_height>][#<pos_z>]
+      #<pos_y> = [#<pos_y> + #<step_y>]
+      #<pos_z> = [#<pos_z> - #<step_z>]
+      #<reverse> = -#<reverse>
+    o<l21> endwhile
+  o<l31> endif
+
+  o<l35> if [#<count> GT 1]
+    o<cut_gen> CALL [#<start_x>][#<start_y>][#<start_z>][#<start_x>][#<end_y>][-#<total_height>][#<extra_z>][0.0][1.0][0.0][0.0][0.0][0.0][#<total_height>][0.0]
+  o<l35> endif
+
+  o<l32> if [#<sides> EQ 0 or #<sides> EQ 2]
+    o<l37> if [#<count> GT 1]
+      #<pos_a> = 0.0
+    o<l37> else
+      #<pos_a> = ATAN[#<diff_z>]/[#<diff_x>]
+    o<l37> endif
+    #<ref_x_step> = #<ref_x>
+
+    o<l33> repeat [#<count>]
+      #<end_y> = [ #<start_y> + #<size_y> ]
+      #<pos_x> = [ #<ref_x_step> ]
+      #<end_x> = [ #<ref_x_step> + #<diff_x>]
+      #<pos_z> = 0.0
+      #<step_x> = [#<step> * COS[#<pos_a>]]
+      #<step_z> = [[#<diff_z> / #<diff_x>] * #<step_x>]
+      #<reverse> = -1.0
+      o<l22> while [#<pos_x> LT [#<end_x> - #<EPSILON>]]
+        o<cut_gen> CALL [#<pos_x>][#<start_y>][#<start_z>][#<pos_x>][#<end_y>][#<pos_z>][0.0][#<pos_a>][-2.0][0.0][0.0][#<reverse>][0.0][#<total_height>][#<pos_z>]
+        #<pos_x> = [#<pos_x> + #<step_x>]
+        #<pos_z> = [#<pos_z> - #<step_z>]
+        #<reverse> = -#<reverse>
+      o<l22> endwhile
+
+      #<pos_x> = [ #<ref_x_step> ]
+      #<end_x> = [ #<ref_x_step> - #<diff_x>]
+      #<pos_z> = 0.0
+      #<reverse> = -1.0
+      o<l23> while [#<pos_x> GT [#<end_x> + #<EPSILON>]]
+        o<cut_gen> CALL [#<pos_x>][#<end_y>][#<start_z>][#<pos_x>][#<start_y>][#<pos_z>][0.0][#<pos_a>][-2.0][0.0][0.0][#<reverse>][0.0][#<total_height>][#<pos_z>]
+        #<pos_x> = [#<pos_x> - #<step_x>]
+        #<pos_z> = [#<pos_z> - #<step_z>]
+        #<reverse> = -#<reverse>
+      o<l23> endwhile
+
+      #<ref_x_step> = [ #<ref_x_step> + #<size_x> ]
+      o<l36> if [#<count> GT 1]
+        #<pos_x> = [#<ref_x_step> + #<diff_x>]
+        o<cut_gen> CALL [#<ref_x_step>][#<start_y>][#<start_z>][#<ref_x_step>][#<end_y>][-#<total_height>][#<extra_z>][0.0][-1.0][0.0][0.0][0.0][0.0][#<total_height>][0.0]
+      o<l36> endif
+      #<ref_x_step> = [ #<ref_x_step> + #<blade_thick> ]
+    o<l33> endrepeat
+  o<l32> endif
+
+o<cape> endsub

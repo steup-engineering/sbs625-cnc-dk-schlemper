@@ -1,0 +1,4 @@
+o<show-cross> sub
+  G53 G0 Z0
+  G0 X#2006 Y#2007
+o<show-cross> endsub

@@ -1,0 +1,4 @@
+o<touch-line-y-table-x> sub
+  O<touch-line-y> CALL
+  G10 L2 P0 X#5341
+o<touch-line-y-table-x> endsub

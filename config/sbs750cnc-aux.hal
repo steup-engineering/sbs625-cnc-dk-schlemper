@@ -1,0 +1,370 @@
+###########################################################
+#
+# Steup SBS750CNC
+#
+# Aux HAL
+#
+###########################################################
+
+net feed-pot => sbs-jog.pot-feed-override
+net feed-pct <= sbs-jog.feed-override-pct
+net rapid-pct <= sbs-jog.rapid-override-pct
+
+net override-limits => sbs-jog.override-limits
+
+net x-neg-lim-in => sbs-jog.x-neg-lim-in
+net x-pos-lim-in => sbs-jog.x-pos-lim-in
+net x-neg-lim-out <= sbs-jog.x-neg-lim-out
+net x-pos-lim-out <= sbs-jog.x-pos-lim-out
+net x-neg-lim-out => axis.0.neg-lim-sw-in
+net x-pos-lim-out => axis.0.pos-lim-sw-in
+
+net y-neg-lim-in => sbs-jog.y-neg-lim-in
+net y-pos-lim-in => sbs-jog.y-pos-lim-in
+net y-neg-lim-out <= sbs-jog.y-neg-lim-out
+net y-pos-lim-out <= sbs-jog.y-pos-lim-out
+net y-neg-lim-out => axis.1.neg-lim-sw-in
+net y-pos-lim-out => axis.1.pos-lim-sw-in
+
+net z-neg-lim-in => sbs-jog.z-neg-lim-in
+net z-pos-lim-in => sbs-jog.z-pos-lim-in
+net z-neg-lim-out <= sbs-jog.z-neg-lim-out
+net z-pos-lim-out <= sbs-jog.z-pos-lim-out
+net z-neg-lim-out => axis.2.neg-lim-sw-in
+net z-pos-lim-out => axis.2.pos-lim-sw-in
+
+net a-neg-lim-in => sbs-jog.a-neg-lim-in
+net a-pos-lim-in => sbs-jog.a-pos-lim-in
+net a-neg-lim-out <= sbs-jog.a-neg-lim-out
+net a-pos-lim-out <= sbs-jog.a-pos-lim-out
+net a-neg-lim-out => axis.3.neg-lim-sw-in
+net a-pos-lim-out => axis.3.pos-lim-sw-in
+
+
+net pend-velo-0 => sbs-jog.pend-velo-0
+net pend-velo-1 => sbs-jog.pend-velo-1
+net pend-velo-2 => sbs-jog.pend-velo-2
+net pend-velo-3 => sbs-jog.pend-velo-3
+net pend-axis-0 => sbs-jog.pend-axis-0
+net pend-axis-1 => sbs-jog.pend-axis-1
+net pend-axis-2 => sbs-jog.pend-axis-2
+net pend-axis-3 => sbs-jog.pend-axis-3
+net pend-key-neg => sbs-jog.pend-key-neg
+net pend-key-sel => sbs-jog.pend-key-sel
+net pend-key-pos => sbs-jog.pend-key-pos
+net pend-key-ena => sbs-jog.pend-key-ena
+
+
+net pend-count => axis.0.jog-counts
+net pend-count => axis.1.jog-counts
+net pend-count => axis.2.jog-counts
+net pend-count => axis.3.jog-counts
+net pend-count => axis.5.jog-counts
+
+net pend-scale <= sbs-jog.pend-scale
+net pend-scale => axis.0.jog-scale
+net pend-scale => axis.1.jog-scale
+net pend-scale => axis.2.jog-scale
+net pend-scale => axis.3.jog-scale
+net pend-scale => axis.5.jog-scale
+
+setp axis.0.jog-vel-mode 1
+setp axis.1.jog-vel-mode 1
+setp axis.2.jog-vel-mode 1
+setp axis.3.jog-vel-mode 1
+setp axis.5.jog-vel-mode 1
+
+net pend-count => sbs-jog.pend-count
+
+net pend-ena-x <= sbs-jog.pend-ena-x
+net pend-ena-x => axis.0.jog-enable
+net pend-ena-y <= sbs-jog.pend-ena-y
+net pend-ena-y => axis.1.jog-enable
+net pend-ena-z <= sbs-jog.pend-ena-z
+net pend-ena-z => axis.2.jog-enable
+net pend-ena-a <= sbs-jog.pend-ena-a
+net pend-ena-a => axis.3.jog-enable
+net pend-ena-c <= sbs-jog.pend-ena-c
+net pend-ena-c => axis.5.jog-enable
+
+net x-homed => sbs-jog.x-homed
+net y-homed => sbs-jog.y-homed
+net z-homed => sbs-jog.z-homed
+net a-homed => sbs-jog.a-homed
+net c-homed => sbs-jog.c-homed
+
+net jog-disable <= sbs-jog.jog-disable
+net joy-sel-uvw => sbs-jog.joy-sel-uvw
+
+net joy-x-neg => sbs-jog.joy-x-neg
+net joy-x-pos => sbs-jog.joy-x-pos
+net joy-y-neg => sbs-jog.joy-y-neg
+net joy-y-pos => sbs-jog.joy-y-pos
+net joy-z-neg => sbs-jog.joy-z-neg
+net joy-z-pos => sbs-jog.joy-z-pos
+
+net jog-x-neg <= sbs-jog.jog-x-neg
+net jog-x-pos <= sbs-jog.jog-x-pos
+net jog-y-neg <= sbs-jog.jog-y-neg
+net jog-y-pos <= sbs-jog.jog-y-pos
+net jog-z-neg <= sbs-jog.jog-z-neg
+net jog-z-pos <= sbs-jog.jog-z-pos
+
+net pot-vel-mm => sbs-jog.pot-vel-mm
+net pot-vel-deg => sbs-jog.pot-vel-deg
+net pot-spindle => sbs-jog.pot-spindle
+net pot-vel-max => sbs-jog.pot-vel-max
+
+net pot-is-vel-mm <= sbs-jog.pot-is-vel-mm
+net pot-is-vel-deg <= sbs-jog.pot-is-vel-deg
+net pot-is-spindle <= sbs-jog.pot-is-spindle
+net pot-is-vel-max <= sbs-jog.pot-is-vel-max
+
+net pot-out-vel-mm <= sbs-jog.pot-out-vel-mm
+net pot-out-vel-deg <= sbs-jog.pot-out-vel-deg
+net pot-out-spindle <= sbs-jog.pot-out-spindle
+net pot-out-vel-max <= sbs-jog.pot-out-vel-max
+
+
+net emc-enable => iocontrol.0.emc-enable-in
+
+###########################################################
+# halui
+###########################################################
+
+net emc-on <= halui.machine.is-on
+net emc-auto <= halui.program.is-running
+
+net ui-mdi-home-z => halui.mdi-command-00
+net ui-mdi-home-xy => halui.mdi-command-01
+net ui-mdi-home-x => halui.mdi-command-02
+net ui-mdi-manu-c-0 => halui.mdi-command-03
+net ui-mdi-manu-c-90 => halui.mdi-command-04
+net ui-mdi-manu-c-180 => halui.mdi-command-05
+net ui-mdi-manu-c-270 => halui.mdi-command-06
+net ui-mdi-manu-a-0 => halui.mdi-command-07
+net ui-mdi-manu-a-30 => halui.mdi-command-08
+net ui-mdi-manu-a-45 => halui.mdi-command-09
+
+net ui-mdi-manu-a-90 => halui.mdi-command-10
+net laser-cross-touch-x => halui.mdi-command-11
+net laser-cross-touch-y => halui.mdi-command-12
+net laser-line-touch-x => halui.mdi-command-13
+net laser-line-touch-y => halui.mdi-command-14
+net table-touch-x => halui.mdi-command-15
+net table-touch-y => halui.mdi-command-16
+net laser-cross-matprobe => halui.mdi-command-17
+net laser-line-touch-y-table-x => halui.mdi-command-18
+net toolprobe-blade => halui.mdi-command-19
+
+net toolprobe-mill => halui.mdi-command-20
+net laser-cross-show => halui.mdi-command-21
+net vac-manu-pickup => halui.mdi-command-22
+net vac-manu-release => halui.mdi-command-23
+net mancut-left => halui.mdi-command-24
+net mancut-right => halui.mdi-command-25
+
+net mancut-stop => halui.program.stop
+
+###########################################################
+# error handling
+###########################################################
+
+net power-ok => sbs-errors.emc-enable-in
+net emc-enable <= sbs-errors.emc-enable-out
+net emc-running <= sbs-errors.emc-running
+net emc-on => sbs-errors.emc-on
+net emc-auto => sbs-errors.emc-auto
+
+net auto-enable => sbs-errors.auto-enable
+net spindle-enable-req => sbs-errors.spindle-enable-in
+net spindle-enable <= sbs-errors.spindle-enable-out
+
+net estop-panel => sbs-errors.estop-panel
+net lube-err => sbs-errors.lube-err
+net spindle-err => sbs-errors.spindle-err
+net ps-pot-err => sbs-errors.ps-pot-err
+
+net air-ok => sbs-errors.air-ok
+net water-ok => sbs-errors.water-ok
+net water-out => sbs-errors.water-out
+
+net inverters-ready <= sbs-errors.inverters-ready
+
+net matprobe-cyl-err => sbs-errors.matprobe-cyl-err
+
+net error => sbs-errors.error
+net error-lamp <= sbs-errors.error-lamp
+
+setp sbs-errors.ec-slaves 34
+net ec-slaves-responding => sbs-errors.ec-slaves-responding
+net ec-link-up => sbs-errors.ec-link-up
+net ec-all-op => sbs-errors.ec-all-op
+
+###########################################################
+# material/tool probing functions
+###########################################################
+
+net emc-on => sbs-probe.emc-on
+net emc-auto => sbs-probe.emc-auto
+
+net toolprobe-req => sbs-probe.toolprobe-req
+net matprobe-req => sbs-probe.matprobe-req
+net matprobe-ack <= sbs-probe.matprobe-ack
+
+net toolprobe-sens => sbs-probe.toolprobe-in
+
+net matprobe-hp => sbs-probe.matprobe-cyl-up
+net matprobe-ap => sbs-probe.matprobe-cyl-down
+net matprobe-sens => sbs-probe.matprobe-in
+
+net matprobe-cyl <= sbs-probe.matprobe-cyl-coil
+
+net matprobe-cyl-err <= sbs-probe.matprobe-cyl-err
+
+net probe-sens <= sbs-probe.probe-out
+net probe-sens => motion.probe-input
+
+###########################################################
+# vacuum functions
+###########################################################
+
+setp sbs-probe.vac-cyl-linked 0
+
+net vac-req-left => sbs-probe.vac-req-left
+net vac-req-right => sbs-probe.vac-req-right
+net vac-ack <= sbs-probe.vac-ack
+
+net vac-pod-left-hp => sbs-probe.vac-cyl-up-left
+net vac-pod-left-ap => sbs-probe.vac-cyl-down-left
+net vac-pod-left-out <= sbs-probe.vac-cyl-coil-left
+
+net vac-pod-right-hp => sbs-probe.vac-cyl-up-right
+net vac-pod-right-ap => sbs-probe.vac-cyl-down-right
+net vac-pod-right-out <= sbs-probe.vac-cyl-coil-right
+
+net vac-pod-pull => sbs-probe.vac-pull
+net vac-pod-push => sbs-probe.vac-push
+
+net vac-pod-pull-left-0 <= sbs-probe.vac-pull-left-0
+net vac-pod-pull-left-1 <= sbs-probe.vac-pull-left-1
+net vac-pod-pull-left-2 <= sbs-probe.vac-pull-left-2
+
+net vac-pod-pull-right-0 <= sbs-probe.vac-pull-right-0
+net vac-pod-pull-right-1 <= sbs-probe.vac-pull-right-1
+net vac-pod-pull-right-2 <= sbs-probe.vac-pull-right-2
+net vac-pod-pull-right-3 <= sbs-probe.vac-pull-right-3
+
+net vac-pod-push-left-0 <= sbs-probe.vac-push-left-0
+net vac-pod-push-left-1 <= sbs-probe.vac-push-left-1
+net vac-pod-push-left-2 <= sbs-probe.vac-push-left-2
+
+net vac-pod-push-right-0 <= sbs-probe.vac-push-right-0
+net vac-pod-push-right-1 <= sbs-probe.vac-push-right-1
+net vac-pod-push-right-2 <= sbs-probe.vac-push-right-2
+net vac-pod-push-right-3 <= sbs-probe.vac-push-right-3
+
+net vac-manu-0l => sbs-probe.vac-manu-left-0
+net vac-manu-1l => sbs-probe.vac-manu-left-1
+net vac-manu-2l => sbs-probe.vac-manu-left-2
+net vac-manu-l <= sbs-probe.vac-manu-left
+net vac-manu-0r => sbs-probe.vac-manu-right-0
+net vac-manu-1r => sbs-probe.vac-manu-right-1
+net vac-manu-2r => sbs-probe.vac-manu-right-2
+net vac-manu-3r => sbs-probe.vac-manu-right-3
+net vac-manu-r <= sbs-probe.vac-manu-right
+
+###########################################################
+# aux functions
+###########################################################
+
+setp sbs-aux.table-arms-y-min [TABLE]ARMS_YPOS_MIN
+setp sbs-aux.table-arms-y-max [TABLE]ARMS_YPOS_MAX
+setp sbs-aux.table-arms-c-min [TABLE]ARMS_CPOS_MIN
+setp sbs-aux.table-arms-c-max [TABLE]ARMS_CPOS_MAX
+
+net power-ok => sbs-aux.emc-enable-in
+net emc-on => sbs-aux.emc-on
+net emc-auto => sbs-aux.emc-auto
+net auto-enable => sbs-aux.auto-enable
+net spindle-enable => sbs-aux.spindle-enable
+
+net x-homing <= sbs-aux.x-homing
+net y-homing <= sbs-aux.y-homing
+net z-homing <= sbs-aux.z-homing
+net a-homing <= sbs-aux.a-homing
+net c-homing <= sbs-aux.c-homing
+
+net x-amp-ready => sbs-aux.x-amp-ready
+net y-amp-ready => sbs-aux.y-amp-ready
+net z-amp-ready => sbs-aux.z-amp-ready
+net a-amp-ready => sbs-aux.a-amp-ready
+net c-amp-ready => sbs-aux.c-amp-ready
+net spindle-ready => sbs-aux.spindle-ready
+
+net y-homed => sbs-aux.y-homed
+net y-pos-joint => sbs-aux.y-pos-joint
+net c-homed => sbs-aux.c-homed
+net c-pos-joint => sbs-aux.c-pos-joint
+
+net a-vel-joint => sbs-aux.a-vel-joint
+net c-vel-joint => sbs-aux.c-vel-joint
+
+net c-magnetic-brake <= sbs-aux.c-magnetic-brake
+
+net laser-cross-on => sbs-aux.laser-cross-on
+net laser-cross-off => sbs-aux.laser-cross-off
+net laser-cross-is-on <= sbs-aux.laser-cross-is-on
+net laser-line-on => sbs-aux.laser-line-on
+net laser-line-off => sbs-aux.laser-line-off
+net laser-line-is-on <= sbs-aux.laser-line-is-on
+
+net table-arms-on => sbs-aux.table-arms-on
+net table-arms-off => sbs-aux.table-arms-off
+net table-arms-is-on <= sbs-aux.table-arms-is-on
+net table-arms-out-up <= sbs-aux.table-arms-out-up
+net table-arms-out-down <= sbs-aux.table-arms-out-down
+net table-magnet-on => sbs-aux.table-magnet-on
+net table-magnet-off => sbs-aux.table-magnet-off
+net table-magnet-is-on <= sbs-aux.table-magnet-is-on
+net table-magnet-out <= sbs-aux.table-magnet-out
+net table-lock-on => sbs-aux.table-lock-on
+net table-lock-off => sbs-aux.table-lock-off
+net table-lock-is-on <= sbs-aux.table-lock-is-on
+
+net water-disable => sbs-aux.water-disable
+net water-req => sbs-aux.water-req
+net water-main <= sbs-aux.water-main
+net water-out <= sbs-aux.water-out
+net mist-req => sbs-aux.mist-req
+net mist-out <= sbs-aux.mist-out
+net water-clean-req => sbs-aux.clean-req
+net water-clean <= sbs-aux.clean-out
+
+net horn <= sbs-aux.horn-pulsed
+
+net x-pos-cmd => sbs-aux.x-pos-cmd
+net y-pos-cmd => sbs-aux.y-pos-cmd
+net z-pos-cmd => sbs-aux.z-pos-cmd
+
+net x-enable => sbs-aux.x-enable
+net y-enable => sbs-aux.y-enable
+net z-enable => sbs-aux.z-enable
+
+net lube-pulse <= sbs-aux.lube-pulse
+
+###########################################################
+# motion I/O
+###########################################################
+
+# input for checking the vacuum acknowledge
+net vac-ack => motion.digital-in-01
+
+net water-clean-req <= motion.digital-out-00
+
+# vacuum functions
+net vac-pod-push <= motion.digital-out-01
+net vac-pod-pull <= motion.digital-out-02
+net vac-manu-l => motion.analog-in-00
+net vac-manu-r => motion.analog-in-01
+

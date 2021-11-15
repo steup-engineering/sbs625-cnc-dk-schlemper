@@ -1,0 +1,36 @@
+###########################################################
+#
+# Steup SBS750CNC
+#
+# Spindle HAL
+#
+###########################################################
+
+###########################################################
+# motion interface
+###########################################################
+
+net spindle-enable-req <= motion.spindle-on
+net spindle-fwd <= motion.spindle-forward
+#net spindle-rev <= motion.spindle-reverse
+net spindle-cmd-rpm <= motion.spindle-speed-out
+net spindle-cmd <= motion.spindle-speed-out-rps
+net spindle-fb <= motion.spindle-speed-in
+net spindle-at-speed => motion.spindle-at-speed
+
+net water-req <= iocontrol.0.coolant-flood
+net mist-req <= iocontrol.0.coolant-mist
+
+###########################################################
+# fan and air control
+###########################################################
+
+setp spindle-fan-dly.on-delay 0.0
+setp spindle-fan-dly.off-delay 300.0
+net spindle-enable-req => spindle-fan-dly.in
+net spindle-fan <= spindle-fan-dly.out
+
+setp spindle-air-dly.on-delay 0.0
+setp spindle-air-dly.off-delay 600.0
+net spindle-enable-req => spindle-air-dly.in
+net spindle-air <= spindle-air-dly.out

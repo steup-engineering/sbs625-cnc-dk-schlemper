@@ -1,0 +1,59 @@
+(info: ac_offsets -- calculate offsets for A/C-Position <> 0)
+o<ac_offsets> sub
+  #<pos_a>     = #1
+  #<pos_c>     = #2
+
+  ( read user parameters )
+  #<blade_diam>    = #1001
+  #<blade_thick>   = #1002
+  #<blade_core>    = #1003
+
+  #<blade_rad>   = [ #<blade_diam> * 0.5 ]
+
+  ( read machine parameters )
+  #<APIVOT_TOOLAXIS>  = #2001
+  #<APIVOT_BLADEPUCK> = #2002
+  #<CPIVOT_TOOLAXIS>  = #2003
+  #<CPIVOT_APIVOT>    = #2004
+
+  ( calculate blade corrction )
+  o<l15> if [#<blade_core> GT 0.0]
+    #<blade_offset> = [ #<blade_core> * 0.5 ]
+  o<l15> else
+    #<blade_offset> = [ #<blade_thick> * 0.5 ]
+  o<l15> endif
+
+  ( calculate native offsets )
+  #<u_offset> = [ #<CPIVOT_TOOLAXIS> ]
+  #<v_offset> = [ #<APIVOT_BLADEPUCK> - #<blade_offset> + #<CPIVOT_APIVOT> ]
+  #<w_offset> = [ #<APIVOT_TOOLAXIS> ]
+
+  ( build bladepuck center point to b pivot vector )
+  #<x_offset> = 0.0
+  #<y_offset> = [ #<APIVOT_BLADEPUCK> - #<blade_offset> ]
+  #<z_offset> = [ #<APIVOT_TOOLAXIS> - #<blade_rad> ]
+
+  ( rotate a <y/z-pane> )
+  #<y_tmp> = [ [ #<y_offset> * COS[#<pos_a>] ] - [ #<z_offset> * SIN[#<pos_a>] ] ]
+  #<z_tmp> = [ [ #<y_offset> * SIN[#<pos_a>] ] + [ #<z_offset> * COS[#<pos_a>] ] ]
+  #<y_offset> = #<y_tmp>
+  #<z_offset> = #<z_tmp>
+
+  ( add a pivot to c pivot vector )
+  #<x_offset> = [ #<x_offset> + #<CPIVOT_TOOLAXIS> ];
+  #<y_offset> = [ #<y_offset> + #<CPIVOT_APIVOT> ];
+
+  ( rotate c <x/y-pane> )
+  #<x_tmp> = [ [ #<x_offset> * COS[#<pos_c>] ] - [ #<y_offset> * SIN[#<pos_c>] ] ]
+  #<y_tmp> = [ [ #<x_offset> * SIN[#<pos_c>] ] + [ #<y_offset> * COS[#<pos_c>] ] ]
+  #<x_offset> = #<x_tmp>
+  #<y_offset> = #<y_tmp>
+
+  ( calculate correction distance )
+  #900 = [ #<u_offset> - #<x_offset> ]
+  #901 = [ #<v_offset> - #<y_offset> ]
+  #902 = [ #<w_offset> - #<z_offset> ]
+
+o<ac_offsets> endsub
+
+

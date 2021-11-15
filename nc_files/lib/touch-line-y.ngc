@@ -1,0 +1,24 @@
+o<touch-line-y> sub
+  ( constants )
+  #<EPSILON> = 0.05
+
+  ( check a/c )
+  G28.1
+  #<pos_a> = #5164
+  #<pos_c> = #5166
+  o<l01> if [ABS[#<pos_a>] GT #<EPSILON>]
+    (MSG, _{A must be at 0 for touchoff})
+    m2
+  o<l01> endif
+  o<l02> if [ABS[#<pos_c>] GT #<EPSILON>]
+    (MSG, _{C must be at 0 for touchoff})
+    m2
+  o<l02> endif
+
+  ( read machine parameters )
+  #<LINE_OFFSET_X>  = #2008
+  #<LINE_OFFSET_Y>  = #2009
+
+  ( set reference point)
+  G10 L20 P0 Y#<LINE_OFFSET_Y>
+o<touch-line-y> endsub

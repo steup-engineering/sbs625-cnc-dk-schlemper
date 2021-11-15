@@ -1,0 +1,27 @@
+o<ipolz> sub
+  #<fast>    = #1
+  #<ref_z>   = #2
+  #<match_z> = #3
+  #<pos_x>   = #4
+  #<pos_y>   = #5
+  #<pos_z>   = #6
+
+  G28.1
+  #<pos_a> = #5164
+  #<pos_c> = #5166
+
+  ( rotate a )
+  #<offset> = [ [ #<pos_z> - #<match_z> ] * TAN[-#<pos_a>] ]
+
+  ( rotate c )
+  #<pos_x> = [ #<pos_x> + [ #<offset> * SIN[-#<pos_c>] ] ]
+  #<pos_y> = [ #<pos_y> + [ #<offset> * COS[-#<pos_c>] ] ]
+  #<pos_z> = [ #<pos_z> + #<ref_z> ]
+
+  ( move to position )
+  o<l01> if [#<fast> GT 0.0]
+    g0 x#<pos_x> y#<pos_y> z#<pos_z>
+  o<l01> else
+    g1 x#<pos_x> y#<pos_y> z#<pos_z>
+  o<l01> endif
+o<ipolz> endsub

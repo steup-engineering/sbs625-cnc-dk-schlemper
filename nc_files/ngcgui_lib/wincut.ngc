@@ -1,0 +1,46 @@
+(info: wincut -- _{wincut processing})
+o<wincut> sub
+  #<length>         = #1  (=2000.0 _{Length})
+  #<depth>          = #2  (=200.0 _{Depth})
+  #<angle_a>        = #3  (=-7.0 _{Angle A})
+  #<angle_c>        = #4  (=45.0 _{Angle C})
+
+  o<l01> if [#<length> LT 0.0 or #<length> GT 5000.0 ]
+    (MSG, _{Length} [1] _{must be} _{between} 0 _{and} 5000 mm_{_lay})
+    m2
+  o<l01> endif
+  o<l02> if [#<depth> LT 0.0 or #<depth> GT 5000.0 ]
+    (MSG, _{Depth} [2] _{must be} _{between} 0 _{and} 5000 mm_{_lay})
+    m2
+  o<l02> endif
+  o<l03> if [#<angle_a> LT -75.0 or #<angle_a> GT 75.0 ]
+    (MSG, _{Angle A} [3] _{must be} _{between} -75 _{and} 75_{_lay})
+    m2
+  o<l03> endif
+  o<l03> if [#<angle_c> LT -75.0 or #<angle_c> GT 75.0 ]
+    (MSG, _{Angle C} [4] _{must be} _{between} -75 _{and} 75_{_lay})
+    m2
+  o<l03> endif
+
+  ( read user parameters )
+  #<start_z>     = #1005
+  #<mat_z>       = #1006
+  #<last_z>      = #1010
+  #<extra_z>     = #1015
+
+  (calculate x offset for angle c)
+  #<offset_x> = [#<depth> * TAN[#<angle_c>]]
+
+  ( make cut )
+  g59.1 (Coordinate system 7 fixed zero)
+  o<l20> if [#<angle_a> GE 0.0]
+    o<cut_gen> CALL [0.0][0.0][#<start_z>][#<offset_x>][#<depth>][-#<mat_z>][#<extra_z>][#<angle_a>][1.0][0.0][0.0][0.0][#<last_z>][#<mat_z>][0.0]
+    o<cut_gen> CALL [#<length> - #<offset_x>][#<depth>][#<start_z>][#<length>][0.0][-#<mat_z>][#<extra_z>][#<angle_a>][1.0][0.0][0.0][0.0][#<last_z>][#<mat_z>][0.0]
+  o<l20> else
+    o<cut_gen> CALL [#<offset_x>][#<depth>][#<start_z>][0.0][0.0][-#<mat_z>][#<extra_z>][-#<angle_a>][-1.0][0.0][0.0][0.0][#<last_z>][#<mat_z>][0.0]
+    o<cut_gen> CALL [#<length>][0.0][#<start_z>][#<length> - #<offset_x>][#<depth>][-#<mat_z>][#<extra_z>][-#<angle_a>][-1.0][0.0][0.0][0.0][#<last_z>][#<mat_z>][0.0]
+  o<l20> endif
+  g54 (Coordinate system 1 default)
+
+o<wincut> endsub
+

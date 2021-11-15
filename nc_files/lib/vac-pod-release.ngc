@@ -1,0 +1,47 @@
+o<vac-pod-release> sub
+  ( read parameters )
+  #<VAC_TOUCH_DIST> = #2035
+  #<VAC_TOUCH_OFFSET> = #2036
+  #<VAC_TOUCH_FEED> = #2037
+  #<VAC_PICK_FEED> = #2038
+  #<VAC_PUSH_DELAY> = #2039
+  #<VAC_PULL_DELAY> = #2040
+  #<VAC_RELEASE_DELAY> = #2041
+  #<VAC_CLEAN_DIST_X> = #2042
+  #<VAC_CLEAN_DIST_Y> = #2043
+  #<VAC_CLEAN_FEED> = #2044
+  #<VAC_PICK_DIST> = #2046
+  #<VAC_SAFE_DIST> = #2047
+  #<VAC_SAFE_FEED> = #2048
+  #<VAC_TOUCH_REF> = #2049
+
+  ( check if ack is really active )
+  M66 P1
+  o<l02> if [#5399 LT 0.5]
+    (MSG, _{Vacuum pull is not active!})
+    m2
+  o<l02> endif
+
+  ( seach for touch )
+  F#<VAC_TOUCH_FEED>
+  G53 G38.2 Z#<VAC_TOUCH_DIST>
+
+  ( deactivate vacuum )
+  M65 P2
+
+  ( wait for stable state )
+  G4 P#<VAC_RELEASE_DELAY>
+
+  ( activate pushing )
+  M64 P1
+
+  ( wait for stable state )
+  G4 P#<VAC_PUSH_DELAY>
+
+  ( deactivate cylinder )
+  M104 P0 Q0
+
+  ( deactivate pushing )
+  M65 P1
+o<vac-pod-release> endsub
+

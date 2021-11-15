@@ -1,0 +1,275 @@
+(info: winbench -- _{winbench processing})
+o<winbench> sub
+  #<start_x>        = #1  (=0.0 _{Start X})
+  #<start_y>        = #2  (=0.0 _{Start Y})
+  #<len_x>          = #3  (=2000.0 _{Length})
+  #<depth>          = #4  (=300.0 _{Width})
+  #<back_height>    = #5  (=100.0 _{Back height})
+  #<sholder_depth>  = #6  (=50.0 _{Shoulder depth})
+  #<sholder_height> = #7  (=30.0 _{Shoulder height})
+  #<drain_angle>    = #8  (=4.0 _{Drain angle})
+  #<slot_pos>       = #9  (=20.0 _{Slot pos})
+  #<slot_width>     = #10 (=7.0 _{Slot width})
+  #<slot_depth>     = #11 (=6.0 _{Slot depth})
+  #<slot_brd_left>  = #12 (=30.0 _{Slot border left})
+  #<slot_brd_right> = #13 (=30.0 _{Slot border right})
+  #<edge_width>     = #14 (=0.0 _{Edge width})
+  #<edge_depth>     = #15 (=0.0 _{Edge depth})
+  #<step_y>         = #16 (=4.0 _{Step size})
+  #<count>          = #17 (=1.0 _{Part count})
+  #<fin_depth>      = #18 (=0.0 _{Finnish depth})
+  #<fin_step>       = #19 (=5.0 _{Finnish Step size})
+  #<fin_feed>       = #20 (=1000.0 _{Finnish feed})
+  #<no_sep_cut>     = #21 (=0.0 _{No separation})
+
+  ( read machine parameters )
+  #<MOTOR_DEAD_ZONE>  = #2005
+
+  ( read user parameters )
+  #<blade_diam>    = #1001
+  #<blade_thick>   = #1002
+  #<start_z>       = #1005
+  #<safe_z>        = #1007
+  #<last_z>        = #1010
+  #<cut_feed>      = #1012
+  #<rad_comp_safe> = #1014
+  #<extra_z>       = #1015
+
+  #<blade_rad> = [ #<blade_diam> * 0.5 ]
+
+  o<l01> if [#<start_x> LT -5000.0 or #<start_x> GT 5000.0 ]
+    (MSG, _{Start X} [1] _{must be} _{between} -5000 _{and} 5000 mm_{_lay})
+    m2
+  o<l01> endif
+  o<l02> if [#<start_y> LT -5000.0 or #<start_y> GT 5000.0 ]
+    (MSG, _{Start Y} [2] _{must be} _{between} -5000 _{and} 5000 mm_{_lay})
+    m2
+  o<l02> endif
+  o<l03> if [#<len_x> LT 0 or #<len_x> GT 5000.0 ]
+    (MSG, _{Length} [3] _{must be} _{between} 0 _{and} 5000 mm_{_lay})
+    m2
+  o<l03> endif
+  o<l04> if [#<depth> LT 0 or #<depth> GT 5000.0 ]
+    (MSG, _{Width} [4] _{must be} _{between} 0 _{and} 5000 mm_{_lay})
+    m2
+  o<l04> endif
+  o<l05> if [#<back_height> LT 0 or #<back_height> GT [#<blade_rad> - #<MOTOR_DEAD_ZONE>]]
+    (MSG, _{Back height} [5] _{must be} _{between} 0 _{and} _{Blade radius}_{_lay})
+    m2
+  o<l05> endif
+  o<l06> if [#<sholder_depth> LT 0 or #<sholder_depth> GT #<depth> ]
+    (MSG, _{Shoulder depth} [6] _{must be} _{between} 0 mm _{and} _{Width}_{_lay})
+    m2
+  o<l06> endif
+  o<l07> if [#<sholder_height> LT 0 or #<sholder_height> GT #<back_height> ]
+    (MSG, _{Shoulder height} [7] _{must be} _{between} 0 mm _{and} _{Width}_{_lay})
+    m2
+  o<l07> endif
+  o<l08> if [#<drain_angle> LT -75.0 or #<drain_angle> GT 75.0 ]
+    (MSG, _{Drain angle} [8] _{must be} _{between} -75 _{and} 75_{_lay})
+    m2
+  o<l08> endif
+  o<l09> if [#<slot_pos> LT 0 or #<slot_pos> GT #<depth> ]
+    (MSG, _{Slot pos} [9] _{must be} _{between} 0 mm _{and} _{Width}_{_lay})
+    m2
+  o<l09> endif
+  o<l10> if [#<slot_width> LT 0 or #<slot_width> GT #<depth> ]
+    (MSG, _{Slot width} [10] _{must be} _{between} 0 mm _{and} _{Width}_{_lay})
+    m2
+  o<l10> endif
+  o<l11> if [#<slot_depth> LT 0 or #<slot_depth> GT #<back_height> ]
+    (MSG, _{Slot depth} [11] _{must be} _{between} 0 mm _{and} _{Back height}_{_lay})
+    m2
+  o<l11> endif
+  o<l12> if [#<slot_brd_left> LT 0 or #<slot_brd_left> GT #<len_x> ]
+    (MSG, _{Slot border left} [12] _{must be} _{between} 0 mm _{and} _{Length}_{_lay})
+    m2
+  o<l12> endif
+  o<l13> if [#<slot_brd_right> LT 0 or #<slot_brd_right> GT #<len_x> ]
+    (MSG, _{Slot border right} [13] _{must be} _{between} 0 mm _{and} _{Length}_{_lay})
+    m2
+  o<l13> endif
+  o<l14> if [#<edge_width> LT 0 or #<edge_width> GT #<depth> ]
+    (MSG, _{Edge width} [14] _{must be} _{between} 0 mm _{and} _{Width}_{_lay})
+    m2
+  o<l14> endif
+  o<l15> if [#<edge_depth> LT 0 or #<edge_depth> GT #<back_height> ]
+    (MSG, _{Edge depth} [15] _{must be} _{between} 0 mm _{and} _{Back height}_{_lay})
+    m2
+  o<l15> endif
+  o<l16> if [#<step_y> LT 0.1 or #<step_y> GT #<depth> ]
+    (MSG, _{Step size} [16] _{must be} _{between} 0.1 mm _{and} _{Width}_{_lay})
+    m2
+  o<l16> endif
+  o<l17> if [#<count> LT 1 or #<count> GT 1000 ]
+    (MSG, _{Part count} [17] _{must be} _{between} 1 _{and} 1000_{_lay})
+    m2
+  o<l17> endif
+  o<l18> if [#<fin_depth> LT -5.0 or #<fin_depth> GT 5.0 ]
+    (MSG, _{Finnish depth} [18] _{must be} _{between} -5.0 _{and} 5.0 mm_{_lay})
+    m2
+  o<l18> endif
+  o<l19> if [#<fin_step> LT 0 or #<fin_step> GT #<blade_rad> ]
+    (MSG, _{Finnish Step size} [19] _{must be} _{between} 0 mm _{and} _{Blade radius}_{_lay})
+    m2
+  o<l19> endif
+  o<l20> if [#<fin_feed> LT 0 or #<fin_feed> GT 5000.0 ]
+    (MSG, _{Finnish feed} [20] _{must be} _{between} 0 _{and} 5000 mm/s_{_lay})
+    m2
+  o<l20> endif
+  o<l21> if [#<no_sep_cut> LT 0.0 or #<no_sep_cut> GT 1.0 ]
+    (MSG, _{No separation} [21] _{must be} 0 _{or} 1_{_be})
+    m2
+  o<l21> endif
+
+  ( Transform drain angle )
+  #<front_height> = [#<back_height> - #<sholder_height> - [[#<depth> - #<sholder_depth>] * TAN[#<drain_angle>]]]
+  o<l30> if [#<front_height> LT 0 or #<front_height> GT #<back_height> ]
+    (MSG, _{Drain angle} [8] _{is invalid for resulting Drain depth})
+    m2
+  o<l30> endif
+
+  ( constants )
+  #<EPSILON> = 0.000001
+
+  #<end_x>  = [ #<start_x> + #<len_x> ]
+  #<grad_z> = [ [#<back_height> - #<sholder_height> - #<front_height>] / [#<depth> - #<sholder_depth>] ]
+
+  ( calculate slot borders )
+  #<slot_start> = #<start_x>
+  #<slot_end> = #<end_x>
+  #<slot_comp_start> = 0
+  #<slot_comp_end> = 0
+  o<l31> if [#<slot_brd_left> GT 0.0]
+    #<slot_start> = [ #<slot_start> + #<slot_brd_left> ]
+    #<slot_comp_start> = 1
+  o<l31> endif
+  o<l32> if [#<slot_brd_right> GT 0.0]
+    #<slot_end> = [ #<slot_end> - #<slot_brd_right> ]
+    #<slot_comp_end> = 1
+  o<l32> endif
+  o<l33> if [#<slot_start> GT #<slot_end> ]
+    (MSG, _{Slot border left} [12] + _{Slot border right} [13] _{must be} <= _{Length}_{_be})
+    m2
+  o<l33> endif
+
+  ( first reference cut )
+  #<ref_y> = #<start_y>
+  o<l34> if [#<no_sep_cut> EQ 0]
+    o<cut_gen> CALL [#<start_x>][#<ref_y>][#<start_z>][#<end_x>][#<ref_y>][-#<back_height>][#<extra_z>][0.0][-1.0][0.0][0.0][0.0][#<last_z>][#<back_height>][0.0]
+  o<l34> endif
+
+  ( loop single pieces )
+  o<l40> repeat [#<count>]
+    ( edge )
+    o<l41> if [#<edge_depth> GT 0.0]
+      #<pos_y> = #<ref_y>
+      #<end_y> = [ #<ref_y> + #<edge_width>]
+      #<reverse> = -1.0
+      o<l42> while [#<pos_y> LT [#<end_y> - #<blade_thick> - #<EPSILON>]]
+        o<cut_gen> CALL [#<start_x>][#<pos_y>][#<start_z>][#<end_x>][#<pos_y>][-#<edge_depth>][0.0][0.0][1.0][0.0][0.0][#<reverse>][0.0][#<back_height>][0.0]
+        #<pos_y> = [#<pos_y> + #<step_y>]
+        #<reverse> = -#<reverse>
+      o<l42> endwhile
+      o<cut_gen> CALL [#<start_x>][#<end_y>][#<start_z>][#<end_x>][#<end_y>][-#<edge_depth>][0.0][0.0][-1.0][0.0][0.0][0.0][0.0][#<back_height>][0.0]
+    o<l41> endif
+
+    ( slot )
+    o<l43> if [#<slot_depth> GT 0.0]
+      #<pos_y> = [ #<ref_y> + #<slot_pos> - [ #<slot_width> * 0.5 ]]
+      #<end_y> = [ #<ref_y> + #<slot_pos> + [ #<slot_width> * 0.5 ]]
+      #<reverse> = -1.0
+      o<l44> while [#<pos_y> LT [#<end_y> - #<blade_thick> - #<EPSILON>]]
+        o<cut_gen> CALL [#<slot_start>][#<pos_y>][#<start_z>][#<slot_end>][#<pos_y>][-#<slot_depth>][0.0][0.0][1.0][#<slot_comp_start>][#<slot_comp_end>][#<reverse>][0.0][#<back_height>][0.0]
+        #<pos_y> = [#<pos_y> + #<step_y>]
+        #<reverse> = -#<reverse>
+      o<l44> endwhile
+      o<cut_gen> CALL [#<slot_start>][#<end_y>][#<start_z>][#<slot_end>][#<end_y>][-#<slot_depth>][0.0][0.0][-1.0][#<slot_comp_start>][#<slot_comp_end>][0.0][0.0][#<back_height>][0.0]
+    o<l43> endif
+
+    ( finishing angle )
+    #<pos_a> = 0.0
+    #<pos_c> = 0.0
+    o<l46> if [#<drain_angle> GT 0 and #<count> LE 1]
+      #<pos_a> = #<drain_angle>
+      #<pos_c> = 180.0
+    o<l46> endif
+
+    ( drain area <cutting> )
+    #<pos_y> = [ #<ref_y> + #<sholder_depth> ]
+    #<end_y> = [ #<ref_y> + #<depth> ]
+    #<pos_z> = [ #<sholder_height> - #<fin_depth> ]
+    #<step_z> = [ #<grad_z> * #<step_y> ]
+    #<reverse> = -1.0
+    o<l45> while [#<pos_y> LT [#<end_y> - #<EPSILON>]]
+      o<l51> if [#<pos_c> GT 0]
+        o<cut_gen> CALL [#<end_x>][#<pos_y>][#<start_z>][#<start_x>][#<pos_y>][-#<pos_z>][0.0][#<pos_a>][-1.0][0.0][0.0][#<reverse>][0.0][#<back_height>][-#<pos_z>]
+      o<l51> else
+        o<cut_gen> CALL [#<start_x>][#<pos_y>][#<start_z>][#<end_x>][#<pos_y>][-#<pos_z>][0.0][#<pos_a>][1.0][0.0][0.0][#<reverse>][0.0][#<back_height>][-#<pos_z>]
+      o<l51> endif
+      #<pos_y> = [#<pos_y> + #<step_y>]
+      #<pos_z> = [#<pos_z> + #<step_z>]
+      #<reverse> = -#<reverse>
+    o<l45> endwhile
+
+    ( calculate correction distance )
+    o<ac_offsets> CALL [#<pos_a>] [#<pos_c>]
+    #<x_offset> = #900
+    #<y_offset> = #901
+    #<z_offset> = #902
+
+    ( precalculate finnishing Y start/end )
+    #<fin_start_y> = [ #<ref_y> +  #<sholder_depth> + [[ #<blade_thick> * 0.5 ] / cos [#<pos_a>]] ]
+    #<fin_end_y> = [ #<ref_y> +  #<depth> + [[ #<blade_thick> * 0.25 ] / cos [#<pos_a>]] ]
+
+    ( end cut / next reference cut )
+    #<ref_y> = [ #<ref_y> + #<depth> + #<blade_thick> ]
+    o<l47> if [#<no_sep_cut> EQ 0]
+      o<cut_gen> CALL [#<start_x>][#<ref_y>][#<start_z>][#<end_x>][#<ref_y>][-#<back_height>][#<extra_z>][0.0][-1.0][0.0][0.0][0.0][#<last_z>][#<back_height>][0.0]
+    o<l47> endif
+
+    ( drain area <finnishing>)
+    o<l48> if [ #<fin_feed> GT 0.0 and #<fin_step> GT 0.0 ]
+      #<ref_z> = [ #<back_height> + #<blade_rad> ]
+
+      ( move to safe position )
+      o<safe_ac> call [#<ref_z>] [#<pos_a>] [#<pos_c>]
+
+      ( calculate z positions )
+      #<fin_start_z> = [ #<sholder_height> - #<ref_z> + #<blade_rad> ]
+      #<fin_end_z> = [ #<fin_start_z> + [ #<grad_z> * [ #<fin_end_y> - #<fin_start_y> ] ] ]
+
+      ( move to start position )
+      g0 X[#<start_x> + #<x_offset>] Y[#<fin_start_y> + #<y_offset>]
+      f#<cut_feed>
+      g1 Z[-#<fin_start_z> + #<start_z> + #<z_offset>]
+      f#<fin_feed>
+      g1 Z[-#<fin_start_z> + #<z_offset>]
+
+      ( loop movement )
+      #<pos_x> = #<start_x>
+      #<pos_y> = #<fin_end_y>
+      #<pos_z> = #<fin_end_z>
+      #<reverse> = -1.0
+      o<l49> while [ #<pos_x> LT [#<end_x> - #<EPSILON>]]
+        g1 X[#<pos_x> + #<x_offset>]
+        g1 Y[#<pos_y> + #<y_offset>] Z[-#<pos_z> + #<z_offset>]
+        #<reverse> = -#<reverse>
+        o<l50> if [#<reverse> GT 0]
+          #<pos_y> = #<fin_start_y>
+          #<pos_z> = #<fin_start_z>
+        o<l50> else
+          #<pos_y> = #<fin_end_y>
+          #<pos_z> = #<fin_end_z>
+        o<l50> endif
+        #<pos_x> = [ #<pos_x> + #<fin_step> ]
+      o<l49> endwhile
+
+      (last move )
+      g1 X[#<pos_x> + #<x_offset>]
+      g1 Y[#<pos_y> + #<y_offset>] Z[-#<pos_z> + #<z_offset>]
+    o<l48> endif
+
+  o<l40> endrepeat
+
+o<winbench> endsub

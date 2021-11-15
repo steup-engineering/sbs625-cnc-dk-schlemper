@@ -1,0 +1,247 @@
+component sbs_errors "sbs errors";
+
+author "Sascha Ittner";
+license "GPL";
+
+option singleton yes;
+
+pin in bit emc_running;
+pin in bit emc_enable_in;
+pin out bit emc_enable_out;
+
+pin in bit emc_on;
+pin in bit emc_auto;
+
+pin in bit auto_enable;
+pin in bit spindle_enable_in;
+pin out bit spindle_enable_out;
+
+pin in bit estop_panel;
+pin in bit lube_err;
+pin in bit spindle_err;
+pin in bit ps_pot_err;
+pin in bit air_ok;
+pin in bit water_ok;
+pin in bit water_out;
+
+pin in bit error;
+pin out bit error_lamp;
+
+pin in bit inverters_ready;
+
+pin in u32 ec_slaves;
+pin in u32 ec_slaves_responding;
+pin in bit ec_link_up;
+pin in bit ec_all_op;
+
+pin in bit matprobe_cyl_err;
+
+option data sbs_err_data;
+option extra_setup;
+
+function _;
+
+;;
+
+#define ERROR_BLINK_PERIOD 500000000LL
+#define ERROR_DELAY_PERIOD 50000000LL
+#define ERROR_WATER_PERIOD 3000000000LL
+
+typedef struct {
+  int last_emc_on;
+  int last_estop_panel;
+  int last_lube_err;
+  int last_spindle_err;
+  int last_ps_pot_err;
+  int last_air_ok;
+  int last_water_ok;
+  int last_matprobe_cyl_err;
+  int last_inverters_ready;
+  int last_auto_err;
+  int last_ec_slaves_responding_ok;
+  int last_ec_link_up;
+  int last_ec_all_op;
+  long long error_blink_timer;
+  long long error_delay_timer;
+  long long error_water_timer;
+} sbs_err_data;
+
+EXTRA_SETUP() {
+  data.last_emc_on = 0;
+  data.last_estop_panel = 0;
+  data.last_lube_err = 0;
+  data.last_spindle_err = 0;
+  data.last_ps_pot_err = 0;
+  data.last_air_ok = 1;
+  data.last_water_ok = 1;
+  data.last_matprobe_cyl_err = 0;
+  data.last_inverters_ready = 1;
+  data.last_auto_err = 0;
+  data.last_ec_slaves_responding_ok = 1;
+  data.last_ec_link_up = 1;
+  data.last_ec_all_op = 1;
+
+  data.error_blink_timer = ERROR_BLINK_PERIOD;
+  data.error_delay_timer = ERROR_DELAY_PERIOD;
+  data.error_water_timer = ERROR_WATER_PERIOD;
+
+  return 0;
+}
+
+FUNCTION(_) {
+  int ec_slaves_responding_ok;
+  int emc_on_edge;
+
+  emc_enable_out = emc_running && emc_enable_in;
+  spindle_enable_out = spindle_enable_in && auto_enable;
+
+  // blink error lamp
+  if (error) {
+    if (data.error_blink_timer >= ERROR_BLINK_PERIOD) {
+      data.error_blink_timer -= ERROR_BLINK_PERIOD;
+      error_lamp = !error_lamp;
+    } else {
+      data.error_blink_timer += period;
+    }
+  } else {
+    // error lamp off
+    data.error_blink_timer = ERROR_BLINK_PERIOD;
+    error_lamp = 0;
+  }
+
+  // check if emc is on
+  emc_on_edge = emc_on && !data.last_emc_on;
+  data.last_emc_on = emc_on;
+  if (!emc_on) {
+    data.last_estop_panel = 0;
+    data.last_lube_err = 0;
+    data.last_spindle_err = 0;
+    data.last_air_ok = 1;
+    data.last_water_ok = 1;
+    data.last_matprobe_cyl_err = 0;
+    data.last_inverters_ready = 1;
+    data.last_auto_err = 0;
+    data.last_ec_slaves_responding_ok = 1;
+    data.last_ec_link_up = 1;
+    data.last_ec_all_op = 1;
+
+    data.error_delay_timer = ERROR_DELAY_PERIOD;
+    data.error_water_timer = ERROR_WATER_PERIOD;
+    return;
+  }
+
+  if (data.error_delay_timer > 0) {
+    data.error_delay_timer -= period;
+    return;
+  }
+
+  if (estop_panel) {
+    if (!data.last_estop_panel) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "E-Stop panel!\n");
+    }
+  }
+  data.last_estop_panel = estop_panel;
+
+  if (lube_err) {
+    if (emc_on_edge) {
+      emc_enable_out = 0;
+    }
+    if (!data.last_lube_err) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "Lube error!\n");
+    }
+  }
+  data.last_lube_err = lube_err;
+
+  if (spindle_err) {
+    emc_enable_out = 0;
+    if (!data.last_spindle_err) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "Spindle drive error!\n");
+    }
+  }
+  data.last_spindle_err = spindle_err;
+
+  if (!inverters_ready) {
+    emc_enable_out = 0;
+    if (data.last_inverters_ready) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "Inverters not ready!\n");
+    }
+  }
+  data.last_inverters_ready = inverters_ready;
+
+  if (ps_pot_err) {
+    emc_enable_out = 0;
+    if (!data.last_ps_pot_err) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "Pot power supply error!\n");
+    }
+  }
+  data.last_ps_pot_err = ps_pot_err;
+
+  if (!air_ok) {
+    emc_enable_out = 0;
+    if (data.last_air_ok) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "Air failure!\n");
+    }
+  }
+  data.last_air_ok = air_ok;
+
+  if (water_out) {
+    if (data.error_water_timer > 0) {
+      data.last_water_ok = 1;
+      data.error_water_timer -= period;
+    } else {
+      if (!water_ok) {
+        emc_enable_out = 0;
+        if (data.last_water_ok) {
+          rtapi_print_msg(RTAPI_MSG_ERR, "Water failure!\n");
+        }
+      }
+      data.last_water_ok = water_ok;
+    }
+  } else {
+    data.last_water_ok = 1;
+    data.error_water_timer = ERROR_WATER_PERIOD;
+  }
+
+  if (matprobe_cyl_err) {
+    emc_enable_out = 0;
+    if (!data.last_matprobe_cyl_err) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "Material probe cylinder failure!\n");
+    }
+  }
+  data.last_matprobe_cyl_err = matprobe_cyl_err;
+
+  if ((emc_auto || spindle_enable_in) && !auto_enable) {
+    emc_enable_out = 0;
+    if (!data.last_auto_err) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "Automatic mode disabled!\n");
+    }
+    data.last_auto_err = 1;
+  } else {
+    data.last_auto_err = 0;
+  }
+
+  ec_slaves_responding_ok = (ec_slaves_responding == ec_slaves);
+  if (!ec_slaves_responding_ok) {
+    emc_enable_out = 0;
+    if (data.last_ec_slaves_responding_ok) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "EtherCAT: Not all %d slaves responding!\n", ec_slaves);
+    }
+  }
+  data.last_ec_slaves_responding_ok = ec_slaves_responding_ok;
+
+  if (!ec_link_up) {
+    emc_enable_out = 0;
+    if (data.last_ec_link_up) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "EtherCAT: Link down!\n");
+    }
+  }
+  data.last_ec_link_up = ec_link_up;
+
+  if (!ec_all_op) {
+    emc_enable_out = 0;
+    if (data.last_ec_all_op) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "EtherCAT: Not all slaves in OP mode!\n");
+    }
+  }
+  data.last_ec_all_op = ec_all_op;
+}

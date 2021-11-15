@@ -1,0 +1,88 @@
+# Benutzerdefinierte HAL-Anweisungen können nachfolgend angegeben werden
+# Die Befehle in dieser Datei werden nach der AXIS GUI (und PyVCP-Panel) ausgeführt.
+
+net spindle-torque-pct => pyvcp.spindle-torque
+net spindle-rpm-abs => pyvcp.spindle-rpm
+
+net ui-mdi-home-z <= pyvcp.home-z
+net ui-mdi-home-xy <= pyvcp.home-xy
+net ui-mdi-home-x <= pyvcp.home-x
+net ui-mdi-manu-c-0 <= pyvcp.manu-c-0
+net ui-mdi-manu-c-90 <= pyvcp.manu-c-90
+net ui-mdi-manu-c-180 <= pyvcp.manu-c-180
+net ui-mdi-manu-c-270 <= pyvcp.manu-c-270
+net ui-mdi-manu-a-0 <= pyvcp.manu-a-0
+net ui-mdi-manu-a-30 <= pyvcp.manu-a-30
+net ui-mdi-manu-a-45 <= pyvcp.manu-a-45
+net ui-mdi-manu-a-90 <= pyvcp.manu-a-90
+
+net mancut-left <= pyvcp.mancut-left
+net mancut-stop <= pyvcp.mancut-stop
+net mancut-right <= pyvcp.mancut-right
+
+net toolprobe-blade <= pyvcp.toolprobe-blade
+net toolprobe-mill <= pyvcp.toolprobe-mill
+
+net laser-cross-on <= pyvcp.laser-cross-on
+net laser-cross-off <= pyvcp.laser-cross-off
+net laser-cross-is-on => pyvcp.laser-cross-is-on
+net laser-cross-touch-x <= pyvcp.laser-cross-touch-x
+net laser-cross-touch-y <= pyvcp.laser-cross-touch-y
+net laser-cross-matprobe <= pyvcp.laser-cross-matprobe
+net laser-line-on <= pyvcp.laser-line-on
+net laser-line-off <= pyvcp.laser-line-off
+net laser-line-is-on => pyvcp.laser-line-is-on
+net laser-line-touch-x <= pyvcp.laser-line-touch-x
+net laser-line-touch-y <= pyvcp.laser-line-touch-y
+net laser-line-touch-y-table-x <= pyvcp.laser-line-touch-y-table-x
+net laser-cross-show <= pyvcp.laser-cross-show
+net table-touch-x <= pyvcp.table-touch-x
+net table-touch-y <= pyvcp.table-touch-y
+
+net table-arms-on <= pyvcp.table-arms-on
+net table-arms-off <= pyvcp.table-arms-off
+net table-arms-is-on => pyvcp.table-arms-is-on
+net table-magnet-on <= pyvcp.table-magnet-on
+net table-magnet-off <= pyvcp.table-magnet-off
+net table-magnet-is-on => pyvcp.table-magnet-is-on
+net table-lock-on <= pyvcp.table-lock-on
+net table-lock-off <= pyvcp.table-lock-off
+net table-lock-is-on => pyvcp.table-lock-is-on
+
+net water-disable <= pyvcp.water-disable
+
+net emc-running <= axisui.is-running
+net jog-disable => axisui.jog.disable
+net jog-x-neg => axisui.jog.x-minus
+net jog-x-pos => axisui.jog.x-plus
+net jog-y-neg => axisui.jog.y-minus
+net jog-y-pos => axisui.jog.y-plus
+net jog-z-neg => axisui.jog.z-minus
+net jog-z-pos => axisui.jog.z-plus
+
+net pot-spindle <= pyvcp.pot-spindle
+net pot-vel-max <= pyvcp.pot-vel-max
+net pot-is-spindle => pyvcp.pot-is-spindle
+net pot-is-vel-max => pyvcp.pot-is-vel-max
+
+setp axisui.sliders.scale 0.0025
+setp axisui.sliders.scale-abs 0.01
+net feed-pct => axisui.sliders.feedoverride-abs
+net rapid-pct => axisui.sliders.rapidoverride-abs
+net pot-out-vel-mm => axisui.sliders.jogspeed
+net pot-out-vel-deg => axisui.sliders.ajogspeed
+net pot-out-spindle => axisui.sliders.spinoverride
+net pot-out-vel-max => axisui.sliders.maxvel
+
+net vac-manu-pickup <= pyvcp.vac-manu-pickup
+net vac-manu-release <= pyvcp.vac-manu-release
+net vac-manu-0l <= pyvcp.vac-manu-0l
+net vac-manu-1l <= pyvcp.vac-manu-1l
+net vac-manu-2l <= pyvcp.vac-manu-2l
+net vac-manu-0r <= pyvcp.vac-manu-0r
+net vac-manu-1r <= pyvcp.vac-manu-1r
+net vac-manu-2r <= pyvcp.vac-manu-2r
+net vac-manu-3r <= pyvcp.vac-manu-3r
+
+net error <= axisui.has-notifications
+

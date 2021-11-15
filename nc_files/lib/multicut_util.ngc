@@ -1,0 +1,36 @@
+o<multicut_util> sub
+  #<start_x> = #1
+  #<start_y> = #2
+  #<length>  = #3
+  #<dir>     = #4
+  #<pos>     = #5
+  #<pos_a>   = #6
+  #<depth>   = #7
+
+  ( read user parameters )
+  #<start_z>     = #1005
+  #<mat_z>       = #1006
+  #<last_z>      = #1010
+  #<extra_z>     = #1015
+
+  o<l01> if [#<depth> EQ 0 ]
+    #<depth> = #<mat_z>
+  o<l01> else
+    #<extra_z> = 0.0
+  o<l01> endif
+
+  o<l02> if [#<dir> GT 0.0]
+    o<l10> if [ #<pos_a> GE 0.0 ]
+      o<cut_gen> CALL [#<start_x> + #<pos>][#<start_y>][#<start_z>][#<start_x> + #<pos>][#<start_y> + #<length>][-#<depth>][#<extra_z>][#<pos_a>][1.0][0.0][0.0][0.0][#<last_z>][#<mat_z>][0.0]
+    o<l10> else
+      o<cut_gen> CALL [#<start_x> + #<pos>][#<start_y> + #<length>][#<start_z>][#<start_x> + #<pos>][#<start_y>][-#<depth>][#<extra_z>][-#<pos_a>][-1.0][0.0][0.0][0.0][#<last_z>][#<mat_z>][0.0]
+    o<l10> endif
+  o<l02> else
+    o<l11> if [ #<pos_a> GE 0.0 ]
+      o<cut_gen> CALL [#<start_x>][#<start_y> + #<pos>][#<start_z>][#<start_x> + #<length>][#<start_y> + #<pos>][-#<depth>][#<extra_z>][#<pos_a>][-1.0][0.0][0.0][0.0][#<last_z>][#<mat_z>][0.0]
+    o<l11> else
+      o<cut_gen> CALL [#<start_x> + #<length][#<start_y> + #<pos>][#<start_z>][#<start_x>>][#<start_y> + #<pos>][-#<depth>][#<extra_z>][-#<pos_a>][1.0][0.0][0.0][0.0][#<last_z>][#<mat_z>][0.0]
+    o<l11> endif
+  o<l02> endif
+o<multicut_util> endsub
+

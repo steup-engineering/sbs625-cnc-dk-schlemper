@@ -1,0 +1,136 @@
+(info: init -- _{set global parameters})
+o<init> sub
+  #<blade_diam>    = #1  (=0.0 _{Blade diameter})
+  #<blade_thick>   = #2  (=8.0 _{Blade thickness})
+  #<blade_core>    = #3  (=6.0 _{Blade core thickness})
+  #<blade_rpm>     = #4  (=500.0 _{Blade speed})
+  #<start_z>       = #5  (=5.0 _{Start Z})
+  #<mat_z>         = #6  (=300.0 _{Material Z})
+  #<extra_z>       = #7  (=2.0 _{Extra Z cut through})
+  #<safe_z>        = #8  (=50.0 _{Safe Z distance})
+  #<max_fwd_z>     = #9  (=0.0 _{Maximum forward cut depth})
+  #<max_bck_z>     = #10 (=0.0 _{Maximum reverse cut depth})
+  #<last_z>        = #11 (=0.0 _{Last Cut depth})
+  #<ins_feed>      = #12 (=200.0 _{Inserting feed})
+  #<cut_feed>      = #13 (=500.0 _{Cutting feed})
+  #<last_feed>     = #14 (=300.0 _{Last cut feed})
+  #<rad_comp_safe> = #15 (=3.0 _{Radius comp safety})
+
+  ( read machine parameters )
+  #<MOTOR_DEAD_ZONE>  = #2005
+
+  #<blade_rad> = [ #<blade_diam> * 0.5 ]
+
+  ( range checks )
+  o<l01> if [#<blade_diam> LT [#<MOTOR_DEAD_ZONE> * 2.0] or #<blade_diam> GT 1500.0 ]
+    (MSG, _{Blade diameter} [1] _{must be} _{between} 0 _{and} 1500 mm_{_lay})
+    m2
+  o<l01> endif
+  o<l02> if [#<blade_thick> LT 0.0 or #<blade_thick> GT 45.0 ]
+    (MSG, _{Blade thickness} [2] _{must be} _{between} 0 _{and} 45 mm_{_lay})
+    m2
+  o<l02> endif
+  o<l03> if [#<blade_core> LT 0.0 or #<blade_core> GT 40.0 ]
+    (MSG, _{Blade core thickness} [3] _{must be} _{between} 0 _{and} 40 mm_{_lay})
+    m2
+  o<l03> endif
+  o<l04> if [#<blade_core> GT #<blade_thick> ]
+    (MSG, _{Blade core thickness} [3] _{must be} _{lesser than} _{Blade thickness} [2]_{_be})
+    m2
+  o<l04> endif
+  o<l05> if [#<blade_rpm> LT 100.0 ]
+    (MSG, _{Blade speed} [4] _{must be} _{greater than} 100 _{rpm})
+    m2
+  o<l05> endif
+  o<l05.3> if [#<blade_diam> GE 1200.0 and #<blade_rpm> GT 800.0 ]
+    (MSG, _{Blade speed} [4] _{must be} _{lesser than} 800 _{rpm})
+    m2
+  o<l05.3> endif
+  o<l05.2> if [#<blade_diam> GE 1000.0 and #<blade_rpm> GT 1000.0 ]
+    (MSG, _{Blade speed} [4] _{must be} _{lesser than} 1000 _{rpm})
+    m2
+  o<l05.2> endif
+  o<l05.1> if [#<blade_diam> GE 800.0 and #<blade_rpm> GT 1800.0 ]
+    (MSG, _{Blade speed} [4] _{must be} _{lesser than} 1800 _{rpm})
+    m2
+  o<l05.1> endif
+  o<l05.0> if [#<blade_rpm> GT 2000.0 ]
+    (MSG, _{Blade speed} [4] _{must be} _{lesser than} 2000 _{rpm})
+    m2
+  o<l05.0> endif
+  o<l06> if [#<start_z> LT -5000.0 or #<start_z> GT 5000.0 ]
+    (MSG, _{Start Z} [5] _{must be} _{between} -5000 _{and} 5000 mm_{_lay})
+    m2
+  o<l06> endif
+  o<l07> if [#<mat_z> LT 0 or #<mat_z> GT 5000.0 ]
+    (MSG, _{Material Z} [6] _{must be} _{between} 0 mm _{and} 5000 mm_{_lay})
+    m2
+  o<l07> endif
+  o<l08> if [#<extra_z> LT 0 or #<extra_z> GT 10.0 ]
+    (MSG, _{Extra Z cut through} [7] _{must be} _{between} 0 _{and} 10 mm_{_lay})
+    m2
+  o<l08> endif
+  o<l09> if [#<safe_z> LT 0 or #<safe_z> GT 5000.0 ]
+    (MSG, _{Safe Z distance} [8] _{must be} _{between} 0 _{and} 5000 mm_{_lay})
+    m2
+  o<l09> endif
+  o<l10> if [#<safe_z> LT #<start_z> ]
+    (MSG, _{Safe Z distance} [8] _{must be} _{greater than} _{Start Z} [5]_{_be})
+    m2
+  o<l10> endif
+  o<l11> if [#<max_fwd_z> LT 0 or #<max_fwd_z> GT #<blade_rad> ]
+    (MSG, _{Maximum forward cut depth} [9] _{must be} _{between} 0 mm _{and} _{Blade radius}_{_lay})
+    m2
+  o<l11> endif
+  o<l12> if [#<max_bck_z> LT 0 or #<max_bck_z> GT #<blade_rad> ]
+    (MSG, _{Maximum reverse cut depth} [10] _{must be} _{between} 0 mm _{and} _{Blade radius}_{_lay})
+    m2
+  o<l12> endif
+  o<l13> if [#<last_z> LT 0 or #<last_z> GT #<blade_rad> ]
+    (MSG, _{Last Cut depth} [11] _{must be} _{between} 0 mm _{and} _{Blade radius}_{_lay})
+    m2
+  o<l13> endif
+  o<l14> if [#<ins_feed> LT 1 or #<ins_feed> GT 5000.0 ]
+    (MSG, _{Inserting feed} [12] _{must be} _{between} 1 _{and} 5000 mm/s_{_lay})
+    m2
+  o<l14> endif
+  o<l15> if [#<cut_feed> LT 1 or #<cut_feed> GT 5000.0 ]
+    (MSG, _{Cutting feed} [13] _{must be} _{between} 1 _{and} 5000 mm/s_{_lay})
+    m2
+  o<l15> endif
+  o<l16> if [#<last_feed> LT 1 or #<last_feed> GT 5000.0 ]
+    (MSG, _{Last cut feed} [14] _{must be} _{between} 1 _{and} 5000 mm/s_{_lay})
+    m2
+  o<l16> endif
+  o<l17> if [#<rad_comp_safe> LT -100.0 or #<rad_comp_safe> GT 100.0 ]
+    (MSG, _{Radius comp safety} [15] _{must be} _{between} -100 _{and} 100 mm/s_{_lay})
+    m2
+  o<l17> endif
+
+  g17 (xy plane)
+  g21 (millimeters)
+  g40 (cancel cutter radius compensation)
+  g49 (cancel tool lengthoffset)
+  g90 (absolute distance mode)
+  g94 (units/min feedrate)
+  g54 (Coordinate system 1 default)
+  g64 p0.1 (path control stop)
+
+  ( set user parameters )
+  #1001 = #<blade_diam>
+  #1002 = #<blade_thick>
+  #1003 = #<blade_core>
+  #1004 = #<blade_rpm>
+  #1005 = #<start_z>
+  #1006 = #<mat_z>
+  #1007 = #<safe_z>
+  #1008 = #<max_fwd_z>
+  #1009 = #<max_bck_z>
+  #1010 = #<last_z>
+  #1011 = #<ins_feed>
+  #1012 = #<cut_feed>
+  #1013 = #<last_feed>
+  #1014 = #<rad_comp_safe>
+  #1015 = #<extra_z>
+
+o<init> endsub

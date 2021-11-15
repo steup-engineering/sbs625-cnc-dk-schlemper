@@ -1,0 +1,25 @@
+( needs to be initaialized properly )
+#<step>          = #900
+
+#<blade_diam>    = #1001
+#<blade_thick>   = #1002
+#<blade_core>    = #1003
+
+#<pos_c> = 0.0
+o<l01> if [#<step> EQ 1]
+  #<pos_c> = 90.0
+o<l01> endif
+o<l02> if [#<step> EQ 2]
+  #<pos_c> = 180.0
+o<l02> endif
+o<l03> if [#<step> EQ 3]
+  #<pos_c> = 270.0
+o<l03> endif
+
+o<ac_offsets> CALL [0.0] [#<pos_c>]
+
+G0 X#900 Y#901 C#<pos_c>
+
+#900 = [ #<step> + 1 ]
+
+M2

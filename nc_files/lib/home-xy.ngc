@@ -1,0 +1,5 @@
+o<home-xy> sub
+  G53 G0 Z0
+  G53 G0 A0 C0
+  G53 G0 X0 Y0
+o<home-xy> endsub

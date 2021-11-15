@@ -1,0 +1,5 @@
+(info: home -- _{move to home position})
+o<home> sub
+  M5 M9
+  o<home-x> CALL
+o<home> endsub

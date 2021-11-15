@@ -1,0 +1,325 @@
+component sbs_aux "SBS aux functions";
+
+author "Sascha Ittner";
+license "GPL";
+
+option singleton yes;
+
+pin in bit emc_enable_in;
+pin in bit emc_on;
+pin in bit emc_auto;
+
+pin in bit auto_enable;
+pin in bit spindle_enable;
+
+pin in bit x_homing;
+pin in bit y_homing;
+pin in bit z_homing;
+pin in bit a_homing;
+pin in bit c_homing;
+
+pin in bit x_amp_ready;
+pin in bit y_amp_ready;
+pin in bit z_amp_ready;
+pin in bit a_amp_ready;
+pin in bit c_amp_ready;
+pin in bit spindle_ready;
+
+pin in bit y_homed;
+pin in float y_pos_joint;
+
+pin in bit c_homed;
+pin in float c_pos_joint;
+
+pin in float a_vel_joint;
+pin in float c_vel_joint;
+
+pin in bit laser_cross_on;
+pin in bit laser_cross_off;
+pin out bit laser_cross_is_on;
+
+pin in bit laser_line_on;
+pin in bit laser_line_off;
+pin out bit laser_line_is_on;
+
+pin in float table_arms_y_min;
+pin in float table_arms_y_max;
+pin in float table_arms_c_min;
+pin in float table_arms_c_max;
+pin in bit table_arms_on;
+pin in bit table_arms_off;
+pin out bit table_arms_is_on;
+pin out bit table_arms_out_up;
+pin out bit table_arms_out_down;
+
+pin in bit table_rolls_on;
+pin in bit table_rolls_off;
+pin out bit table_rolls_is_on;
+
+pin in bit table_magnet_on;
+pin in bit table_magnet_off;
+pin out bit table_magnet_is_on;
+pin out bit table_magnet_out;
+
+pin in bit table_lock_on;
+pin in bit table_lock_off;
+pin out bit table_lock_is_on;
+
+pin in bit water_req;
+pin in bit mist_req;
+pin in bit clean_req;
+pin in bit water_disable;
+pin out bit water_main;
+pin out bit water_out;
+pin out bit mist_out;
+pin out bit clean_out;
+
+pin out bit horn;
+pin out bit horn_pulsed;
+
+pin in float x_pos_cmd;
+pin in float y_pos_cmd;
+pin in float z_pos_cmd;
+
+pin in bit x_enable;
+pin in bit y_enable;
+pin in bit z_enable;
+
+pin out bit lube_pulse;
+
+option data sbs_aux_data;
+option extra_setup;
+
+pin out bit a_is_moving;
+pin out bit a_magnetic_brake;
+pin out bit c_is_moving;
+pin out bit c_magnetic_brake;
+
+function _;
+
+;;
+
+#include "rtapi_math.h"
+
+#define EPSILON 2e-7
+
+#define AUX_AUTOWARN_PERIOD 5000000000LL
+#define HORN_PULSE_PERIOD 500000000LL
+
+#define MAGNETIC_BRAKE_DELAY 1000000000LL
+
+#define LUBE_PULSE_DISTANCE 1000.0
+
+typedef struct {
+  long long autowarn_timer;
+  long long horn_pulse_timer;
+
+  double x_pos_cmd_last;
+  double y_pos_cmd_last;
+  double z_pos_cmd_last;
+
+  double lube_acc;
+
+  long long a_magnetic_brake_timer;
+  long long c_magnetic_brake_timer;
+} sbs_aux_data;
+
+EXTRA_SETUP() {
+  data.autowarn_timer = 0;
+  data.horn_pulse_timer = 0;
+
+  data.x_pos_cmd_last = 0.0;
+  data.y_pos_cmd_last = 0.0;
+  data.z_pos_cmd_last = 0.0;
+
+  data.lube_acc = 0.0;
+
+  data.a_magnetic_brake_timer = MAGNETIC_BRAKE_DELAY;
+  data.c_magnetic_brake_timer = MAGNETIC_BRAKE_DELAY;
+
+  return 0;
+}
+
+FUNCTION(_) {
+  double delta, delta_max;
+
+  // setect moving joints
+  a_is_moving = (a_vel_joint < -EPSILON) || (a_vel_joint > EPSILON);
+  c_is_moving = (c_vel_joint < -EPSILON) || (c_vel_joint > EPSILON);
+
+  // pulse horn
+  if (horn) {
+    if (data.horn_pulse_timer <= 0) {
+      data.horn_pulse_timer += HORN_PULSE_PERIOD;
+      horn_pulsed = !horn_pulsed;
+    }
+
+    data.horn_pulse_timer -= period;
+  } else {
+    data.horn_pulse_timer = 0;
+    horn_pulsed = 0;
+  }
+
+  // warn on emergency stop while motor stop
+  horn = 0;
+  if (!emc_enable_in && (
+      x_amp_ready || y_amp_ready || z_amp_ready ||
+      a_amp_ready || c_amp_ready || spindle_ready)) {
+    horn = 1;
+  }
+
+  // disable outputs
+  water_main = 0;
+  water_out = 0;
+  mist_out = 0;
+  clean_out = 0;
+  a_magnetic_brake = 0;
+  c_magnetic_brake = 0;
+
+  // check if emc is on
+  if (!emc_on) {
+    laser_cross_is_on = 0;
+    laser_line_is_on = 0;
+    table_arms_is_on = 0;
+    table_arms_out_up = 0;
+    table_arms_out_down = 0;
+    table_rolls_is_on = 0;
+    table_magnet_is_on = 0;
+    table_magnet_out = 0;
+    table_lock_is_on = 0;
+
+    data.autowarn_timer = 0;
+
+    data.x_pos_cmd_last = x_pos_cmd;
+    data.y_pos_cmd_last = y_pos_cmd;
+    data.z_pos_cmd_last = z_pos_cmd;
+
+    data.a_magnetic_brake_timer = MAGNETIC_BRAKE_DELAY;
+    data.c_magnetic_brake_timer = MAGNETIC_BRAKE_DELAY;
+
+    return;
+  }
+
+  // Laser
+  if (laser_cross_on) {
+    laser_cross_is_on = 1;
+  }
+  if (laser_cross_off) {
+    laser_cross_is_on = 0;
+  }
+  if (laser_line_on) {
+    laser_line_is_on = 1;
+  }
+  if (laser_line_off) {
+    laser_line_is_on = 0;
+  }
+
+  // table arms
+  table_arms_is_on = 0;
+  table_arms_out_up = 0;
+  table_arms_out_down = 0;
+
+  if (table_arms_on &&
+      y_homed && y_pos_joint >= table_arms_y_min && y_pos_joint <= table_arms_y_max &&
+      c_homed && c_pos_joint >= table_arms_c_min && c_pos_joint <= table_arms_c_max) {
+    table_arms_is_on = 1;
+    table_arms_out_up = 1;
+  }
+  if (table_arms_off) {
+    table_arms_is_on = 1;
+    table_arms_out_down = 1;
+  }
+  if (emc_auto || spindle_enable) {
+    table_arms_is_on = 0;
+    table_arms_out_up = 0;
+    table_arms_out_down = 1;
+  }
+
+  // table rolls
+  if (table_rolls_on) {
+    table_rolls_is_on = 1;
+  }
+  if (table_rolls_off) {
+    table_rolls_is_on = 0;
+  }
+  if (emc_auto || spindle_enable) {
+    table_rolls_is_on = 0;
+  }
+
+  // table magnet
+  if (table_magnet_on) {
+    table_magnet_is_on = 1;
+  }
+  if (table_magnet_off) {
+    table_magnet_is_on = 0;
+  }
+  table_magnet_out = table_magnet_is_on || emc_auto || spindle_enable;
+
+  // table lock
+  if (table_lock_on) {
+    table_lock_is_on = 1;
+  }
+  if (table_lock_off) {
+    table_lock_is_on = 0;
+  }
+
+  // water
+  if (!water_disable) {
+    water_main = (water_req || mist_req || clean_req);
+    water_out = water_req;
+    mist_out = mist_req;
+    clean_out = clean_req;
+  }
+
+  // horn
+  if (emc_auto) {
+    if (data.autowarn_timer < AUX_AUTOWARN_PERIOD) {
+      horn = 1;
+      data.autowarn_timer += period;
+    }
+  } else {
+    data.autowarn_timer = 0;
+  }
+  if (x_homing || y_homing || z_homing || a_homing || c_homing) {
+    horn = 1;
+  }
+
+  // magnetic breaks
+  if (emc_auto && !a_is_moving) {
+    if (data.a_magnetic_brake_timer > 0) {
+      data.a_magnetic_brake_timer -= period;
+    } else {
+      a_magnetic_brake = 1;
+    }
+  } else {
+    data.a_magnetic_brake_timer = MAGNETIC_BRAKE_DELAY;
+  }
+  if (emc_auto && !c_is_moving) {
+    if (data.c_magnetic_brake_timer > 0) {
+      data.c_magnetic_brake_timer -= period;
+    } else {
+      c_magnetic_brake = 1;
+    }
+  } else {
+    data.c_magnetic_brake_timer = MAGNETIC_BRAKE_DELAY;
+  }
+
+  // lube
+  delta_max = 0.0;
+  delta = fabs(x_pos_cmd - data.x_pos_cmd_last);
+  data.x_pos_cmd_last = x_pos_cmd;
+  if (x_enable && delta > delta_max) delta_max = delta;
+  delta = fabs(y_pos_cmd - data.y_pos_cmd_last);
+  data.y_pos_cmd_last = y_pos_cmd;
+  if (y_enable && delta > delta_max) delta_max = delta;
+  delta = fabs(z_pos_cmd - data.z_pos_cmd_last);
+  data.z_pos_cmd_last = z_pos_cmd;
+  if (z_enable && delta > delta_max) delta_max = delta;
+  data.lube_acc += delta_max;
+  if (data.lube_acc >= (LUBE_PULSE_DISTANCE * 0.5)) {
+    lube_pulse = !lube_pulse;
+    data.lube_acc -= (LUBE_PULSE_DISTANCE * 0.5);
+  }
+
+}
+

@@ -1,0 +1,322 @@
+(info: cut_gen -- Bridgesaw cut generator)
+o<cut_gen> sub
+  #<start_x>     = #1  (=0.0 Start X)
+  #<start_y>     = #2  (=0.0 Start Y)
+  #<start_z>     = #3  (=0.0 Start Z)
+  #<end_x>       = #4  (=0.0 End X)
+  #<end_y>       = #5  (=0.0 End Y)
+  #<end_z>       = #6  (=0.0 End Z)
+  #<extra_z>     = #7  (=2.0 Extra Z cut through)
+  #<pos_a>       = #8  (=0.0 A angle)
+  #<comp_cut>    = #9  (=0 Cut compensation [1:right, -1:left, 2/-2 with z corretion] )
+  #<comp_start>  = #10 (=0 Start compensation)
+  #<comp_end>    = #11 (=0 End compensation)
+  #<reverse>     = #12 (=0 Reverse Movement)
+  #<last_z>      = #13 (=0.0 Last cut Z depth)
+  #<ref_z>       = #14 (=0.0 Z reference)
+  #<match_z>     = #15 (=0.0 Z match depth for x/y point)
+
+  ( constants )
+  #<EPSILON> = 0.000001
+
+  ( read machine parameters )
+  #<MOTOR_DEAD_ZONE> = #2005
+  #<reverse_spindle> = #2010
+  #<force_dir_x> = #2011
+  #<force_dir_y> = #2012
+
+  ( read user parameters )
+  #<blade_diam>    = #1001
+  #<blade_thick>   = #1002
+  #<blade_rpm>     = #1004
+  #<safe_z>        = #1007
+  #<max_fwd_z>     = #1008
+  #<max_bck_z>     = #1009
+  #<ins_feed>      = #1011
+  #<cut_feed>      = #1012
+  #<last_feed>     = #1013
+  #<rad_comp_safe> = #1014
+
+  #<blade_rad>   = [ #<blade_diam> * 0.5 ]
+
+  ( check z params )
+  o<l29> if [#<end_z> GT #<start_z>]
+    #<end_z> = #<start_z>
+  o<l29> endif
+  o<l30> if [#<extra_z> LT 0.0]
+    #<extra_z> = 0.0
+  o<l30> endif
+  o<l31> if [#<last_z> LT 0.0]
+    #<last_z> = 0.0
+  o<l31> endif
+  o<l32> if [#<max_fwd_z> LT 0.0]
+    #<max_fwd_z> = 0.0
+  o<l32> endif
+  o<l33> if [#<max_bck_z> LT 0.0]
+    #<max_bck_z> = 0.0
+  o<l33> endif
+
+  ( limit a )
+  o<l01> if [#<pos_a> LT 0.0]
+    #<pos_a> = 0.0
+  o<l01> endif
+  o<l02> if [#<pos_a> GT 75.0]
+    #<pos_a> = 75.0
+  o<l02> endif
+
+  ( limit z )
+  #<max_z> = [[0 - [#<blade_rad> - #<MOTOR_DEAD_ZONE>]] * COS[#<pos_a>]]
+  o<l46> if [[#<end_z> - #<extra_z>] LT #<max_z>]
+    #<end_z> = #<max_z>
+    #<extra_z> = 0.0
+  o<l46> endif
+
+  ( swap start/end if forced direction )
+  #<swap_dir> = 0.0
+  o<l40> if [#<pos_a> EQ 0.0]
+    o<l41> if [[#<force_dir_x> LT 0.0] and [#<start_x> LT #<end_x>]]
+      #<swap_dir> = 1.0
+    o<l41> endif
+    o<l42> if [[#<force_dir_x> GT 0.0] and [#<start_x> GT #<end_x>]]
+      #<swap_dir> = 1.0
+    o<l42> endif
+    o<l43> if [[#<force_dir_y> LT 0.0] and [#<start_y> LT #<end_y>]]
+      #<swap_dir> = 1.0
+    o<l43> endif
+    o<l44> if [[#<force_dir_y> GT 0.0] and [#<start_y> GT #<end_y>]]
+      #<swap_dir> = 1.0
+    o<l44> endif
+  o<l40> endif
+  o<l45> if [#<swap_dir> GT 0.0]
+    #<x_tmp> = #<start_x>
+    #<y_tmp> = #<start_y>
+    #<start_x> = #<end_x>
+    #<start_y> = #<end_y>
+    #<end_x> = #<x_tmp>
+    #<end_y> = #<y_tmp>
+    #<comp_cut> = -#<comp_cut>
+    #<comp_tmp> = #<comp_start>
+    #<comp_start> = #<comp_end>
+    #<comp_end> = #<comp_tmp>
+  o<l45> endif
+
+  ( calculate x/y difference and middle )
+  #<delta_x> = [#<end_x> - #<start_x>]
+  #<delta_y> = [#<end_y> - #<start_y>]
+  #<delta> = SQRT[ [#<delta_x> * #<delta_x>] + [#<delta_y> * #<delta_y>] ]
+
+  ( calculate resulting angle for c axis )
+  o<l03> if [ABS[#<delta_x>] GT #<EPSILON>]
+    #<pos_c> = ATAN[#<delta_y>]/[#<delta_x>]
+  o<l03> else
+    o<l04> if [#<delta_y> GE 0.0]
+      #<pos_c> =  90
+    o<l04> else
+      #<pos_c> = -90
+    o<l04> endif
+  o<l03> endif
+
+  ( calculate cut compensation )
+  #<cut_offset> = [ [#<blade_thick> * 0.5] / cos [#<pos_a>] ]
+  #<dep_offset> = [ [#<blade_thick> * 0.5] * sin [#<pos_a>] ]
+  #<cut_offset_x> = [#<cut_offset> * SIN[-#<pos_c>] ]
+  #<cut_offset_y> = [#<cut_offset> * COS[-#<pos_c>] ]
+  o<l34> if [#<comp_cut> GT 0.5]
+    #<start_x> = [ #<start_x> + #<cut_offset_x> ]
+    #<start_y> = [ #<start_y> + #<cut_offset_y> ]
+    #<end_x>   = [ #<end_x>   + #<cut_offset_x> ]
+    #<end_y>   = [ #<end_y>   + #<cut_offset_y> ]
+  o<l34> endif
+  o<l38> if [#<comp_cut> GT 1.5]
+    #<end_z>   = [ #<end_z> + #<dep_offset> ]
+  o<l38> endif
+  o<l35> if [#<comp_cut> LT -0.5]
+    #<start_x> = [ #<start_x> - #<cut_offset_x> ]
+    #<start_y> = [ #<start_y> - #<cut_offset_y> ]
+    #<end_x>   = [ #<end_x>   - #<cut_offset_x> ]
+    #<end_y>   = [ #<end_y>   - #<cut_offset_y> ]
+  o<l35> endif
+  o<l39> if [#<comp_cut> LT -1.5]
+    #<end_z>   = [ #<end_z> - #<dep_offset> ]
+  o<l39> endif
+
+  ( calculate middle position )
+  #<mid_x> = [ [#<start_x> + #<end_x>] * 0.5 ]
+  #<mid_y> = [ [#<start_y> + #<end_y>] * 0.5 ]
+
+  ( calculate blade start/end compensation )
+  #<z_tmp> = [#<end_z> - #<extra_z>]
+  o<l05> if [#<z_tmp> LT 0.0]
+    #<rad_rem> = [ #<blade_rad> - [ -#<z_tmp> / COS[#<pos_a>] ] ] 
+    o<l06> if [#<rad_rem> LT 0.0]
+      #<rad_rem> = 0.0
+    o<l06> endif
+    o<l07> if [#<rad_rem> GT #<blade_rad>]
+      #<rad_rem> = #<blade_rad>
+    o<l07> endif
+
+    #<rad_comp> = [SQRT[[#<blade_rad> * #<blade_rad>] - [#<rad_rem> * #<rad_rem>] ] + #<rad_comp_safe> ]
+    #<rad_comp_x> = [ #<rad_comp> * COS[#<pos_c>] ]
+    #<rad_comp_y> = [ #<rad_comp> * SIN[#<pos_c>] ]
+
+    #<spare> = #<delta>
+    o<l08> if [#<comp_start> GT 0.0]
+      #<spare> = [ #<spare> - #<rad_comp> ]
+    o<l08> endif
+    o<l09> if [#<comp_end> GT 0.0]
+      #<spare> = [ #<spare> - #<rad_comp> ]
+    o<l09> endif
+
+    o<l10> if [#<spare> GE 0.0]
+      o<l11> if [#<comp_start> GT 0.0]
+        #<start_x> = [ #<start_x> + #<rad_comp_x> ]
+        #<start_y> = [ #<start_y> + #<rad_comp_y> ]
+      o<l11> endif
+      o<l12> if [#<comp_end> GT 0.0]
+        #<end_x> = [ #<end_x> - #<rad_comp_x> ]
+        #<end_y> = [ #<end_y> - #<rad_comp_y> ]
+      o<l12> endif
+    o<l10> else
+      #<spare> = [ #<delta> * 0.5 ]
+      #<touch_x> = #<mid_x>
+      #<touch_y> = #<mid_y>
+      o<l13> if [ [#<comp_start> GT 0.0] and [#<comp_end> LE 0.0] ]
+        #<spare> = #<delta>
+        #<touch_x> = #<end_x>
+        #<touch_y> = #<end_y>
+      o<l13> endif
+      o<l14> if [ [#<comp_start> LE 0.0] and [#<comp_end> GT 0.0] ]
+        #<spare> = #<delta>
+        #<touch_x> = #<start_x>
+        #<touch_y> = #<start_y>
+      o<l14> endif
+      #<start_x> = #<touch_x>
+      #<start_y> = #<touch_y>
+      #<end_x> = #<touch_x>
+      #<end_y> = #<touch_y>
+      #<end_z> = [[ 0 - [ #<blade_rad> - SQRT[[#<blade_rad> * #<blade_rad>] - [#<spare> * #<spare>] ] ] ] * COS[#<pos_a>] ]
+      #<extra_z> = 0
+    o<l10> endif
+  o<l05> endif
+
+  ( calculate correction distance )
+  o<ac_offsets> CALL [#<pos_a>] [#<pos_c>]
+  #<x_offset> = [ #900 ]
+  #<y_offset> = [ #901 ]
+  #<z_offset> = [ #902 + #<ref_z>]
+
+  ( calculate corrected points )
+  #<start_x> = [ #<start_x> + #<x_offset> ]
+  #<start_y> = [ #<start_y> + #<y_offset> ]
+  #<end_x>   = [ #<end_x>   + #<x_offset> ]
+  #<end_y>   = [ #<end_y>   + #<y_offset> ]
+
+  ( move to safe position )
+  o<safe_ac> call [#<z_offset>] [#<pos_a>] [#<pos_c>]
+
+  ( set processing parameters )
+  s#<blade_rpm>
+
+  ( swap start/stop points if reverse movement is enabled )
+  o<l36> if [#<reverse> GT 0.0]
+    #<x_tmp> = #<start_x>
+    #<y_tmp> = #<start_y>
+    #<start_x> = #<end_x>
+    #<start_y> = #<end_y>
+    #<end_x> = #<x_tmp>
+    #<end_y> = #<y_tmp>
+    #<max_tmp> = #<max_fwd_z>
+    #<max_fwd_z> = #<max_bck_z>
+    #<max_bck_z> = #<max_tmp>
+  o<l36> endif
+
+  ( swap start/stop points if reverse spindle direction is enabled )
+  o<l37> if [#<reverse_spindle> GT 0.0]
+    #<x_tmp> = #<start_x>
+    #<y_tmp> = #<start_y>
+    #<start_x> = #<end_x>
+    #<start_y> = #<end_y>
+    #<end_x> = #<x_tmp>
+    #<end_y> = #<y_tmp>
+  o<l37> endif
+
+  ( move to start position and start spindle and coolant )
+  o<ipolz> call [1][#<z_offset>][#<match_z>][#<start_x>][#<start_y>][#<safe_z>]
+  m8 m3
+  f#<cut_feed>
+  o<ipolz> call [0][#<z_offset>][#<match_z>][#<start_x>][#<start_y>][#<start_z>]
+
+  ( iterate till final z depth is reached )
+  #<pos_x> = #<start_x>
+  #<pos_y> = #<start_y>
+  #<pos_z> = #<start_z>
+  #<last_z_limit> = [#<end_z> + #<last_z>]
+  o<l17> do
+    ( forward cut )
+    o<l18> if [#<max_fwd_z> GT 0.0]
+      #<new_z> = [#<pos_z> - #<max_fwd_z>]
+    o<l18> else
+      #<new_z> = #<end_z>
+    o<l18> endif
+    o<l19> if [#<new_z> LT #<last_z_limit>]
+      #<new_z> = #<last_z_limit>
+    o<l19> endif
+    o<l20> if [#<new_z> LT #<pos_z>]
+      o<l26> if [[#<new_z> - #<EPSILON>] LE #<end_z>]
+        #<new_z> = [ #<new_z> - #<extra_z> ]
+      o<l26> endif
+      o<ipolz> call [1][#<z_offset>][#<match_z>][#<start_x>][#<start_y>][#<pos_z>]
+      #<pos_z> = #<new_z>
+      f#<ins_feed>
+      o<ipolz> call [0][#<z_offset>][#<match_z>][#<start_x>][#<start_y>][#<pos_z>]
+      f#<cut_feed>
+      o<ipolz> call [0][#<z_offset>][#<match_z>][#<end_x>][#<end_y>][#<pos_z>]
+      #<pos_x> = #<end_x>
+      #<pos_y> = #<end_y>
+    o<l20> endif
+
+    ( backward cut )
+    o<l21> if [#<max_bck_z> GT 0.0]
+      #<new_z> = [#<pos_z> - #<max_bck_z>]
+    o<l21> endif
+    o<l22> if [#<new_z> LT #<last_z_limit>]
+      #<new_z> = #<last_z_limit>
+    o<l22> endif
+    o<l23> if [#<new_z> LT #<pos_z>]
+      o<l27> if [[#<new_z> - #<EPSILON>] LE #<end_z>]
+        #<new_z> = [ #<new_z> - #<extra_z> ]
+      o<l27> endif
+      o<ipolz> call [1][#<z_offset>][#<match_z>][#<end_x>][#<end_y>][#<pos_z>]
+      #<pos_z> = #<new_z>
+      f#<ins_feed>
+      o<ipolz> call [0][#<z_offset>][#<match_z>][#<end_x>][#<end_y>][#<pos_z>]
+      f#<cut_feed>
+      o<ipolz> call [0][#<z_offset>][#<match_z>][#<start_x>][#<start_y>][#<pos_z>]
+      #<pos_x> = #<start_x>
+      #<pos_y> = #<start_y>
+    o<l23> endif
+
+    ( last cut )
+    o<l24> if [[#<pos_z> - #<EPSILON>] LE #<last_z_limit>]
+      #<new_z> = #<end_z>
+    o<l24> endif
+    o<l25> if [#<new_z> LT #<pos_z>]
+      o<l28> if [[#<new_z> - #<EPSILON>] LE #<end_z>]
+        #<new_z> = [ #<new_z> - #<extra_z> ]
+      o<l28> endif
+      o<ipolz> call [1][#<z_offset>][#<match_z>][#<end_x>][#<end_y>][#<pos_z>]
+      #<pos_z> = #<new_z>
+      f#<ins_feed>
+      o<ipolz> call [0][#<z_offset>][#<match_z>][#<end_x>][#<end_y>][#<pos_z>]
+      f#<last_feed>
+      o<ipolz> call [0][#<z_offset>][#<match_z>][#<start_x>][#<start_y>][#<pos_z>]
+      #<pos_x> = #<start_x>
+      #<pos_y> = #<start_y>
+    o<l25> endif
+  o<l17> while [#<pos_z> GT [#<end_z> + #<EPSILON>]]
+
+  ( move out )
+  f#<cut_feed>
+  o<ipolz> call [0][#<z_offset>][#<match_z>][#<pos_x>][#<pos_y>][#<start_z>]
+  o<ipolz> call [1][#<z_offset>][#<match_z>][#<pos_x>][#<pos_y>][#<safe_z>]
+o<cut_gen> endsub

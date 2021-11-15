@@ -1,0 +1,155 @@
+( needs to be initaialized properly )
+#<step>            = #900
+#<nut_dia>         = #901
+#<blade_core>      = #902
+
+( state tracking vars )
+#<last_pos>        = #903
+#<c_radius>        = #904
+#<az_offset>       = #905
+#<ay_offset>       = #906
+#<cpivot_toolaxis> = #907
+
+#<nut_rad> = [#<nut_dia> * 0.5]
+
+G17 (xy plane)
+G21 (millimeters)
+G40 (cancel cutter radius compensation)
+G49 (cancel tool lengthoffset)
+G90 (absolute distance mode)
+G94 (units/min feedrate)
+G54 (Coordinate system 1 default)
+G64 p0.001 (path control stop)
+
+o<l01> if [#<step> EQ 0]
+  G53 G0 Z0
+  G53 G0 A0 C0
+
+  (MSG, Schritt1: C-Versatz Referenzpunkt Blattvorderseite anfahren)
+  #900 = 1
+  M2
+o<l01> endif
+
+o<l02> if [#<step> EQ 1]
+  (save y position)
+  #903 = #5421
+
+  #<tmp> = #5422
+  G0 Y[#5421 + 800.0]
+  G53 G0 Z0
+  G53 G0 A0 C180
+  G0 Z#<tmp>
+
+  (MSG, Schritt2: C-Versatz Referenzpunkt Blattrückseite anfahren)
+  #900 = 2
+  M2
+o<l02> endif
+
+o<l03> if [#<step> EQ 2]
+  (calc c radius)
+  #904 = [[[#<last_pos> - #<blade_core>] - #5421] * 0.5]
+
+  G0 Y[#5421 + 800.0]
+  G53 G0 Z0
+  G53 G0 A0 C0
+
+  (MSG, Schritt3: Mutter Z-Richtung anfahren)
+  #900 = 3
+  M2
+o<l03> endif
+
+o<l04> if [#<step> EQ 3]
+  (save z position)
+  #903 = #5422
+
+  G53 G0 Z0
+  G53 G0 A90 C0
+
+  (MSG, Schritt4: Blatt Z-Richtung anfahren)
+  #900 = 4
+  M2
+o<l04> endif
+
+o<l05> if [#<step> EQ 4]
+  (calc z offset)
+  #905 = [[#5422 - #<blade_core>] - [#<last_pos> - #<nut_rad>]]
+
+  G53 G0 A90 C0
+
+  (MSG, Schritt5: Mutter Y-Richtung anfahren)
+  #900 = 5
+  M2
+o<l05> endif
+
+o<l06> if [#<step> EQ 5]
+  (save y position)
+  #903 = #5421
+
+  G0 Y[#5421 + #<c_radius> ]
+  G53 G0 Z0
+  G53 G0 A0 C0
+
+  (MSG, Schritt6: Blatt Y-Richtung anfahren)
+  #900 = 6
+  M2
+o<l06> endif
+
+o<l07> if [#<step> EQ 6]
+  (calc y offset)
+  #906 = [[#5421 - #<blade_core>] - [#<last_pos> - #<nut_rad>]]
+
+  G0 Y[#5421 + 800.0]
+  G53 G0 Z0
+  G53 G0 A0 C0
+
+  (MSG, Schritt7: Mutter X-Richtung anfahren, C = 0)
+  #900 = 7
+  M2
+o<l07> endif
+
+o<l08> if [#<step> EQ 7]
+  (save x position)
+  #903 = #5420
+
+  G0 X[#5420 - 800.0]
+  G53 G0 Z0
+  G53 G0 A0 C180
+
+  (MSG, Schritt8: Mutter X-Richtung anfahren, C = 180)
+  #900 = 8
+  M2
+o<l08> endif
+
+o<l09> if [#<step> EQ 8]
+  (calc y offset)
+  #907 = [[#5420 - #<last_pos>] * 0.5]
+
+  G0 X[#5420 - 800.0]
+  G53 G0 Z0
+  G53 G0 A0 C0
+
+  (MSG, Schritt9: Werte speichern)
+  #900 = 9
+  M2
+o<l09> endif
+
+o<l10> if [#<step> EQ 9]
+  ( calc segments )
+  #<apivot_toolaxis>  = [[#<ay_offset> - #<az_offset>] * 0.5]
+  #<apivot_bladepuck> = [[#<ay_offset> + #<az_offset>] * 0.5]
+  #<cpivot_apivot>    = [#<apivot_bladepuck> - #<c_radius>]
+
+  ( save values )
+  #2001 = -#<apivot_toolaxis>
+  #2002 = -#<apivot_bladepuck>
+  #2003 = #<cpivot_toolaxis>
+  #2004 = #<cpivot_apivot>
+
+  (MSG, Werte gespeichert)
+  #900 = 10
+  M2
+o<l10> endif
+
+#900 = 0
+M2
+

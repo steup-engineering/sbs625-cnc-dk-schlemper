@@ -1,0 +1,39 @@
+PWD: 193796
+
+Safety Prog:
+
+IS01----/EM01ER--[ES01EN
+IS03-------------[ES01I1
+IS04-------------[ES01I2
+IS02-------------[ES01RE
+ES01QS-----------[QS01
+ES01QS-----------[ES02EN
+IS05-------------[ES02I1
+IS06-------------[ES02I2
+ES01QS--/ES02QS--[MS01
+MS01----TS01QS---[QS02
+MS01-------------[TS01TR
+ES01QS--+--------[TS01SA
+TS01QS--+
+TS01QS-----------[QS03
+ES02QS-----------[EM01OC
+IS7--------------[EM01FL
+EM01QS-----------[QS04
+ES01QS-----------[EM01EN
+
+Params:
+
+ES01: EN MST 2CH DT=0.5s
+ES02: EN AST 2CH DT=0.5s
+TS01: S [] T1=5.0s T2=0.0s
+EM01: EN AST FT=0.2s
+
+Test Signals:
+
+IS02 <- T3
+IS03 <- T1
+IS04 <- T2
+IS05 <- T1
+IS06 <- T2
+IS07 <- T4
+

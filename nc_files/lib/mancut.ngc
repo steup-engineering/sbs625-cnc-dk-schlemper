@@ -1,0 +1,46 @@
+o<mancut> sub
+  #<feed> = #1
+  #<offset_c> = #2
+  #<min_x> = #3
+  #<min_y> = #4
+  #<max_x> = #5
+  #<max_y> = #6
+
+  G28.1
+  #<pos_x> = #5161
+  #<pos_y> = #5162
+  #<pos_c> = #5166
+
+  #<dest_x> = [#<max_x> - #<min_x>]
+  #<dest_y> = [#<max_y> - #<min_y>]
+  #<rmax> = SQRT[[#<dest_x> * #<dest_x>] + [#<dest_y> * #<dest_y>]];
+
+  #<dest_x> = [#<pos_x> + [#<rmax> * COS[#<offset_c> + #<pos_c>]]];
+  #<dest_y> = [#<pos_y> + [#<rmax> * SIN[#<offset_c> + #<pos_c>]]];
+
+  o<l01> if [#<dest_x> LT #<min_x>]
+    #<dest_y> = [#<pos_y> + [#<dest_y> - #<pos_y>] * [[#<min_x> - #<pos_x>] / [#<dest_x> - #<pos_x>]]];
+    #<dest_x> = #<min_x>;
+  o<l01> endif
+
+  o<l02> if [#<dest_y> LT #<min_y>]
+    #<dest_x> = [#<pos_x> + [#<dest_x> - #<pos_x>] * [[#<min_y> - #<pos_y>] / [#<dest_y> - #<pos_y>]]];
+    #<dest_y> = #<min_y>;
+  o<l02> endif
+
+  o<l03> if [#<dest_x> GT #<max_x>]
+    #<dest_y> = [#<pos_y> + [#<dest_y> - #<pos_y>] * [[#<max_x> - #<pos_x>] / [#<dest_x> - #<pos_x>]]];
+    #<dest_x> = #<max_x>;
+  o<l03> endif
+
+  o<l04> if [#<dest_y> GT #<max_y>]
+    #<dest_x> = [#<pos_x> + [#<dest_x> - #<pos_x>] * [[#<max_x> - #<pos_y>] / [#<dest_y> - #<pos_y>]]];
+    #<dest_y> = #<max_y>;
+  o<l04> endif
+
+  F#<feed>
+  G53 G1 X#<dest_x> Y#<dest_y>
+  G53 G0 Z0
+  G53 G0 X#<pos_x> Y#<pos_y>
+
+o<mancut> endsub

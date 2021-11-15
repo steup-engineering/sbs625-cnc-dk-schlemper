@@ -1,0 +1,268 @@
+component sbs_jog "SBS Jog functions";
+
+author "Sascha Ittner";
+license "GPL";
+
+option singleton yes;
+
+pin in bit joy_x_neg;
+pin in bit joy_x_pos;
+pin in bit joy_y_neg;
+pin in bit joy_y_pos;
+pin in bit joy_z_neg;
+pin in bit joy_z_pos;
+pin in bit joy_sel_uvw;
+
+pin in bit override_limits;
+
+pin in bit x_neg_lim_in;
+pin in bit x_pos_lim_in;
+pin in bit y_neg_lim_in;
+pin in bit y_pos_lim_in;
+pin in bit z_neg_lim_in;
+pin in bit z_pos_lim_in;
+pin in bit a_neg_lim_in;
+pin in bit a_pos_lim_in;
+
+pin out bit x_neg_lim_out;
+pin out bit x_pos_lim_out;
+pin out bit y_neg_lim_out;
+pin out bit y_pos_lim_out;
+pin out bit z_neg_lim_out;
+pin out bit z_pos_lim_out;
+pin out bit a_neg_lim_out;
+pin out bit a_pos_lim_out;
+
+pin in bit x_homed;
+pin in bit y_homed;
+pin in bit z_homed;
+pin in bit a_homed;
+pin in bit c_homed;
+
+pin in s32 pend_count;
+
+pin in bit pend_axis_0;
+pin in bit pend_axis_1;
+pin in bit pend_axis_2;
+pin in bit pend_axis_3;
+
+pin in bit pend_velo_0;
+pin in bit pend_velo_1;
+pin in bit pend_velo_2;
+pin in bit pend_velo_3;
+
+pin in bit pend_key_pos;
+pin in bit pend_key_sel;
+pin in bit pend_key_neg;
+pin in bit pend_key_ena;
+
+pin out bit pend_ena_x;
+pin out bit pend_ena_y;
+pin out bit pend_ena_z;
+pin out bit pend_ena_a;
+pin out bit pend_ena_c;
+
+pin out float pend_scale;
+
+pin out bit jog_x_neg;
+pin out bit jog_x_pos;
+pin out bit jog_y_neg;
+pin out bit jog_y_pos;
+pin out bit jog_z_neg;
+pin out bit jog_z_pos;
+
+pin in float pot_feed_override;
+pin out s32 feed_override_pct;
+pin out s32 rapid_override_pct;
+pin out bit jog_disable;
+
+pin in bit pot_vel_mm;
+pin in bit pot_vel_deg;
+pin in bit pot_spindle;
+pin in bit pot_vel_max;
+
+pin out bit pot_is_vel_mm;
+pin out bit pot_is_vel_deg;
+pin out bit pot_is_spindle;
+pin out bit pot_is_vel_max;
+
+pin out s32 pot_out_vel_mm;
+pin out s32 pot_out_vel_deg;
+pin out s32 pot_out_spindle;
+pin out s32 pot_out_vel_max;
+
+option data sbs_jog_data;
+option extra_setup;
+
+function _;
+
+;;
+
+#define FEED_OVERRIDE_EXTRA   1.05
+#define FEED_OVERRIDE_SCALE   100.0
+#define RAPID_OVERRIDE_SCALE  200.0
+
+typedef enum {
+  POT_FUNCTION_SPINDLE = 0,
+  POT_FUNCTION_VEL_MM,
+  POT_FUNCTION_VEL_DEG,
+  POT_FUNCTION_VEL_MAX
+} pot_function_t;
+
+typedef struct {
+  int do_init;
+
+  pot_function_t pot_function;
+  hal_s32_t pot_last_count; 
+
+
+} sbs_jog_data;
+
+EXTRA_SETUP() {
+  data.do_init = 1;
+
+  data.pot_function = POT_FUNCTION_SPINDLE;
+  data.pot_last_count = 0;
+
+  return 0;
+}
+
+FUNCTION(_) {
+  double f_tmp;
+  hal_s32_t pot_diff;
+
+  if (data.do_init) {
+    data.do_init = 0;
+    data.pot_last_count = pend_count;
+  }
+
+  pend_scale = 0.0;
+  if (pend_velo_0 && !pend_velo_1 && !pend_velo_2 && !pend_velo_3) {
+    pend_scale = 0.25;
+  }
+  if (pend_velo_0 && pend_velo_1 && !pend_velo_2 && !pend_velo_3) {
+    pend_scale = 0.025;
+  }
+  if (!pend_velo_0 && pend_velo_1 && !pend_velo_2 && !pend_velo_3) {
+    pend_scale = 0.0025;
+  }
+  if (!pend_velo_0 && pend_velo_1 && pend_velo_2 && !pend_velo_3) {
+    pend_scale = 0.00025;
+  }
+
+  pend_ena_x = 0;
+  pend_ena_y = 0;
+  pend_ena_z = 0;
+  pend_ena_a = 0;
+  pend_ena_c = 0;
+  if (pend_key_ena && !pend_key_sel) {
+    if (!pend_axis_0 && !pend_axis_1 && !pend_axis_2 && !pend_axis_3) {
+      pend_ena_x = x_homed;
+    }
+    if (pend_axis_0 && !pend_axis_1 && !pend_axis_2 && !pend_axis_3) {
+      pend_ena_y = y_homed;
+    }
+    if (pend_axis_0 && pend_axis_1 && !pend_axis_2 && !pend_axis_3) {
+      pend_ena_z = z_homed;
+    }
+    if (!pend_axis_0 && pend_axis_1 && !pend_axis_2 && !pend_axis_3) {
+      pend_ena_a = a_homed;
+    }
+    if (!pend_axis_0 && pend_axis_1 && pend_axis_2 && !pend_axis_3) {
+      pend_ena_c = c_homed;
+    }
+  }
+
+  if (override_limits) {
+    x_neg_lim_out = 0;
+    x_pos_lim_out = 0;
+    y_neg_lim_out = 0;
+    y_pos_lim_out = 0;
+    z_neg_lim_out = 0;
+    z_pos_lim_out = 0;
+    a_neg_lim_out = 0;
+    a_pos_lim_out = 0;
+  } else {
+    x_neg_lim_out = x_neg_lim_in;
+    x_pos_lim_out = x_pos_lim_in;
+    y_neg_lim_out = y_neg_lim_in;
+    y_pos_lim_out = y_pos_lim_in;
+    z_neg_lim_out = z_neg_lim_in;
+    z_pos_lim_out = z_pos_lim_in;
+    a_neg_lim_out = a_neg_lim_in;
+    a_pos_lim_out = a_pos_lim_in;
+  }
+
+  jog_x_neg = (joy_x_neg && !x_neg_lim_in) && (x_homed || override_limits);
+  jog_x_pos = (joy_x_pos && !x_pos_lim_in) && (x_homed || override_limits);
+  jog_y_neg = (joy_y_neg && !y_neg_lim_in) && (y_homed || override_limits);
+  jog_y_pos = (joy_y_pos && !y_pos_lim_in) && (y_homed || override_limits);
+  jog_z_neg = (joy_z_neg && !z_neg_lim_in) && (z_homed || override_limits);
+  jog_z_pos = (joy_z_pos && !z_pos_lim_in) && (z_homed || override_limits);
+
+  f_tmp = pot_feed_override * FEED_OVERRIDE_SCALE * FEED_OVERRIDE_EXTRA;
+  if (f_tmp < 0.0) {
+    f_tmp = 0.0;
+  }
+  if (f_tmp > 100.0) {
+    f_tmp = 100.0;
+  }
+  feed_override_pct = (hal_s32_t)f_tmp;
+
+  f_tmp = pot_feed_override * RAPID_OVERRIDE_SCALE * FEED_OVERRIDE_EXTRA;
+  if (f_tmp < 0.0) {
+    f_tmp = 0.0;
+  }
+  if (f_tmp > 100.0) {
+    f_tmp = 100.0;
+  }
+  rapid_override_pct = (hal_s32_t)f_tmp;
+
+  jog_disable = !((x_homed && y_homed && z_homed && a_homed && c_homed) || override_limits);
+
+  // pot function selector
+  if (pend_key_sel) {
+    pot_diff = pend_count - data.pot_last_count;
+  } else {
+    pot_diff = 0;
+  }
+  data.pot_last_count = pend_count;
+
+  if (pot_vel_mm) {
+    data.pot_function = POT_FUNCTION_VEL_MM;
+  }
+  if (pot_vel_deg) {
+    data.pot_function = POT_FUNCTION_VEL_DEG;
+  }
+  if (pot_spindle) {
+    data.pot_function = POT_FUNCTION_SPINDLE;
+  }
+  if (pot_vel_max) {
+    data.pot_function = POT_FUNCTION_VEL_MAX;
+  }
+
+  pot_is_vel_mm = 0;
+  pot_is_vel_deg = 0;
+  pot_is_spindle = 0;
+  pot_is_vel_max = 0;
+  switch (data.pot_function) {
+    case POT_FUNCTION_VEL_MM:
+      pot_is_vel_mm = 1;
+      pot_out_vel_mm += pot_diff;
+      break;
+    case POT_FUNCTION_VEL_DEG:
+      pot_is_vel_deg = 1;
+      pot_out_vel_deg += pot_diff;
+      break;
+    case POT_FUNCTION_VEL_MAX:
+      pot_is_vel_max = 1;
+      pot_out_vel_max += pot_diff;
+      break;
+    default:
+      data.pot_function = POT_FUNCTION_SPINDLE;
+      pot_is_spindle = 1;
+      pot_out_spindle += pot_diff;
+  }
+
+}
+

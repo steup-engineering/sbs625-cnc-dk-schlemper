@@ -1,0 +1,53 @@
+###########################################################
+#
+# Steup SBS750CNC
+#
+# Main HAL
+#
+###########################################################
+
+###########################################################
+# Setup
+###########################################################
+
+loadrt trivkins
+#loadrt bridgesawkins
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[TRAJ]AXES num_dio=16
+
+loadusr -W lcec_conf ethercat-conf.xml
+loadrt lcec
+
+loadrt sbs_jog
+loadrt sbs_errors
+loadrt sbs_aux
+loadrt sbs_probe
+
+loadrt pid names=x-pid,y-pid,z-pid,a-pid,c-pid 
+loadrt timedelay names=spindle-fan-dly,spindle-air-dly
+
+###########################################################
+# Functions
+###########################################################
+
+addf lcec.read-all servo-thread
+
+addf sbs-probe servo-thread
+
+addf motion-command-handler servo-thread
+addf motion-controller servo-thread
+
+addf x-pid.do-pid-calcs servo-thread
+addf y-pid.do-pid-calcs servo-thread
+addf z-pid.do-pid-calcs servo-thread
+addf a-pid.do-pid-calcs servo-thread
+addf c-pid.do-pid-calcs servo-thread
+
+addf spindle-fan-dly servo-thread
+addf spindle-air-dly servo-thread
+
+addf sbs-jog servo-thread
+addf sbs-errors servo-thread
+addf sbs-aux servo-thread
+
+addf lcec.write-all servo-thread
+

@@ -1,0 +1,119 @@
+o<vac-pod-pick> sub
+  #<mask_left> = #1
+  #<mask_right> = #2
+
+  ( read manual masks )
+  o<l11> if [#<mask_left> LT 0.0]
+    M66 E0 L0
+    #<mask_left> = #5399
+  o<l11> endif
+  o<l12> if [#<mask_right> LT 0.0]
+    M66 E1 L0
+    #<mask_right> = #5399
+  o<l12> endif
+
+  ( check for mask )
+  o<l13> if [#<mask_left> LE 0.0 AND #<mask_right> LE 0.0]
+    m2
+  o<l13> endif
+
+  ( read parameters )
+  #<VAC_TOUCH_DIST> = #2035
+  #<VAC_TOUCH_OFFSET> = #2036
+  #<VAC_TOUCH_FEED> = #2037
+  #<VAC_PICK_FEED> = #2038
+  #<VAC_PUSH_DELAY> = #2039
+  #<VAC_PULL_DELAY> = #2040
+  #<VAC_RELEASE_DELAY> = #2041
+  #<VAC_CLEAN_DIST_X> = #2042
+  #<VAC_CLEAN_DIST_Y> = #2043
+  #<VAC_CLEAN_FEED> = #2044
+  #<VAC_PICK_DIST> = #2046
+  #<VAC_SAFE_DIST> = #2047
+  #<VAC_SAFE_FEED> = #2048
+  #<VAC_TOUCH_REF> = #2049
+
+  ( check if ack is alredy active )
+  M66 P1
+  o<l02> if [#5399 GT 0.5]
+    (MSG, _{Vacuum pull is already active, please release first!})
+    m2
+  o<l02> endif
+
+  ( get current position )
+  G28.1
+  #<ref_z> = #5163
+  #<pick_x> = #5420
+  #<pick_y> = #5421
+  #<pick_z> = #5422
+
+  ( move to save Z )
+  #<safe_z> = [#<ref_z> + #<VAC_TOUCH_OFFSET>]
+  o<l01> if [#<safe_z> GT 0.0]
+    #<safe_z> = 0.0
+  o<l01> endif
+  G53 G0 Z[#<safe_z>]
+
+  ( move to pickup position )
+  G0 X[#<pick_x>] Y[#<pick_y> + #<VAC_CLEAN_DIST_Y>]
+
+  ( activate cylinder )
+  M104 P#<mask_left> Q#<mask_right>
+
+  ( disable push and pull outputs)
+  M65 P1
+  M65 P2
+
+  ( activate cleaning water)
+  M64 P0
+
+  ( cleaning move )
+  F#<VAC_CLEAN_FEED>
+  G1 X[#<pick_x> + #<VAC_CLEAN_DIST_X>] Y[#<pick_y> + #<VAC_CLEAN_DIST_Y>]
+  G1 X[#<pick_x> + #<VAC_CLEAN_DIST_X>] Y[#<pick_y> - #<VAC_CLEAN_DIST_Y>]
+  G1 X[#<pick_x> - #<VAC_CLEAN_DIST_X>] Y[#<pick_y> - #<VAC_CLEAN_DIST_Y>]
+  G1 X[#<pick_x> - #<VAC_CLEAN_DIST_X>] Y[#<pick_y> + #<VAC_CLEAN_DIST_Y>]
+  G1 X[#<pick_x>] Y[#<pick_y> + #<VAC_CLEAN_DIST_Y>]
+  G0 X#<pick_x> Y#<pick_y>
+
+  ( deactivate cleaning water)
+  M65 P0
+
+  ( activate air cleaning )
+  M64 P1
+
+  ( move to touch)
+  F#<VAC_TOUCH_FEED>
+  G53 G38.2 Z#<VAC_TOUCH_DIST>
+  #<touch_z> = #5063
+
+  ( calculate material height )
+  #<mat_z> = [ #<ref_z> + #<touch_z> - #<pick_z> + #<VAC_TOUCH_REF>]  
+
+  ( calculate safe z )
+  #<safe_z> = [#<touch_z> + #<mat_z> + #<VAC_SAFE_DIST>]
+  o<l03> if [#<safe_z> LT #<pick_z>]
+    #<safe_z> = #<pick_z>
+  o<l03> endif
+
+  ( deactivate air cleaning )
+  M65 P1
+
+  ( activate vacuum )
+  M64 P2
+
+  ( wait for stable vacuum )
+  G4 P#<VAC_PULL_DELAY>
+
+  ( move to pick dist )
+  F#<VAC_PICK_FEED>
+  G1 Z[#<touch_z> + #<VAC_PICK_DIST>]
+  F#<VAC_SAFE_FEED>
+  G1 Z[#<safe_z>]
+
+o<vac-pod-pick> endsub
+
+
+
+
+
