@@ -45,7 +45,7 @@ net override-limits <= lcec.0.P65A8.fsoe-in-1
 # main cabinet
 #
 
-net power-ok <= lcec.0.C50A2.din-1
+
 net air-ok <= lcec.0.C50A2.din-2
 net water-ok <= lcec.0.C50A2.din-3
 	###net inverters-ready <= lcec.0.C50A2.din-4
@@ -56,8 +56,13 @@ net y-home <= lcec.0.C50A2.din-8
 net toolprobe-sens <= lcec.0.C50A2.din-11
 net toolprobe-sens-err <= lcec.0.C50A2.din-12
 
+net fsoe-com-err <= lcec.0.C50A5.com-err
+net fsoe-fb-err <= lcec.0.C50A5.fb-err
+
 net y-pos-lim-in <= lcec.0.C50A6.fsoe-in-2-not
 net y-neg-lim-in <= lcec.0.C50A6.fsoe-in-3-not
+
+net power-ok	<= lcec.0.C50A8.fsoe-out-0
 
 #
 # external unit bridge
@@ -100,10 +105,12 @@ net error => lcec.0.P65A4.dout-6
 # main cabinet
 #
 
-net emc-running => lcec.0.C50A5.run
 
 net table-magnet-out => lcec.0.C50A3.dout-6
 
+
+net fsoe-enable => lcec.0.C50A5.run
+net fsoe-err-ack => lcec.0.C50A5.err-ack
 
 
 	###net spindle-air => lcec.0.S50A6.dout-1

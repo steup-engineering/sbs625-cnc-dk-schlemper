@@ -18,17 +18,19 @@ function _;
 ;;
 
 FUNCTION(_) {
-
-  fsoe_enable = 0;
   fsoe_err_reset = 0;
 
   if (!emc_running || !ec_all_op) {
+    fsoe_enable = 0;
     return;
   }
 
-  if (!fsoe_com_err) {
-    fsoe_enable = 1;
-  } else {
-    fsoe_err_reset;
+  if (!fsoe_enable) {
+    if (fsoe_com_err) {
+      fsoe_err_reset = 1;
+    } else {
+      fsoe_enable = 1;
+    }
   }
 }
+

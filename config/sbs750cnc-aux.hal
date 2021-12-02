@@ -127,6 +127,16 @@ net pot-out-vel-max <= sbs-jog.pot-out-vel-max
 
 
 net emc-enable => iocontrol.0.emc-enable-in
+###########################################################
+# fsoe
+###########################################################
+
+net emc-running => sbs-fsoe.emc-running
+net ec-all-op		=> sbs-fsoe.ec-all-op
+net fsoe-com-err => sbs-fsoe.fsoe-com-err
+net fsoe-enable <= sbs-fsoe.fsoe-enable
+net fsoe-err-ack <= sbs-fsoe.fsoe-err-reset
+
 
 ###########################################################
 # halui
