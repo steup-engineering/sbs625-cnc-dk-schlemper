@@ -56,7 +56,7 @@ net y-home <= lcec.0.C50A2.din-8
 net toolprobe-sens <= lcec.0.C50A2.din-11
 net toolprobe-sens-err <= lcec.0.C50A2.din-12
 
-net y-pos-lim-in <= lcec.0.C50A6.fsoe-in-4-not
+net y-pos-lim-in <= lcec.0.C50A6.fsoe-in-2-not
 net y-neg-lim-in <= lcec.0.C50A6.fsoe-in-3-not
 
 #
@@ -72,13 +72,13 @@ net matprobe-sens <= lcec.0.S80A2.din-11-not
 net z-home <= lcec.0.S80A2.din-12
 net x-home <= lcec.0.S80A2.din-13
 
-net x-neg-lim-in <= lcec.0.S80A5.din-0-not
-net x-pos-lim-in <= lcec.0.S80A5.din-1-not
-net z-neg-lim-in <= lcec.0.S80A5.din-4-not
-net z-pos-lim-in <= lcec.0.S80A5.din-5-not
+net x-neg-lim-in <= lcec.0.S80A5.fsoe-in-0-not
+net x-pos-lim-in <= lcec.0.S80A5.fsoe-in-1-not
+net z-neg-lim-in <= lcec.0.S80A5.fsoe-in-2-not
+net z-pos-lim-in <= lcec.0.S80A5.fsoe-in-3-not
 
-net a-neg-lim-in <= lcec.0.S80A6.din-0-not
-net a-pos-lim-in <= lcec.0.S80A6.din-1-not
+net a-neg-lim-in <= lcec.0.S80A6.fsoe-in-0-not
+net a-pos-lim-in <= lcec.0.S80A6.fsoe-in-1-not
 
 ###########################################################
 # digital outputs
@@ -90,9 +90,9 @@ net a-pos-lim-in <= lcec.0.S80A6.din-1-not
 net power-ok => lcec.0.P65A4.dout-0
 net error-lamp => lcec.0.P65A4.dout-1
 net horn => lcec.0.P65A4.dout-4
-net error => lcec.0.P65AA.dout-6
+net error => lcec.0.P65A4.dout-6
 net emc-auto => lcec.0.P65A4.dout-7
-net error => lcec.0.P65AA.dout-6
+net error => lcec.0.P65A4.dout-6
 
 
 
@@ -108,17 +108,17 @@ net table-magnet-out => lcec.0.C50A3.dout-6
 
 	###net spindle-air => lcec.0.S50A6.dout-1
 
-net mist-out => lcec.0.S50A10.dout-1
+net mist-out => lcec.0.C50A10.dout-1
 net water-main => lcec.0.C50A10.dout-2
 net table-lock-is-on => lcec.0.C50A10.dout-3
 
 #
 # external unit bridge
 #
-net lube => lcec.0.S80A4.dout-0
-net spindle-fan => lcec.0.S80A4.dout-5
-net laser-cross-is-on => lcec.0.S80A4.dout-6
-net laser-line-is-on => lcec.0.S80A4.dout-7
+net lube => lcec.0.S80A3.dout-0
+net spindle-fan => lcec.0.S80A3.dout-5
+net laser-cross-is-on => lcec.0.S80A3.dout-6
+net laser-line-is-on => lcec.0.S80A3.dout-7
 
 	###net water-clean => lcec.0.S80A4.dout-1
 
@@ -192,60 +192,60 @@ net z-pos-fb <= lcec.0.S80A4.enc-1-pos
 ###########################################################
 
 # X axis
-setp lcec.0.S13T1_XC.ch0.srv-pos-scale [AXIS_0]SCALE
-#net x-enable => lcec.0.S13T1_XC.ch0.srv-enable
-net x-amp-fault <= lcec.0.S13T1_XC.ch0.srv-fault
-net x-amp-ready <= lcec.0.S13T1_XC.ch0.srv-enabled
-net x-vel-cmd => lcec.0.S13T1_XC.ch0.srv-vel-cmd
-#net emc-on => lcec.0.S13T1_XC.ch0.srv-err-reset
+#setp lcec.0.S13T1_X_C.ch0.srv-pos-scale [AXIS_0]SCALE
+#net x-enable => lcec.0.S13T1_X_C.ch0.srv-enable
+net x-amp-fault <= lcec.0.S13T1_X_C.ch0.srv-fault
+net x-amp-ready <= lcec.0.S13T1_X_C.ch0.srv-enabled
+net x-vel-cmd => lcec.0.S13T1_X_C.ch0.srv-velo-cmd
+#net emc-on => lcec.0.S13T1_X_C.ch0.srv-err-reset
 
 # Y axis
-setp lcec.0.S15T1_YA.ch0.srv-pos-scale [AXIS_1]SCALE
-#net y-enable => lcec.0.S15T1_YA.ch0.srv-enable
-net y-amp-fault <= lcec.0.S15T1_YA.ch0.srv-fault
-net y-amp-ready <= lcec.0.S15T1_YA.ch0.srv-enabled
-net y-vel-cmd => lcec.0.S15T1_YA.ch0.srv-vel-cmd
-#net emc-on => lcec.0.S15T1_YA.ch0.srv-err-reset
+#setp lcec.0.S15T1_Y_A.ch0.srv-pos-scale [AXIS_1]SCALE
+#net y-enable => lcec.0.S15T1_Y_A.ch0.srv-enable
+net y-amp-fault <= lcec.0.S15T1_Y_A.ch0.srv-fault
+net y-amp-ready <= lcec.0.S15T1_Y_A.ch0.srv-enabled
+net y-vel-cmd => lcec.0.S15T1_Y_A.ch0.srv-velo-cmd
+#net emc-on => lcec.0.S15T1_Y_A.ch0.srv-err-reset
 
 # Z axis
-setp lcec.0.S17T1_Z.srv-pos-scale [AXIS_2]SCALE
+#setp lcec.0.S17T1_Z.srv-pos-scale [AXIS_2]SCALE
 #net z-enable => lcec.0.S17T1_Z.srv-enable
 net z-amp-fault <= lcec.0.S17T1_Z.srv-fault
 net z-amp-ready <= lcec.0.S17T1_Z.srv-enabled
-net z-vel-cmd => lcec.0.S17T1_Z.srv-vel-cmd
+net z-vel-cmd => lcec.0.S17T1_Z.srv-velo-cmd
 #net emc-on => lcec.0.S17T1_Z.srv-err-reset
 
 # A axis
-setp lcec.0.S15T1_YA.ch1.srv-pos-scale [AXIS_3]SCALE
-#setp lcec.0.S15T1_YA.ch1.enc-raw-home [AXIS_3]HOME_VIRTUAL_SWITCH
-#net a-enable => lcec.0.S15T1_YA.ch1.srv-enable
-net a-amp-fault <= lcec.0.S15T1_YA.ch1.srv-fault
-net a-amp-ready <= lcec.0.S15T1_YA.ch1.srv-enabled
-net a-vel-cmd => lcec.0.S15T1_YA.ch1.srv-vel-cmd
-net a-pos-fb <= lcec.0.S15T1_YA.ch1.enc-pos-abs
-#net emc-on => lcec.0.S15T1_YA.ch1.srv-err-reset
+#setp lcec.0.S15T1_Y_A.ch1.srv-pos-scale [AXIS_3]SCALE
+#setp lcec.0.S15T1_Y_A.ch1.enc-raw-home [AXIS_3]HOME_VIRTUAL_SWITCH
+#net a-enable => lcec.0.S15T1_Y_A.ch1.srv-enable
+net a-amp-fault <= lcec.0.S15T1_Y_A.ch1.srv-fault
+net a-amp-ready <= lcec.0.S15T1_Y_A.ch1.srv-enabled
+net a-vel-cmd => lcec.0.S15T1_Y_A.ch1.srv-velo-cmd
+net a-pos-fb <= lcec.0.S15T1_Y_A.ch1.enc-pos-abs
+#net emc-on => lcec.0.S15T1_Y_A.ch1.srv-err-reset
 
 # C axis
-setp lcec.0.S13T1_XC.ch1.srv-pos-scale [AXIS_5]SCALE
-#setp lcec.0.S13T1_XC.ch1.enc-raw-home [AXIS_5]HOME_VIRTUAL_SWITCH
-#net c-enable => lcec.0.S13T1_XC.ch1.srv-enable
-net c-amp-fault <= lcec.0.S13T1_XC.ch1.srv-fault
-net c-amp-ready <= lcec.0.S13T1_XC.ch1.srv-enabled
-net c-vel-cmd => lcec.0.S13T1_XC.ch1.srv-vel-cmd
-net c-pos-fb <= lcec.0.S13T1_XC.ch1.enc-pos-abs
-#net c-home <= lcec.0.S13T1_XC.ch1.enc-on-home-neg
-#net emc-on => lcec.0.S13T1_XC.ch1.srv-err-reset
+#setp lcec.0.S13T1_X_C.ch1.srv-pos-scale [AXIS_5]SCALE
+#setp lcec.0.S13T1_X_C.ch1.enc-raw-home [AXIS_5]HOME_VIRTUAL_SWITCH
+#net c-enable => lcec.0.S13T1_X_C.ch1.srv-enable
+net c-amp-fault <= lcec.0.S13T1_X_C.ch1.srv-fault
+net c-amp-ready <= lcec.0.S13T1_X_C.ch1.srv-enabled
+net c-vel-cmd => lcec.0.S13T1_X_C.ch1.srv-velo-cmd
+net c-pos-fb <= lcec.0.S13T1_X_C.ch1.enc-pos-abs
+#net c-home <= lcec.0.S13T1_X_C.ch1.enc-on-home-neg
+#net emc-on => lcec.0.S13T1_X_C.ch1.srv-err-reset
 
 # spindle
-setp lcec.0.S19T1.srv-pos-scale -1.0
+#setp lcec.0.S19T1_SAW.srv-pos-scale -1.0
 #net spindle-enable => lcec.0.S50A11.dout-5
-net emc-on => lcec.0.S19T1.srv-enable
-net spindle-err <= lcec.0.S19T1.srv-error
-net spindle-ready <= lcec.0.S19T1.srv-ready
-net spindle-cmd => lcec.0.S19T1.srv-vel-cmd
-net spindle-fb <= lcec.0.S19T1.srv-vel-fb
-net spindle-torque-pct <= lcec.0.S19T1.srv-torque-fb-pct
-net spindle-rpm-abs <= lcec.0.S19T1.srv-vel-fb-rpm-abs
-net spindle-at-speed <= lcec.0.S19T1.srv-at-speed
-net emc-on => lcec.0.S19T1.srv-err-reset
+#net emc-on => lcec.0.S19T1_SAW.enable
+net spindle-err <= lcec.0.S19T1_SAW.stat-fault
+net spindle-ready <= lcec.0.S19T1_SAW.stat-op-enabled
+net spindle-cmd => lcec.0.S19T1_SAW.vel-rpm-cmd
+net spindle-fb <= lcec.0.S19T1_SAW.vel-fb-rpm
+#net spindle-torque-pct <= lcec.0.S19T1_SAW.srv-torque-fb-pct
+net spindle-rpm-abs <= lcec.0.S19T1_SAW.vel-fb-rpm-abs
+net spindle-at-speed <= lcec.0.S19T1_SAW.stat-at-speed
+#net emc-on => lcec.0.S19T1_SAW.srv-err-reset
 

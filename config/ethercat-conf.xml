@@ -8,17 +8,17 @@
 	<slave idx="5" type="EL3255" name="P65A6"/>
 	<slave idx="6" type="EL1904" name="P65A7"/>
 	<slave idx="7" type="EL1904" name="P65A8"/>
-  <slave idx="8" type="AX5206" name="13T1_X_C">
+  <slave idx="8" type="AX5206" name="S13T1_X_C">
     <!-- IMPORTANT: in this case (sync1Cycle = n * sync0Cycle) sync1Cycle must be appTimePeriod - sync0Cycle) -->
     <initCmds filename="initcmds/13t1_xc_initcmds.xml"/>      
     <dcConf assignActivate="730" sync0Cycle="250000" sync0Shift="0" sync1Cycle="750000" sync1Shift="0"/>
   </slave>
- <slave idx="9" type="AX5206" name="15T1_Y_A">
+ <slave idx="9" type="AX5206" name="S15T1_Y_A">
     <!-- IMPORTANT: in this case (sync1Cycle = n * sync0Cycle) sync1Cycle must be appTimePeriod - sync0Cycle) -->
     <initCmds filename="initcmds/15t1_ya_initcmds.xml"/>      
     <dcConf assignActivate="730" sync0Cycle="250000" sync0Shift="0" sync1Cycle="750000" sync1Shift="0"/>
   </slave>
-<slave idx="10" type="AX5103" name="17T1_Z">
+<slave idx="10" type="AX5103" name="S17T1_Z">
     <!-- IMPORTANT: in this case (sync1Cycle = n * sync0Cycle) sync1Cycle must be appTimePeriod - sync0Cycle) -->
     <initCmds filename="initcmds/17t1_z_initcmds.xml"/>      
     <dcConf assignActivate="730" sync0Cycle="250000" sync0Shift="0" sync1Cycle="750000" sync1Shift="0"/>
@@ -46,7 +46,7 @@
 	<slave idx="19" type="EL2008" name="C50A10"/>
 	<slave idx="20" type="EL2008" name="C50A11"/>
 	<slave idx="21" type="EK1122" name="C50A12"/>
-	<slave idx="22" type="DeMS300" name="19T1_SAW"/>
+	<slave idx="22" type="DeMS300" name="S19T1_SAW"/>
   <slave idx="23" type="EK1100" name="S80A1"/>
 	<slave idx="24" type="EL1819" name="S80A2"/>    
 	<slave idx="25" type="EL2008" name="S80A3"/>
