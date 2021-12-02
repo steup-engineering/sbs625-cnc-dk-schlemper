@@ -1,59 +1,153 @@
 <masters>
   <master idx="0" appTimePeriod="1000000" refClockSyncCycles="-1">
-    <slave idx="0" type="EK1100" name="P65A1"/>
-    <slave idx="1" type="EL1018" name="P65A2"/>
-    <slave idx="2" type="EL1018" name="P65A3"/>
-    <slave idx="3" type="EL1018" name="P65A4"/>
-    <slave idx="4" type="EL2008" name="P65A5"/>
-    <slave idx="5" type="EL5101" name="P65A6"/>
-    <slave idx="6" type="EL9510" name="P65A7"/>
-    <slave idx="7" type="EL3162" name="P65A8"/>
-    <slave idx="8" type="EK1100" name="S50A1"/>
-    <slave idx="9" type="EL1018" name="S50A2"/>
-    <slave idx="10" type="EL1018" name="S50A3"/>
-    <slave idx="11" type="EL1018" name="S50A4"/>
-    <slave idx="12" type="EL2008" name="S50A5"/>
-    <slave idx="13" type="EL2008" name="S50A6"/>
-    <slave idx="14" type="EL2008" name="S50A7"/>
-    <slave idx="15" type="EL2042" name="S50A8"/>
-    <slave idx="16" type="EL5152" name="S50A9"/>
-    <slave idx="17" type="EL2008" name="S50A11"/>
-    <slave idx="18" type="EL2008" name="S50A12"/>
-    <slave idx="19" type="StMDS5k" name="S13T1">
-      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
-      <watchdog divider="2498" intervals="5000"/>
-    </slave>
-    <slave idx="20" type="StMDS5k" name="S14T1">
-      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
-      <watchdog divider="2498" intervals="5000"/>
-    </slave>
-    <slave idx="21" type="StMDS5k" name="S15T1">
-      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
-      <watchdog divider="2498" intervals="5000"/>
-    </slave>
-    <slave idx="22" type="StMDS5k" name="S16T1">
-      <modParam name="isMultiturn" value="true"/>
-      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
-      <watchdog divider="2498" intervals="5000"/>
-    </slave>
-    <slave idx="23" type="StMDS5k" name="S17T1">
-      <modParam name="isMultiturn" value="true"/>
-      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
-      <watchdog divider="2498" intervals="5000"/>
-    </slave>
-    <slave idx="24" type="StMDS5k" name="S19T1">
-      <dcConf assignActivate="300" sync0Cycle="*1" sync0Shift="-25000"/>
-      <watchdog divider="2498" intervals="5000"/>
-    </slave>
-    <slave idx="25" type="EK1100" name="P80A1"/>
-    <slave idx="26" type="EL1018" name="P80A2"/>
-    <slave idx="27" type="EL1018" name="P80A3"/>
-    <slave idx="28" type="EL2008" name="P80A4"/>
-    <slave idx="29" type="EL5152" name="P80A5"/>
-    <slave idx="30" type="EL5151" name="P80A6"/>
-    <slave idx="31" type="EL2008" name="P80A7"/>
-    <slave idx="32" type="EP2028" name="P80A8"/>
-    <slave idx="33" type="EP2028" name="P80A9"/>
+	<slave idx="0" type="EK1100" name="P65A1"/>
+	<slave idx="1" type="EL1819" name="P65A2"/>    
+	<slave idx="2" type="EL1018" name="P65A3"/>
+	<slave idx="3" type="EL2008" name="P65A4"/>
+	<slave idx="4" type="EL5101" name="P65A5"/>
+	<slave idx="5" type="EL3255" name="P65A6"/>
+	<slave idx="6" type="EL1904" name="P65A7"/>
+	<slave idx="7" type="EL1904" name="P65A8"/>
+  <slave idx="8" type="AX5206" name="13T1_X_C">
+    <!-- IMPORTANT: in this case (sync1Cycle = n * sync0Cycle) sync1Cycle must be appTimePeriod - sync0Cycle) -->
+    <initCmds filename="initcmds/13t1_xc_initcmds.xml"/>      
+    <dcConf assignActivate="730" sync0Cycle="250000" sync0Shift="0" sync1Cycle="750000" sync1Shift="0"/>
+  </slave>
+ <slave idx="9" type="AX5206" name="15T1_Y_A">
+    <!-- IMPORTANT: in this case (sync1Cycle = n * sync0Cycle) sync1Cycle must be appTimePeriod - sync0Cycle) -->
+    <initCmds filename="initcmds/15t1_ya_initcmds.xml"/>      
+    <dcConf assignActivate="730" sync0Cycle="250000" sync0Shift="0" sync1Cycle="750000" sync1Shift="0"/>
+  </slave>
+<slave idx="10" type="AX5103" name="17T1_Z">
+    <!-- IMPORTANT: in this case (sync1Cycle = n * sync0Cycle) sync1Cycle must be appTimePeriod - sync0Cycle) -->
+    <initCmds filename="initcmds/17t1_z_initcmds.xml"/>      
+    <dcConf assignActivate="730" sync0Cycle="250000" sync0Shift="0" sync1Cycle="750000" sync1Shift="0"/>
+  </slave>
+	<slave idx="11" type="EK1100" name="C50A1"/>
+	<slave idx="12" type="EL1819" name="C50A2"/>
+	<slave idx="13" type="EL2008" name="C50A3"/>
+	<slave idx="14" type="EL5152" name="C50A4"/>
+	<slave idx="15" type="EL6900" name="C50A5">
+		<modParam name="stdInName" value="run"/>
+		<modParam name="stdInName" value="err-ack"/>
+		<modParam name="stdOutName" value="fb-err"/>
+		<modParam name="stdOutName" value="com-err"/>
+		<modParam name="fsoeSlaveIdx" value="7"/>
+		<modParam name="fsoeSlaveIdx" value="6"/>
+		<modParam name="fsoeSlaveIdx" value="18"/>
+		<modParam name="fsoeSlaveIdx" value="17"/>
+		<modParam name="fsoeSlaveIdx" value="27"/>
+		<modParam name="fsoeSlaveIdx" value="16"/>
+		<modParam name="fsoeSlaveIdx" value="28"/>
+	</slave>
+	<slave idx="16" type="EL1904" name="C50A6"/>
+	<slave idx="17" type="EL1904" name="C50A7"/>
+	<slave idx="18" type="EL2904" name="C50A8"/>
+	<slave idx="19" type="EL2008" name="C50A10"/>
+	<slave idx="20" type="EL2008" name="C50A11"/>
+	<slave idx="21" type="EK1122" name="C50A12"/>
+	<slave idx="22" type="DeMS300" name="19T1_SAW"/>
+  <slave idx="23" type="EK1100" name="S80A1"/>
+	<slave idx="24" type="EL1819" name="S80A2"/>    
+	<slave idx="25" type="EL2008" name="S80A3"/>
+	<slave idx="26" type="EL5152" name="S80A4"/>
+	<slave idx="27" type="EL1904" name="S80A5"/>
+	<slave idx="28" type="EL1904" name="S80A6"/>
+  <!-- Pneumax Valve Island -->
+  <slave idx="29" type="generic" vid="0000017a" pid="0008bc74" name="pneumax">
+    <syncManager idx="0" dir="out">
+    </syncManager>
+    <syncManager idx="1" dir="in">
+    </syncManager>
+    <syncManager idx="2" dir="out">
+      <pdo idx="1600">
+        <pdoEntry idx="2000" subIdx="01" bitLen="8" halType="complex">
+					<complexEntry bitLen="1" halPin="valve-1" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-2" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-3" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-4" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-5" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-6" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-7" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-8" halType="bit"/>
+				</pdoEntry>
+        <pdoEntry idx="2000" subIdx="02" bitLen="8" halType="complex">
+					<complexEntry bitLen="1" halPin="valve-9" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-10" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-11" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-12" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-13" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-14" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-15" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-16" halType="bit"/>
+				</pdoEntry>
+        <pdoEntry idx="2000" subIdx="03" bitLen="8" halType="complex">
+					<complexEntry bitLen="1" halPin="valve-17" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-18" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-19" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-20" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-21" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-22" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-23" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-24" halType="bit"/>
+				</pdoEntry>
+        <pdoEntry idx="2000" subIdx="04" bitLen="8" halType="complex">
+					<complexEntry bitLen="1" halPin="valve-25" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-26" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-27" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-28" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-29" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-30" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-31" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-32" halType="bit"/>
+				</pdoEntry>
+      </pdo>
+    </syncManager>
+    <syncManager idx="3" dir="in">
+			<pdo idx="1a00">
+        <pdoEntry idx="3000" subIdx="01" bitLen="8" halType="complex">
+					<complexEntry bitLen="1" halPin="valve-diag-in-1" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-2" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-3" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-4" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-5" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-6" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-7" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-8" halType="bit"/>
+				</pdoEntry>
+        <pdoEntry idx="3000" subIdx="02" bitLen="8" halType="complex">
+					<complexEntry bitLen="1" halPin="valve-diag-in-9" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-10" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-11" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-12" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-13" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-14" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-15" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-16" halType="bit"/>
+				</pdoEntry>
+        <pdoEntry idx="3000" subIdx="03" bitLen="8" halType="complex">
+					<complexEntry bitLen="1" halPin="valve-diag-in-17" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-18" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-19" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-20" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-21" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-22" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-23" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-24" halType="bit"/>
+				</pdoEntry>
+        <pdoEntry idx="3000" subIdx="04" bitLen="8" halType="complex">
+					<complexEntry bitLen="1" halPin="valve-diag-in-25" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-26" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-27" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-28" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-29" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-30" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-31" halType="bit"/>
+					<complexEntry bitLen="1" halPin="valve-diag-in-32" halType="bit"/>
+				</pdoEntry>
+      </pdo>
+    </syncManager>
+  </slave>
   </master>
 </masters>
 
