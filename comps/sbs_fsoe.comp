@@ -1,0 +1,34 @@
+component sbs_fsoe "sbs fsoe handling";
+
+author "Sascha Ittner";
+license "GPL";
+
+option singleton yes;
+
+pin in bit emc_running;
+pin in bit ec_all_op;
+
+pin in bit fsoe_com_err;
+
+pin out bit fsoe_enable;
+pin out bit fsoe_err_reset;
+
+function _;
+
+;;
+
+FUNCTION(_) {
+
+  fsoe_enable = 0;
+  fsoe_err_reset = 0;
+
+  if (!emc_running || !ec_all_op) {
+    return;
+  }
+
+  if (!fsoe_com_err) {
+    fsoe_enable = 1;
+  } else {
+    fsoe_err_reset;
+  }
+}
