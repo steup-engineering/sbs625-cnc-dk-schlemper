@@ -17,6 +17,7 @@ loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[TRAJ]AX
 loadusr -W lcec_conf ethercat-conf.xml
 loadrt lcec
 
+loadrt sbs_fsoe
 loadrt sbs_jog
 loadrt sbs_errors
 loadrt sbs_aux
@@ -31,6 +32,7 @@ loadrt timedelay names=spindle-fan-dly,spindle-air-dly
 
 addf lcec.read-all servo-thread
 
+addf sbs-fsoe servo-thread
 addf sbs-probe servo-thread
 
 addf motion-command-handler servo-thread
