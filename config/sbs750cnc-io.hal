@@ -41,11 +41,10 @@ net pend-key-ena <= lcec.0.P65A3.din-3
 net estop-panel <= lcec.0.P65A7.fsoe-in-0-not
 
 net override-limits <= lcec.0.P65A8.fsoe-in-1
+
 #
 # main cabinet
 #
-
-
 net air-ok <= lcec.0.C50A2.din-2
 net water-ok <= lcec.0.C50A2.din-3
 	###net inverters-ready <= lcec.0.C50A2.din-4
@@ -67,6 +66,8 @@ net power-ok	<= lcec.0.C50A8.fsoe-out-0
 #
 # external unit bridge
 #
+net lube1-status <= lcec.0.S80A2.din-0
+net lube1-status <= lcec.0.S80A2.din-1
 net vac-pod-right-ap <= lcec.0.S80A2.din-4
 net vac-pod-right-hp <= lcec.0.S80A2.din-5
 net vac-pod-left-ap <= lcec.0.S80A2.din-6
@@ -99,66 +100,58 @@ net error => lcec.0.P65A4.dout-6
 net emc-auto => lcec.0.P65A4.dout-7
 net error => lcec.0.P65A4.dout-6
 
-
-
 #
 # main cabinet
 #
-
-
-net table-magnet-out => lcec.0.C50A3.dout-6
-
-
 net fsoe-enable => lcec.0.C50A5.run
 net fsoe-err-ack => lcec.0.C50A5.err-ack
 
-
-	###net spindle-air => lcec.0.S50A6.dout-1
-
-net mist-out => lcec.0.C50A10.dout-1
+net water-clean => lcec.0.C50A10.dout-1
 net water-main => lcec.0.C50A10.dout-2
 net table-lock-is-on => lcec.0.C50A10.dout-3
 
 #
 # external unit bridge
 #
-net lube => lcec.0.S80A3.dout-0
+net lube1-command => lcec.0.S80A3.dout-0
+net lube2-command => lcec.0.S80A3.dout-1
+net mist-out => lcec.0.S80A3.dout-3
 net spindle-fan => lcec.0.S80A3.dout-5
 net laser-cross-is-on => lcec.0.S80A3.dout-6
 net laser-line-is-on => lcec.0.S80A3.dout-7
 
-	###net water-clean => lcec.0.S80A4.dout-1
-
-
-	###net water-out => lcec.0.S80A4.dout-3
-	###net c-magnetic-brake => lcec.0.S80A4.dout-4
-
+###net water-out => lcec.0.S80A4.dout-3
 
 #
 # external unit valve island
 #
-	###net matprobe-cyl => lcec.0.pneumax.valve-1
-#net vac-pod-left-out => lcec.0.P80A7.dout-0
-#net vac-pod-right-out => lcec.0.P80A7.dout-2
+#net matprobe-cyl => lcec.0.pneumax.valve-1
+net vac-pod-pull-right-0 => lcec.0.pneumax.valve-8
+net vac-pod-pull-right-1 => lcec.0.pneumax.valve-2
+net vac-pod-pull-right-2 => lcec.0.pneumax.valve-4
+net vac-pod-pull-right-3 => lcec.0.pneumax.valve-6
 
-#net vac-pod-pull-right-0 => lcec.0.P80A8.dout-3
-#net vac-pod-pull-right-1 => lcec.0.P80A8.dout-1
-#net vac-pod-pull-right-2 => lcec.0.P80A8.dout-0
-#net vac-pod-pull-right-3 => lcec.0.P80A8.dout-2
+net vac-pod-pull-left-0 => lcec.0.pneumax.valve-12
+net vac-pod-pull-left-1 => lcec.0.pneumax.valve-14
+net vac-pod-pull-left-2 => lcec.0.pneumax.valve-10
 
-#net vac-pod-pull-left-0 => lcec.0.P80A8.dout-5
-#net vac-pod-pull-left-1 => lcec.0.P80A8.dout-4
-#net vac-pod-pull-left-2 => lcec.0.P80A8.dout-6
+net vac-pod-push-right-0 => lcec.0.pneumax.valve-7
+net vac-pod-push-right-1 => lcec.0.pneumax.valve-1
+net vac-pod-push-right-2 => lcec.0.pneumax.valve-3
+net vac-pod-push-right-3 => lcec.0.pneumax.valve-5
 
-#net vac-pod-push-right-0 => lcec.0.P80A9.dout-0
-#net vac-pod-push-right-1 => lcec.0.P80A9.dout-1
-#net vac-pod-push-right-2 => lcec.0.P80A9.dout-3
-#net vac-pod-push-right-3 => lcec.0.P80A9.dout-2
+net vac-pod-push-left-0 => lcec.0.pneumax.valve-11
+net vac-pod-push-left-1 => lcec.0.pneumax.valve-13
+net vac-pod-push-left-2 => lcec.0.pneumax.valve-9
 
-#net vac-pod-push-left-0 => lcec.0.P80A9.dout-5
-#net vac-pod-push-left-1 => lcec.0.P80A9.dout-4
-#net vac-pod-push-left-2 => lcec.0.P80A9.dout-6
+net vac-pod-right-in	=> lcec.0.pneumax.valve-15
+net vac-pod-right-out => lcec.0.pneumax.valve-16
 
+net vac-pod-left-in	 => lcec.0.pneumax.valve-18
+net vac-pod-left-out => lcec.0.pneumax.valve-17
+
+net matprobe-cyl-in  => lcec.0.pneumax.valve-19
+net matprobe-cyl-out => lcec.0.pneumax.valve-20
 
 ###########################################################
 # analog inputs
