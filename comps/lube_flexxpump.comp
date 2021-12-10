@@ -1,0 +1,154 @@
+component lube_flexxpump "FlexxPump Auto Lube Device";
+
+author "Dominik Braun";
+license "GPL";
+
+option singleton no;
+
+// IOs Hardware 
+pin in  bit status_input;
+pin out bit pulse_command;
+
+// Inputs 
+pin in bit lube_manual;
+pin in bit auto_mode;
+pin in bit ctrl_voltage;
+
+//Outputs 
+pin out bit lube_ready;
+pin out bit lube_error;
+
+//parameter
+param rw float lube_auto_time     = 10.0 "timeout for spindle stop";
+param rw float lube_standby_time  = 8.0 "timeout for switching the transmission";
+param rw s32   lube_power_on_pulses = 3 "overrun time for switching motor";
+
+//Instance Data
+variable  bool  err_timer_run = false; 
+variable  bool  init = false;
+variable  bool  lube_manual_old = false;
+variable  bool  status_input_old  = false; 
+variable  int   pulse_counter = 0;
+variable  bool  pulse_run;
+variable  bool  pulse_ack;
+variable  double  state_timer;
+variable  double  state_err_timer;
+variable  double  pulse_timer;
+variable  double  standby_timer;
+variable  double  auto_timer;
+
+function _;
+
+;;
+
+
+#define STATE_OK_TIME_SEC   3.500
+#define STATE_ERR_TIME_SEC  18 
+#define PULSE_TIME_SEC      2
+#define RESET_TIME_SEC      14
+
+FUNCTION(_) {
+
+  double period_sec, period_min;
+  bool  r_edge_state, f_edge_state;
+
+  // get period in seconds
+  period_sec = (double)period * 1e-9;
+  period_min = (double)period * 1e-9 /60;
+
+
+  //Get lube states
+
+  r_edge_state = status_input && !status_input_old;
+  f_edge_state = !status_input && status_input_old;
+  status_input_old = status_input; 
+
+  //state ok signal
+  if (status_input) {
+    state_timer += period_sec; 
+  }
+  if (state_timer >= STATE_OK_TIME_SEC) {
+    lube_ready = 1;
+    lube_error = 0;
+    err_timer_run = 0;
+  } 
+
+  //check for error state
+  if (f_edge_state) {
+    lube_ready = 0;
+    err_timer_run = 1; 
+    state_err_timer = 0;       
+    state_timer = 0; 
+  }
+
+  if (err_timer_run) {
+    state_err_timer += period_sec; 
+  }
+  if (state_err_timer >= STATE_ERR_TIME_SEC) {
+    lube_error = 1;
+  }
+
+
+  //send lube Pulse 
+  if ((pulse_timer >= PULSE_TIME_SEC) && pulse_run) {
+    pulse_command = 0;
+    pulse_timer = 0;
+  }
+
+  if ((pulse_counter > 0) && lube_ready && ctrl_voltage && !pulse_run) {
+    pulse_timer += period_sec; 
+    pulse_command = 1; 
+    pulse_run = 1;
+  } 
+
+  if (pulse_run && f_edge_state) {
+    pulse_ack = 1; 
+  }
+
+  if (pulse_run && pulse_ack && lube_ready) {
+    pulse_run = 0; 
+    pulse_counter -= 1;
+    pulse_ack = 0; 
+  } 
+    
+  //lube pulse generation
+  //power on  
+  if (!init && ctrl_voltage && lube_error) {
+    pulse_counter += lube_power_on_pulses;
+    init = 1;
+  }
+
+  //manual pulse
+  if (lube_manual && !lube_manual_old) {
+    pulse_counter += 1;
+  }
+  lube_manual_old = lube_manual; 
+
+  //standby lube pulse
+  if (ctrl_voltage && !auto_mode && !lube_error) {
+    standby_timer += period_min;
+  }
+  if (standby_timer >= lube_standby_time) {
+    pulse_counter += 1;
+    standby_timer = 0; 
+  } 
+  
+  //auto mode lube pulse
+  if (auto_mode && !lube_error) {
+    auto_timer += period_min; 
+  }
+  if (auto_timer >= lube_auto_time) {
+    pulse_counter += 1;
+    auto_timer = 0;
+  } 
+
+  //error react 
+  if (lube_error || !ctrl_voltage) {
+    pulse_command = 0; 
+    pulse_run = 0;
+    pulse_ack = 0;
+    pulse_timer = 0; 
+  } 
+
+}
+
