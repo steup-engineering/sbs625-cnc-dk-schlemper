@@ -17,8 +17,8 @@ pin in bit spindle_enable_in;
 pin out bit spindle_enable_out;
 
 pin in bit estop_panel;
-pin in bit lube_err1;
-pin in bit lube_err2;
+pin in bit lube1_err;
+pin in bit lube2_err;
 pin in bit spindle_err;
 pin in bit spindle_temp_err;
 pin in bit ps_pot_err;
@@ -49,8 +49,8 @@ function _;
 
 typedef struct {
   int last_estop_panel;
-  int last_lube_err1;
-  int last_lube_err2;
+  int last_lube1_err;
+  int last_lube2_err;
   int last_spindle_err;
   int last_spindle_temp_err;
   int last_ps_pot_err;
@@ -68,8 +68,8 @@ typedef struct {
 
 EXTRA_SETUP() {
   data.last_estop_panel = 0;
-  data.last_lube_err1 = 0;
-  data.last_lube_err2 = 0;
+  data.last_lube1_err = 0;
+  data.last_lube2_err = 0;
   data.last_spindle_err = 0;
   data.last_spindle_temp_err = 0;
   data.last_ps_pot_err = 0;
@@ -111,8 +111,8 @@ FUNCTION(_) {
   // check if emc is on
   if (!emc_on) {
     data.last_estop_panel = 0;
-    data.last_lube_err1 = 0;
-    data.last_lube_err2 = 0;
+    data.last_lube1_err = 0;
+    data.last_lube2_err = 0;
     data.last_spindle_err = 0;
     data.last_spindle_temp_err = 0;
     data.last_air_ok = 1;
@@ -140,19 +140,19 @@ FUNCTION(_) {
   }
   data.last_estop_panel = estop_panel;
 
-  if (lube_err1) {
-    if (!data.last_lube_err1) {
+  if (lube1_err) {
+    if (!data.last_lube1_err) {
       rtapi_print_msg(RTAPI_MSG_ERR, "Lube 1 error!\n");
     }
   }
-  data.last_lube_err1 = lube_err1;
+  data.last_lube1_err = lube1_err;
 
-  if (lube_err2) {
-    if (!data.last_lube_err2) {
+  if (lube2_err) {
+    if (!data.last_lube2_err) {
       rtapi_print_msg(RTAPI_MSG_ERR, "Lube 2 error!\n");
     }
   }
-  data.last_lube_err2 = lube_err2;
+  data.last_lube2_err = lube2_err;
 
   if (spindle_err) {
     emc_enable_out = 0;
