@@ -68,12 +68,12 @@ net power-ok	<= lcec.0.C50A8.fsoe-out-0
 #
 net lube1-status <= lcec.0.S80A2.din-0
 net lube2-status <= lcec.0.S80A2.din-1
-net vac-pod-right-ap <= lcec.0.S80A2.din-4
-net vac-pod-right-hp <= lcec.0.S80A2.din-5
-net vac-pod-left-ap <= lcec.0.S80A2.din-6
-net vac-pod-left-hp <= lcec.0.S80A2.din-7
-net matprobe-hp <= lcec.0.S80A2.din-8
-net matprobe-ap <= lcec.0.S80A2.din-9
+net vac-pod-left-ap <= lcec.0.S80A2.din-5
+net vac-pod-left-hp <= lcec.0.S80A2.din-4
+net vac-pod-right-ap <= lcec.0.S80A2.din-6
+net vac-pod-right-hp <= lcec.0.S80A2.din-7
+net matprobe-hp <= lcec.0.S80A2.din-9
+net matprobe-ap <= lcec.0.S80A2.din-8
 net matprobe-sens <= lcec.0.S80A2.din-11-not
 net z-home <= lcec.0.S80A2.din-12
 net x-home <= lcec.0.S80A2.din-13
@@ -192,33 +192,32 @@ net z-pos-fb <= lcec.0.S80A4.enc-1-pos
 ###########################################################
 
 # X axis
-#setp lcec.0.S13T1_X_C.ch0.srv-pos-scale [AXIS_0]SCALE
-#net x-enable => lcec.0.S13T1_X_C.ch0.srv-enable
+setp lcec.0.S13T1_X_C.ch0.srv-scale [AXIS_0]SCALE
+net x-enable => lcec.0.S13T1_X_C.ch0.srv-enable
 net x-amp-fault <= lcec.0.S13T1_X_C.ch0.srv-fault
 net x-amp-ready <= lcec.0.S13T1_X_C.ch0.srv-enabled
 net x-vel-cmd => lcec.0.S13T1_X_C.ch0.srv-velo-cmd
 #net emc-on => lcec.0.S13T1_X_C.ch0.srv-err-reset
 
 # Y axis
-#setp lcec.0.S15T1_Y_A.ch0.srv-pos-scale [AXIS_1]SCALE
-#net y-enable => lcec.0.S15T1_Y_A.ch0.srv-enable
+setp lcec.0.S15T1_Y_A.ch0.srv-scale [AXIS_1]SCALE
+net y-enable => lcec.0.S15T1_Y_A.ch0.srv-enable
 net y-amp-fault <= lcec.0.S15T1_Y_A.ch0.srv-fault
 net y-amp-ready <= lcec.0.S15T1_Y_A.ch0.srv-enabled
 net y-vel-cmd => lcec.0.S15T1_Y_A.ch0.srv-velo-cmd
 #net emc-on => lcec.0.S15T1_Y_A.ch0.srv-err-reset
 
 # Z axis
-#setp lcec.0.S17T1_Z.srv-pos-scale [AXIS_2]SCALE
-#net z-enable => lcec.0.S17T1_Z.srv-enable
+setp lcec.0.S17T1_Z.srv-scale [AXIS_2]SCALE
+net z-enable => lcec.0.S17T1_Z.srv-enable
 net z-amp-fault <= lcec.0.S17T1_Z.srv-fault
 net z-amp-ready <= lcec.0.S17T1_Z.srv-enabled
 net z-vel-cmd => lcec.0.S17T1_Z.srv-velo-cmd
 #net emc-on => lcec.0.S17T1_Z.srv-err-reset
 
 # A axis
-#setp lcec.0.S15T1_Y_A.ch1.srv-pos-scale [AXIS_3]SCALE
-#setp lcec.0.S15T1_Y_A.ch1.enc-raw-home [AXIS_3]HOME_VIRTUAL_SWITCH
-#net a-enable => lcec.0.S15T1_Y_A.ch1.srv-enable
+setp lcec.0.S15T1_Y_A.ch1.srv-scale [AXIS_3]SCALE
+net a-enable => lcec.0.S15T1_Y_A.ch1.srv-enable
 net a-amp-fault <= lcec.0.S15T1_Y_A.ch1.srv-fault
 net a-amp-ready <= lcec.0.S15T1_Y_A.ch1.srv-enabled
 net a-vel-cmd => lcec.0.S15T1_Y_A.ch1.srv-velo-cmd
@@ -226,9 +225,8 @@ net a-pos-fb <= lcec.0.S15T1_Y_A.ch1.enc-pos-abs
 #net emc-on => lcec.0.S15T1_Y_A.ch1.srv-err-reset
 
 # C axis
-#setp lcec.0.S13T1_X_C.ch1.srv-pos-scale [AXIS_5]SCALE
-#setp lcec.0.S13T1_X_C.ch1.enc-raw-home [AXIS_5]HOME_VIRTUAL_SWITCH
-#net c-enable => lcec.0.S13T1_X_C.ch1.srv-enable
+setp lcec.0.S13T1_X_C.ch1.srv-scale [AXIS_5]SCALE
+net c-enable => lcec.0.S13T1_X_C.ch1.srv-enable
 net c-amp-fault <= lcec.0.S13T1_X_C.ch1.srv-fault
 net c-amp-ready <= lcec.0.S13T1_X_C.ch1.srv-enabled
 net c-vel-cmd => lcec.0.S13T1_X_C.ch1.srv-velo-cmd

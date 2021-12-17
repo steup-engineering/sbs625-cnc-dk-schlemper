@@ -151,8 +151,8 @@ net lubetest	=> lube2.ctrl-voltage
 net lube1-manual	=> lube1.lube-manual
 net lube2-manual	=> lube2.lube-manual
 
-net lube1-error	<= lube1.lube-error
-net lube2-error	<= lube2.lube-error
+net lube1-err	<= lube1.lube-error
+net lube2-err	<= lube2.lube-error
 
 net lube-auto-test	=> lube1.auto-mode
 net lube-auto-test	=> lube2.auto-mode
@@ -218,7 +218,8 @@ net spindle-enable-req => sbs-errors.spindle-enable-in
 net spindle-enable <= sbs-errors.spindle-enable-out
 
 net estop-panel => sbs-errors.estop-panel
-net lube-err => sbs-errors.lube-err
+net lube1-err => sbs-errors.lube1-err
+net lube2-err => sbs-errors.lube2-err
 net spindle-err => sbs-errors.spindle-err
 net ps-pot-err => sbs-errors.ps-pot-err
 
@@ -226,14 +227,14 @@ net air-ok => sbs-errors.air-ok
 net water-ok => sbs-errors.water-ok
 net water-out => sbs-errors.water-out
 
-net inverters-ready <= sbs-errors.inverters-ready
-
 net matprobe-cyl-err => sbs-errors.matprobe-cyl-err
+net vac-cyl-left-err => sbs-errors.vac-cyl-left-err
+net vac-cyl-right-err => sbs-errors.vac-cyl-right-err
 
 net error => sbs-errors.error
 net error-lamp <= sbs-errors.error-lamp
 
-setp sbs-errors.ec-slaves 34
+setp sbs-errors.ec-slaves 30
 net ec-slaves-responding => sbs-errors.ec-slaves-responding
 net ec-link-up => sbs-errors.ec-link-up
 net ec-all-op => sbs-errors.ec-all-op
@@ -271,6 +272,9 @@ setp sbs-probe.vac-cyl-linked 0
 net vac-req-left => sbs-probe.vac-req-left
 net vac-req-right => sbs-probe.vac-req-right
 net vac-ack <= sbs-probe.vac-ack
+
+net vac-cyl-left-err <= sbs-probe.vac-cyl-left-err
+net vac-cyl-right-err <= sbs-probe.vac-cyl-right-err
 
 net vac-pod-left-hp => sbs-probe.vac-cyl-up-left
 net vac-pod-left-ap => sbs-probe.vac-cyl-down-left
