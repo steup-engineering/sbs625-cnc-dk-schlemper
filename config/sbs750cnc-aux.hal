@@ -137,6 +137,33 @@ net fsoe-com-err => sbs-fsoe.fsoe-com-err
 net fsoe-enable <= sbs-fsoe.fsoe-enable
 net fsoe-err-ack <= sbs-fsoe.fsoe-err-reset
 
+###########################################################
+# lube
+###########################################################
+net lube1-status => lube1.status-input
+net lube2-status => lube2.status-input
+net lube1-command <= lube1.pulse-command
+net lube2-command <= lube2.pulse-command
+
+net lubetest	=> lube1.ctrl-voltage
+net lubetest	=> lube2.ctrl-voltage
+
+net lube1-manual	=> lube1.lube-manual
+net lube2-manual	=> lube2.lube-manual
+
+net lube1-error	<= lube1.lube-error
+net lube2-error	<= lube2.lube-error
+
+net lube-auto-test	=> lube1.auto-mode
+net lube-auto-test	=> lube2.auto-mode
+
+setp lube1.lube-auto-time 1
+setp lube1.lube-standby-time 3
+setp lube1.lube-power-on-pulses 1
+
+setp lube2.lube-auto-time 1
+setp lube2.lube-standby-time 3
+setp lube2.lube-power-on-pulses 1
 
 ###########################################################
 # halui
