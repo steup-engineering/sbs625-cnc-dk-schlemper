@@ -1,0 +1,93 @@
+component valve1to2way "valve 2 way converter";
+
+author "Sascha Ittner";
+license "GPL";
+
+pin in bit emc_on;
+pin in bit emc_auto;
+
+pin in bit fb_home;
+pin in bit fb_active;
+
+pin in bit cmd;
+
+pin out bit out_home;
+pin out bit out_active;
+
+pin out bit error;
+
+param rw float timeout = 0.0 "timeout to reach position";
+param rw float extra_time = 10.0 "extra setup time";
+
+variable bool last_emc_on = 0;
+variable bool last_emc_auto = 0;
+
+variable int64_t timeout_timer_home = 0;
+variable int64_t timeout_timer_active = 0;
+variable int64_t extra_timer_home = 0;
+variable int64_t extra_timer_active = 0;
+
+function _;
+
+;;
+
+#define sec_to_nano(x) ((int64_t) (x * 1e9))
+
+FUNCTION(_) {
+  out_home = 0;
+  out_active = 0;
+
+  if (! emc_on) {
+    last_emc_on = 0;
+    last_emc_auto = 0;
+    error = 0;
+    return;
+  }
+
+  if ((emc_on && !last_emc_on) || (emc_auto && !last_emc_auto)) {
+    extra_timer_home = sec_to_nano(extra_time);
+    extra_timer_active = sec_to_nano(extra_time);
+    timeout_timer_home = sec_to_nano(timeout);
+    timeout_timer_active = sec_to_nano(timeout);
+  }
+
+  last_emc_on = emc_on;
+  last_emc_auto = emc_auto;
+
+  if (cmd) {
+    extra_timer_home = sec_to_nano(extra_time);
+    timeout_timer_home = sec_to_nano(timeout);
+    if (! fb_active) {
+      if (timeout > 0.0) {
+        if (timeout_timer_active > 0) {
+          timeout_timer_active -= period;
+        } else {
+          error = 1;
+        }
+      }
+      extra_timer_active = sec_to_nano(extra_time);
+      out_active = 1;
+    } else if (extra_timer_active > 0) {
+      extra_timer_active -= period;
+      out_active = 1;
+    }
+  } else {
+    extra_timer_active = sec_to_nano(extra_time);
+    timeout_timer_active = sec_to_nano(timeout);
+    if (! fb_home) {
+      if (timeout > 0.0) {
+        if (timeout_timer_home > 0) {
+          timeout_timer_home -= period;
+        } else {
+          error = 1;
+        }
+      }
+      extra_timer_home = sec_to_nano(extra_time);
+      out_home = 1;
+    } else if (extra_timer_home > 0) {
+      extra_timer_home -= period;
+      out_home = 1;
+    }
+  }
+}
+
