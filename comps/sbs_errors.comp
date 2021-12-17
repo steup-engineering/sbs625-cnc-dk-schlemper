@@ -17,8 +17,10 @@ pin in bit spindle_enable_in;
 pin out bit spindle_enable_out;
 
 pin in bit estop_panel;
-pin in bit lube_err;
+pin in bit lube_err1;
+pin in bit lube_err2;
 pin in bit spindle_err;
+pin in bit spindle_temp_err;
 pin in bit ps_pot_err;
 pin in bit air_ok;
 pin in bit water_ok;
@@ -26,8 +28,6 @@ pin in bit water_out;
 
 pin in bit error;
 pin out bit error_lamp;
-
-pin in bit inverters_ready;
 
 pin in u32 ec_slaves;
 pin in u32 ec_slaves_responding;
@@ -48,15 +48,15 @@ function _;
 #define ERROR_WATER_PERIOD 3000000000LL
 
 typedef struct {
-  int last_emc_on;
   int last_estop_panel;
-  int last_lube_err;
+  int last_lube_err1;
+  int last_lube_err2;
   int last_spindle_err;
+  int last_spindle_temp_err;
   int last_ps_pot_err;
   int last_air_ok;
   int last_water_ok;
   int last_matprobe_cyl_err;
-  int last_inverters_ready;
   int last_auto_err;
   int last_ec_slaves_responding_ok;
   int last_ec_link_up;
@@ -67,15 +67,15 @@ typedef struct {
 } sbs_err_data;
 
 EXTRA_SETUP() {
-  data.last_emc_on = 0;
   data.last_estop_panel = 0;
-  data.last_lube_err = 0;
+  data.last_lube_err1 = 0;
+  data.last_lube_err2 = 0;
   data.last_spindle_err = 0;
+  data.last_spindle_temp_err = 0;
   data.last_ps_pot_err = 0;
   data.last_air_ok = 1;
   data.last_water_ok = 1;
   data.last_matprobe_cyl_err = 0;
-  data.last_inverters_ready = 1;
   data.last_auto_err = 0;
   data.last_ec_slaves_responding_ok = 1;
   data.last_ec_link_up = 1;
@@ -90,7 +90,6 @@ EXTRA_SETUP() {
 
 FUNCTION(_) {
   int ec_slaves_responding_ok;
-  int emc_on_edge;
 
   emc_enable_out = emc_running && emc_enable_in;
   spindle_enable_out = spindle_enable_in && auto_enable;
@@ -110,16 +109,15 @@ FUNCTION(_) {
   }
 
   // check if emc is on
-  emc_on_edge = emc_on && !data.last_emc_on;
-  data.last_emc_on = emc_on;
   if (!emc_on) {
     data.last_estop_panel = 0;
-    data.last_lube_err = 0;
+    data.last_lube_err1 = 0;
+    data.last_lube_err2 = 0;
     data.last_spindle_err = 0;
+    data.last_spindle_temp_err = 0;
     data.last_air_ok = 1;
     data.last_water_ok = 1;
     data.last_matprobe_cyl_err = 0;
-    data.last_inverters_ready = 1;
     data.last_auto_err = 0;
     data.last_ec_slaves_responding_ok = 1;
     data.last_ec_link_up = 1;
@@ -142,15 +140,19 @@ FUNCTION(_) {
   }
   data.last_estop_panel = estop_panel;
 
-  if (lube_err) {
-    if (emc_on_edge) {
-      emc_enable_out = 0;
-    }
-    if (!data.last_lube_err) {
-      rtapi_print_msg(RTAPI_MSG_ERR, "Lube error!\n");
+  if (lube_err1) {
+    if (!data.last_lube_err1) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "Lube 1 error!\n");
     }
   }
-  data.last_lube_err = lube_err;
+  data.last_lube_err1 = lube_err1;
+
+  if (lube_err2) {
+    if (!data.last_lube_err2) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "Lube 2 error!\n");
+    }
+  }
+  data.last_lube_err2 = lube_err2;
 
   if (spindle_err) {
     emc_enable_out = 0;
@@ -160,13 +162,13 @@ FUNCTION(_) {
   }
   data.last_spindle_err = spindle_err;
 
-  if (!inverters_ready) {
+  if (spindle_temp_err) {
     emc_enable_out = 0;
-    if (data.last_inverters_ready) {
-      rtapi_print_msg(RTAPI_MSG_ERR, "Inverters not ready!\n");
+    if (!data.last_spindle_temp_err) {
+      rtapi_print_msg(RTAPI_MSG_ERR, "Spindle overtemp error!\n");
     }
   }
-  data.last_inverters_ready = inverters_ready;
+  data.last_spindle_temp_err = spindle_temp_err;
 
   if (ps_pot_err) {
     emc_enable_out = 0;
