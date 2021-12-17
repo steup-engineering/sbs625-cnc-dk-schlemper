@@ -607,6 +607,17 @@
 				<Attribute>0</Attribute>
 				<Data>0c000c0001000000f401e803bc020000</Data>
 			</InitCmd>
+			<InitCmd>
+				<Transition>PS</Transition>
+				<Comment><![CDATA[Position loop Kv-factor]]></Comment>
+				<Timeout>0</Timeout>
+				<OpCode>3</OpCode>
+				<DriveNo>0</DriveNo>
+				<IDN>104</IDN>
+				<Elements>64</Elements>
+				<Attribute>0</Attribute>
+				<Data>0000</Data>
+			</InitCmd>
 		</InitCmds>
 	</SoE>
 </EtherCATMailbox>

@@ -67,7 +67,7 @@ net power-ok	<= lcec.0.C50A8.fsoe-out-0
 # external unit bridge
 #
 net lube1-status <= lcec.0.S80A2.din-0
-net lube1-status <= lcec.0.S80A2.din-1
+net lube2-status <= lcec.0.S80A2.din-1
 net vac-pod-right-ap <= lcec.0.S80A2.din-4
 net vac-pod-right-hp <= lcec.0.S80A2.din-5
 net vac-pod-left-ap <= lcec.0.S80A2.din-6
