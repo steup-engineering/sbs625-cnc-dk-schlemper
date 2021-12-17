@@ -29,7 +29,7 @@ pin io s32 vac_req_left;
 pin in bit vac_cyl_up_left;
 pin in bit vac_cyl_down_left;
 pin out bit vac_cyl_coil_left;
-pin out bit vac_cyl_coil_left_err;
+pin out bit vac_cyl_left_err;
 
 pin out bit vac_push_left_0;
 pin out bit vac_push_left_1;
@@ -45,7 +45,7 @@ pin io s32 vac_req_right;
 pin in bit vac_cyl_up_right;
 pin in bit vac_cyl_down_right;
 pin out bit vac_cyl_coil_right;
-pin out bit vac_cyl_coil_right_err;
+pin out bit vac_cyl_right_err;
 
 pin out bit vac_push_right_0;
 pin out bit vac_push_right_1;
@@ -201,8 +201,8 @@ FUNCTION(_) {
 
   matprobe_cyl_coil = 0;
   matprobe_cyl_err = 0;
-  vac_cyl_coil_left_err = 0;
-  vac_cyl_coil_right_err = 0;
+  vac_cyl_left_err = 0;
+  vac_cyl_right_err = 0;
   probe_out = 0;
 
   // update manual vacuum requests
@@ -282,11 +282,11 @@ FUNCTION(_) {
   // handle vac cylinder request
   if (!vac_disable) {
     if (vac_cyl_linked) {
-      handle_vac(period, &data.vac_left, vac_req_left | vac_req_right, vac_cyl_up_left, vac_cyl_down_left, &vac_cyl_coil_left, &vac_cyl_coil_left_err);
-      handle_vac(period, &data.vac_right, vac_req_left | vac_req_right, vac_cyl_up_right, vac_cyl_down_right, &vac_cyl_coil_right, &vac_cyl_coil_right_err);
+      handle_vac(period, &data.vac_left, vac_req_left | vac_req_right, vac_cyl_up_left, vac_cyl_down_left, &vac_cyl_coil_left, &vac_cyl_left_err);
+      handle_vac(period, &data.vac_right, vac_req_left | vac_req_right, vac_cyl_up_right, vac_cyl_down_right, &vac_cyl_coil_right, &vac_cyl_right_err);
     } else {
-      handle_vac(period, &data.vac_left, vac_req_left, vac_cyl_up_left, vac_cyl_down_left, &vac_cyl_coil_left, &vac_cyl_coil_left_err);
-      handle_vac(period, &data.vac_right, vac_req_right, vac_cyl_up_right, vac_cyl_down_right, &vac_cyl_coil_right, &vac_cyl_coil_right_err);
+      handle_vac(period, &data.vac_left, vac_req_left, vac_cyl_up_left, vac_cyl_down_left, &vac_cyl_coil_left, &vac_cyl_left_err);
+      handle_vac(period, &data.vac_right, vac_req_right, vac_cyl_up_right, vac_cyl_down_right, &vac_cyl_coil_right, &vac_cyl_right_err);
     }
   }
 

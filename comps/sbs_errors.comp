@@ -35,8 +35,8 @@ pin in bit ec_link_up;
 pin in bit ec_all_op;
 
 pin in bit matprobe_cyl_err;
-pin in bit vac_cyl_coil_left_err;
-pin in bit vac_cyl_coil_right_err;
+pin in bit vac_cyl_left_err;
+pin in bit vac_cyl_right_err;
 
 option data sbs_err_data;
 option extra_setup;
@@ -59,8 +59,8 @@ typedef struct {
   int last_air_ok;
   int last_water_ok;
   int last_matprobe_cyl_err;
-  int last_vac_cyl_coil_left_err;
-  int last_vac_cyl_coil_right_err;
+  int last_vac_cyl_left_err;
+  int last_vac_cyl_right_err;
   int last_auto_err;
   int last_ec_slaves_responding_ok;
   int last_ec_link_up;
@@ -80,8 +80,8 @@ EXTRA_SETUP() {
   data.last_air_ok = 1;
   data.last_water_ok = 1;
   data.last_matprobe_cyl_err = 0;
-  data.last_vac_cyl_coil_left_err = 0;
-  data.last_vac_cyl_coil_right_err = 0;
+  data.last_vac_cyl_left_err = 0;
+  data.last_vac_cyl_right_err = 0;
   data.last_auto_err = 0;
   data.last_ec_slaves_responding_ok = 1;
   data.last_ec_link_up = 1;
@@ -124,8 +124,8 @@ FUNCTION(_) {
     data.last_air_ok = 1;
     data.last_water_ok = 1;
     data.last_matprobe_cyl_err = 0;
-    data.last_vac_cyl_coil_left_err = 0;
-    data.last_vac_cyl_coil_right_err = 0;
+    data.last_vac_cyl_left_err = 0;
+    data.last_vac_cyl_right_err = 0;
     data.last_auto_err = 0;
     data.last_ec_slaves_responding_ok = 1;
     data.last_ec_link_up = 1;
@@ -220,21 +220,21 @@ FUNCTION(_) {
   }
   data.last_matprobe_cyl_err = matprobe_cyl_err;
 
-  if (vac_cyl_coil_left_err) {
+  if (vac_cyl_left_err) {
     emc_enable_out = 0;
-    if (!data.last_vac_cyl_coil_left_err) {
+    if (!data.last_vac_cyl_left_err) {
       rtapi_print_msg(RTAPI_MSG_ERR, "Vacuum pod left cylinder failure!\n");
     }
   }
-  data.last_vac_cyl_coil_left_err = vac_cyl_coil_left_err;
+  data.last_vac_cyl_left_err = vac_cyl_left_err;
 
-  if (vac_cyl_coil_right_err) {
+  if (vac_cyl_right_err) {
     emc_enable_out = 0;
-    if (!data.last_vac_cyl_coil_right_err) {
+    if (!data.last_vac_cyl_right_err) {
       rtapi_print_msg(RTAPI_MSG_ERR, "Vacuum pod right cylinder failure!\n");
     }
   }
-  data.last_vac_cyl_coil_right_err = vac_cyl_coil_right_err;
+  data.last_vac_cyl_right_err = vac_cyl_right_err;
 
   if ((emc_auto || spindle_enable_in) && !auto_enable) {
     emc_enable_out = 0;
