@@ -16,29 +16,29 @@ net x-neg-lim-in => sbs-jog.x-neg-lim-in
 net x-pos-lim-in => sbs-jog.x-pos-lim-in
 net x-neg-lim-out <= sbs-jog.x-neg-lim-out
 net x-pos-lim-out <= sbs-jog.x-pos-lim-out
-net x-neg-lim-out => axis.0.neg-lim-sw-in
-net x-pos-lim-out => axis.0.pos-lim-sw-in
+net x-neg-lim-out => joint.0.neg-lim-sw-in
+net x-pos-lim-out => joint.0.pos-lim-sw-in
 
 net y-neg-lim-in => sbs-jog.y-neg-lim-in
 net y-pos-lim-in => sbs-jog.y-pos-lim-in
 net y-neg-lim-out <= sbs-jog.y-neg-lim-out
 net y-pos-lim-out <= sbs-jog.y-pos-lim-out
-net y-neg-lim-out => axis.1.neg-lim-sw-in
-net y-pos-lim-out => axis.1.pos-lim-sw-in
+net y-neg-lim-out => joint.1.neg-lim-sw-in
+net y-pos-lim-out => joint.1.pos-lim-sw-in
 
 net z-neg-lim-in => sbs-jog.z-neg-lim-in
 net z-pos-lim-in => sbs-jog.z-pos-lim-in
 net z-neg-lim-out <= sbs-jog.z-neg-lim-out
 net z-pos-lim-out <= sbs-jog.z-pos-lim-out
-net z-neg-lim-out => axis.2.neg-lim-sw-in
-net z-pos-lim-out => axis.2.pos-lim-sw-in
+net z-neg-lim-out => joint.2.neg-lim-sw-in
+net z-pos-lim-out => joint.2.pos-lim-sw-in
 
 net a-neg-lim-in => sbs-jog.a-neg-lim-in
 net a-pos-lim-in => sbs-jog.a-pos-lim-in
 net a-neg-lim-out <= sbs-jog.a-neg-lim-out
 net a-pos-lim-out <= sbs-jog.a-pos-lim-out
-net a-neg-lim-out => axis.3.neg-lim-sw-in
-net a-pos-lim-out => axis.3.pos-lim-sw-in
+net a-neg-lim-out => joint.3.neg-lim-sw-in
+net a-pos-lim-out => joint.3.pos-lim-sw-in
 
 
 net pend-velo-0 => sbs-jog.pend-velo-0
@@ -55,37 +55,45 @@ net pend-key-pos => sbs-jog.pend-key-pos
 net pend-key-ena => sbs-jog.pend-key-ena
 
 
-net pend-count => axis.0.jog-counts
-net pend-count => axis.1.jog-counts
-net pend-count => axis.2.jog-counts
-net pend-count => axis.3.jog-counts
-net pend-count => axis.5.jog-counts
+net pend-count => joint.0.jog-counts axis.x.jog-counts
+net pend-count => joint.1.jog-counts axis.y.jog-counts
+net pend-count => joint.2.jog-counts axis.z.jog-counts
+net pend-count => joint.3.jog-counts axis.a.jog-counts
+net pend-count => joint.4.jog-counts axis.c.jog-counts
 
 net pend-scale <= sbs-jog.pend-scale
-net pend-scale => axis.0.jog-scale
-net pend-scale => axis.1.jog-scale
-net pend-scale => axis.2.jog-scale
-net pend-scale => axis.3.jog-scale
-net pend-scale => axis.5.jog-scale
+net pend-scale => joint.0.jog-scale axis.x.jog-scale
+net pend-scale => joint.1.jog-scale axis.y.jog-scale
+net pend-scale => joint.2.jog-scale axis.z.jog-scale
+net pend-scale => joint.3.jog-scale axis.a.jog-scale
+net pend-scale => joint.4.jog-scale axis.c.jog-scale
+setp joint.0.jog-vel-mode 1
+setp axis.x.jog-vel-mode 1
 
-setp axis.0.jog-vel-mode 1
-setp axis.1.jog-vel-mode 1
-setp axis.2.jog-vel-mode 1
-setp axis.3.jog-vel-mode 1
-setp axis.5.jog-vel-mode 1
+setp joint.1.jog-vel-mode 1
+setp axis.y.jog-vel-mode 1
+
+setp joint.2.jog-vel-mode 1
+setp axis.z.jog-vel-mode 1
+
+setp joint.3.jog-vel-mode 1
+setp axis.a.jog-vel-mode 1
+
+setp joint.4.jog-vel-mode 1
+setp axis.c.jog-vel-mode 1
 
 net pend-count => sbs-jog.pend-count
 
 net pend-ena-x <= sbs-jog.pend-ena-x
-net pend-ena-x => axis.0.jog-enable
+net pend-ena-x => axis.x.jog-enable
 net pend-ena-y <= sbs-jog.pend-ena-y
-net pend-ena-y => axis.1.jog-enable
+net pend-ena-y => axis.y.jog-enable
 net pend-ena-z <= sbs-jog.pend-ena-z
-net pend-ena-z => axis.2.jog-enable
+net pend-ena-z => axis.z.jog-enable
 net pend-ena-a <= sbs-jog.pend-ena-a
-net pend-ena-a => axis.3.jog-enable
+net pend-ena-a => axis.a.jog-enable
 net pend-ena-c <= sbs-jog.pend-ena-c
-net pend-ena-c => axis.5.jog-enable
+net pend-ena-c => axis.c.jog-enable
 
 net x-homed => sbs-jog.x-homed
 net y-homed => sbs-jog.y-homed
