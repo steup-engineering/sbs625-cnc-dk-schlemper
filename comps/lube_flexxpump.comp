@@ -19,9 +19,9 @@ pin out bit lube_ready;
 pin out bit lube_error;
 
 //parameter
-param rw float lube_auto_time     = 10.0 "timeout for spindle stop";
-param rw float lube_standby_time  = 8.0 "timeout for switching the transmission";
-param rw s32   lube_power_on_pulses = 3 "overrun time for switching motor";
+param rw float lube_auto_time     = 10.0 "lubetime in automode minute";
+param rw float lube_standby_time  = 8.0 "lubetime in standby minute";
+param rw s32   lube_power_on_pulses = 3 "Count of lube pulses at startup";
 
 //Instance Data
 variable  bool  err_timer_run = false; 
