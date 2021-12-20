@@ -271,6 +271,15 @@ net matprobe-cyl-err <= sbs-probe.matprobe-cyl-err
 net probe-sens <= sbs-probe.probe-out
 net probe-sens => motion.probe-input
 
+setp matprobe-cyl.extra-time 5.0
+net emc-on           => matprobe-cyl.emc-on
+net emc-auto         => matprobe-cyl.emc-auto
+net matprobe-hp      => matprobe-cyl.fb-home
+net matprobe-ap      => matprobe-cyl.fb-active
+net matprobe-cyl     => matprobe-cyl.cmd;
+net matprobe-cyl-in  <= matprobe-cyl.out-home
+net matprobe-cyl-out <= matprobe-cyl.out-active
+
 ###########################################################
 # vacuum functions
 ###########################################################
@@ -286,11 +295,11 @@ net vac-cyl-right-err <= sbs-probe.vac-cyl-right-err
 
 net vac-pod-left-hp => sbs-probe.vac-cyl-up-left
 net vac-pod-left-ap => sbs-probe.vac-cyl-down-left
-net vac-pod-left-out <= sbs-probe.vac-cyl-coil-left
+net vac-pod-left-cyl <= sbs-probe.vac-cyl-coil-left
 
 net vac-pod-right-hp => sbs-probe.vac-cyl-up-right
 net vac-pod-right-ap => sbs-probe.vac-cyl-down-right
-net vac-pod-right-out <= sbs-probe.vac-cyl-coil-right
+net vac-pod-right-cyl <= sbs-probe.vac-cyl-coil-right
 
 net vac-pod-pull => sbs-probe.vac-pull
 net vac-pod-push => sbs-probe.vac-push
@@ -322,6 +331,24 @@ net vac-manu-1r => sbs-probe.vac-manu-right-1
 net vac-manu-2r => sbs-probe.vac-manu-right-2
 net vac-manu-3r => sbs-probe.vac-manu-right-3
 net vac-manu-r <= sbs-probe.vac-manu-right
+
+setp vac-left-cyl.extra-time 5.0
+net emc-on            => vac-left-cyl.emc-on
+net emc-auto          => vac-left-cyl.emc-auto
+net vac-pod-left-hp   => vac-left-cyl.fb-home
+net vac-pod-left-ap   => vac-left-cyl.fb-active
+net vac-pod-left-cyl  => vac-left-cyl.cmd;
+net vac-pod-left-in   <= vac-left-cyl.out-home
+net vac-pod-left-out  <= vac-left-cyl.out-active
+
+setp vac-right-cyl.extra-time 5.0
+net emc-on            => vac-right-cyl.emc-on
+net emc-auto          => vac-right-cyl.emc-auto
+net vac-pod-right-hp  => vac-right-cyl.fb-home
+net vac-pod-right-ap  => vac-right-cyl.fb-active
+net vac-pod-right-cyl => vac-right-cyl.cmd;
+net vac-pod-right-in  <= vac-right-cyl.out-home
+net vac-pod-right-out <= vac-right-cyl.out-active
 
 ###########################################################
 # aux functions
