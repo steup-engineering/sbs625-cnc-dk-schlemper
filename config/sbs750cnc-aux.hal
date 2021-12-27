@@ -153,8 +153,8 @@ net lube2-status => lube2.status-input
 net lube1-command <= lube1.pulse-command
 net lube2-command <= lube2.pulse-command
 
-net lubetest	=> lube1.ctrl-voltage
-net lubetest	=> lube2.ctrl-voltage
+net power-ok	=> lube1.ctrl-voltage
+net power-ok	=> lube2.ctrl-voltage
 
 net lube1-manual	=> lube1.lube-manual
 net lube2-manual	=> lube2.lube-manual
@@ -162,16 +162,16 @@ net lube2-manual	=> lube2.lube-manual
 net lube1-err	<= lube1.lube-error
 net lube2-err	<= lube2.lube-error
 
-net lube-auto-test	=> lube1.auto-mode
-net lube-auto-test	=> lube2.auto-mode
+net emc-auto	=> lube1.auto-mode
+net emc-auto	=> lube2.auto-mode
 
-setp lube1.lube-auto-time 1
-setp lube1.lube-standby-time 3
-setp lube1.lube-power-on-pulses 1
+setp lube1.lube-auto-time [LUBE]AUTO_TIME
+setp lube1.lube-standby-time [LUBE]STANDBY_TIME
+setp lube1.lube-power-on-pulses [LUBE]POWER_ON_PULSES
 
-setp lube2.lube-auto-time 1
-setp lube2.lube-standby-time 3
-setp lube2.lube-power-on-pulses 1
+setp lube2.lube-auto-time [LUBE]AUTO_TIME
+setp lube2.lube-standby-time [LUBE]STANDBY_TIME
+setp lube2.lube-power-on-pulses [LUBE]POWER_ON_PULSES
 
 ###########################################################
 # halui
@@ -276,7 +276,7 @@ net emc-on           => matprobe-cyl.emc-on
 net emc-auto         => matprobe-cyl.emc-auto
 net matprobe-hp      => matprobe-cyl.fb-home
 net matprobe-ap      => matprobe-cyl.fb-active
-net matprobe-cyl     => matprobe-cyl.cmd;
+net matprobe-cyl     => matprobe-cyl.cmd
 net matprobe-cyl-in  <= matprobe-cyl.out-home
 net matprobe-cyl-out <= matprobe-cyl.out-active
 
@@ -337,7 +337,7 @@ net emc-on            => vac-left-cyl.emc-on
 net emc-auto          => vac-left-cyl.emc-auto
 net vac-pod-left-hp   => vac-left-cyl.fb-home
 net vac-pod-left-ap   => vac-left-cyl.fb-active
-net vac-pod-left-cyl  => vac-left-cyl.cmd;
+net vac-pod-left-cyl  => vac-left-cyl.cmd
 net vac-pod-left-in   <= vac-left-cyl.out-home
 net vac-pod-left-out  <= vac-left-cyl.out-active
 
@@ -346,7 +346,7 @@ net emc-on            => vac-right-cyl.emc-on
 net emc-auto          => vac-right-cyl.emc-auto
 net vac-pod-right-hp  => vac-right-cyl.fb-home
 net vac-pod-right-ap  => vac-right-cyl.fb-active
-net vac-pod-right-cyl => vac-right-cyl.cmd;
+net vac-pod-right-cyl => vac-right-cyl.cmd
 net vac-pod-right-in  <= vac-right-cyl.out-home
 net vac-pod-right-out <= vac-right-cyl.out-active
 

@@ -682,7 +682,7 @@
 				<IDN>32821</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>0c002200414d383035322d7846783000</Data>
+				<Data>0c002200414d383034322d7846783100</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -704,7 +704,7 @@
 				<IDN>32830</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>10001000e8085000640001008900190000000000</Data>
+				<Data>10001000bc075000640001007500190000000000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -726,7 +726,7 @@
 				<IDN>111</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>e40c0000</Data>
+				<Data>04100000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -737,7 +737,7 @@
 				<IDN>196</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>1c0c0000</Data>
+				<Data>d80e0000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -748,7 +748,7 @@
 				<IDN>109</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>ec450000</Data>
+				<Data>ac580000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -792,7 +792,7 @@
 				<IDN>32841</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>ca0d0000</Data>
+				<Data>62070000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -803,7 +803,7 @@
 				<IDN>32842</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>50005000f4060000f20d0000f0140000ee1b0000ec220000ea290000e8300000e6370000ee3e0000ec45000002020000e10300009c05000033070000a7080000f6090000210b0000290c00000c0d0000ca0d0000</Data>
+				<Data>50005000de080000bc1100009a1a000078230000562c000034350000123e0000f0460000ce4f0000ac58000007010000fd010000e3020000b80300007d04000032050000d70500006b060000ee06000062070000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -814,7 +814,7 @@
 				<IDN>32823</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>8606</Data>
+				<Data>a802</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -825,7 +825,7 @@
 				<IDN>32834</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>08000800520300006a0e0000</Data>
+				<Data>0800080072010000cc060000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -836,7 +836,7 @@
 				<IDN>32843</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>50005000f4060000f20d0000f0140000ee1b0000ec220000ea290000e8300000e6370000ee3e0000ec450000100e0000980d0000d00c0000080c00002c0b0000c4090000020800009a06000032050000ca030000</Data>
+				<Data>50005000de080000bc1100009a1a000078230000562c000034350000123e0000f0460000ce4f0000ac5800003006000071050000b204000038040000d603000057030000fc020000d2020000c9020000c9020000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -869,7 +869,7 @@
 				<IDN>32839</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>080008009901000000000000</Data>
+				<Data>080008000701000000000000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -895,6 +895,61 @@
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
+				<Comment><![CDATA[Motor brake]]></Comment>
+				<Timeout>0</Timeout>
+				<OpCode>3</OpCode>
+				<DriveNo>0</DriveNo>
+				<IDN>32828</IDN>
+				<Elements>64</Elements>
+				<Attribute>0</Attribute>
+				<Data>0100</Data>
+			</InitCmd>
+			<InitCmd>
+				<Transition>PS</Transition>
+				<Comment><![CDATA[Motor brake current monitoring level]]></Comment>
+				<Timeout>0</Timeout>
+				<OpCode>3</OpCode>
+				<DriveNo>0</DriveNo>
+				<IDN>32827</IDN>
+				<Elements>64</Elements>
+				<Attribute>0</Attribute>
+				<Data>0e01</Data>
+			</InitCmd>
+			<InitCmd>
+				<Transition>PS</Transition>
+				<Comment><![CDATA[Motor brake data]]></Comment>
+				<Timeout>0</Timeout>
+				<OpCode>3</OpCode>
+				<DriveNo>0</DriveNo>
+				<IDN>32840</IDN>
+				<Elements>64</Elements>
+				<Attribute>0</Attribute>
+				<Data>06000600840300000000</Data>
+			</InitCmd>
+			<InitCmd>
+				<Transition>PS</Transition>
+				<Comment><![CDATA[Drive on delay time]]></Comment>
+				<Timeout>0</Timeout>
+				<OpCode>3</OpCode>
+				<DriveNo>0</DriveNo>
+				<IDN>206</IDN>
+				<Elements>64</Elements>
+				<Attribute>0</Attribute>
+				<Data>5000</Data>
+			</InitCmd>
+			<InitCmd>
+				<Transition>PS</Transition>
+				<Comment><![CDATA[Drive off delay time]]></Comment>
+				<Timeout>0</Timeout>
+				<OpCode>3</OpCode>
+				<DriveNo>0</DriveNo>
+				<IDN>207</IDN>
+				<Elements>64</Elements>
+				<Attribute>0</Attribute>
+				<Data>2800</Data>
+			</InitCmd>
+			<InitCmd>
+				<Transition>PS</Transition>
 				<Comment><![CDATA[Motor temperature sensor characteristic]]></Comment>
 				<Timeout>0</Timeout>
 				<OpCode>3</OpCode>
@@ -902,7 +957,7 @@
 				<IDN>32844</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>28002800d9fe16003901440237031504e204a0054d06f4068001000280020003800300048004000580050406</Data>
+				<Data>28002800d9fe17003a01440237031604e304a0054e06f4068001000280020003800300048004000580050406</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -968,7 +1023,7 @@
 				<IDN>32861</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>e40c0000</Data>
+				<Data>04100000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -979,7 +1034,7 @@
 				<IDN>32860</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>c8190000</Data>
+				<Data>08200000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -990,7 +1045,7 @@
 				<IDN>32838</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>32030000</Data>
+				<Data>9a010000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -1001,7 +1056,7 @@
 				<IDN>106</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>5304</Data>
+				<Data>0a02</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -1034,7 +1089,7 @@
 				<IDN>100</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>aa000000</Data>
+				<Data>64000000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -1056,7 +1111,7 @@
 				<IDN>32918</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>e000e00003000000454b4d33362d304b4630413031384100000000000000000000000000000000000000000000000000000000000e0000000000000005000e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007000e000000000012000c000000000002000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000960096007d0000000000000000000000000000000000000000000000</Data>
+				<Data>e000e00003000000454b5333362d304b4630413053313600000000000000000000000000000000000000000000000000000000000e0000000000000005000e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007000e0000000000120000000000000002000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c800c8007d0000000000000000000000000000000000000000000000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
@@ -1072,4 +1127,4 @@
 		</InitCmds>
 	</SoE>
 </EtherCATMailbox>
-																																																																																
+																																																																																					

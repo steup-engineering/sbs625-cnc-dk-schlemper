@@ -13,10 +13,13 @@ pin out bit pulse_command;
 pin in bit lube_manual;
 pin in bit auto_mode;
 pin in bit ctrl_voltage;
+pin out bit pulse_run;
+
 
 //Outputs 
 pin out bit lube_ready;
 pin out bit lube_error;
+pin out unsigned pulse_counter;
 
 //parameter
 param rw float lube_auto_time     = 10.0 "lubetime in automode minute";
@@ -28,8 +31,6 @@ variable  bool  err_timer_run = false;
 variable  bool  init = false;
 variable  bool  lube_manual_old = false;
 variable  bool  status_input_old  = false; 
-variable  int   pulse_counter = 0;
-variable  bool  pulse_run;
 variable  bool  pulse_ack;
 variable  double  state_timer;
 variable  double  state_err_timer;
@@ -92,20 +93,23 @@ FUNCTION(_) {
   //send lube Pulse 
   if ((pulse_timer >= PULSE_TIME_SEC) && pulse_run) {
     pulse_command = 0;
-    pulse_timer = 0;
   }
 
   if ((pulse_counter > 0) && lube_ready && ctrl_voltage && !pulse_run) {
-    pulse_timer += period_sec; 
     pulse_command = 1; 
+    pulse_timer = 0;
     pulse_run = 1;
   } 
+
+  if (pulse_run) {
+    pulse_timer += period_sec; 
+  }
 
   if (pulse_run && f_edge_state) {
     pulse_ack = 1; 
   }
 
-  if (pulse_run && pulse_ack && lube_ready) {
+  if (pulse_run && pulse_ack) {
     pulse_run = 0; 
     pulse_counter -= 1;
     pulse_ack = 0; 
@@ -113,7 +117,7 @@ FUNCTION(_) {
     
   //lube pulse generation
   //power on  
-  if (!init && ctrl_voltage && lube_error) {
+  if (!init && ctrl_voltage && lube_ready) {
     pulse_counter += lube_power_on_pulses;
     init = 1;
   }
