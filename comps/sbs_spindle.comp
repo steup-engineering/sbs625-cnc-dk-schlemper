@@ -1,0 +1,281 @@
+component sbs_spindle "Spindle mode and thermal managment";
+
+author "Dominik Braun";
+license "GPL";
+
+option singleton yes;
+
+// IOs Hardware 
+pin in  bit switch_mode_mill;
+//pin in  bit start_warmup;
+
+pin out bit lamp_warmup;
+
+// Inputs 
+pin in bit auto_enable;
+pin in bit ctrl_voltage;
+pin in bit enable_in;
+pin in s32 rpm_in; 
+pin in bit spindle_at_speed_in;
+
+//Outputs 
+pin out bit enable_out;
+pin out u32 accel_time;
+pin out u32 deccel_time; 
+pin out s32 rpm_out;
+
+pin out bit warmed_up;
+pin out bit warmed_up_mill;
+pin out bit warmed_up_saw;
+pin out bit warmup_run;
+pin out bit mode_mill;
+pin out bit spindle_at_speed_out;
+pin out s32 dbg_warmup_state;
+
+//parameter
+param rw u32 saw_ramp_up_time  = 10.0 "accel time in saw mode to max rpm";
+param rw u32 saw_ramp_down_time  = 10.0 "deccel time in saw mode to zero";
+param rw u32 mill_ramp_up_time  = 10.0 "accel time in mill mode to max rpm";
+param rw u32 mill_ramp_down_time  = 10.0 "deccel time in mill mode to zero";
+
+param rw s32 saw_max_rpm  = 3000 "max rpm in saw mode";
+param rw s32 mill_max_rpm = 8000 "max rpm in mill mode";
+param rw s32 mill_min_rpm = 0 "max rpm in mill mode";
+
+param rw u32 saw_cool_down_minutes = 60 "standby time in saw mode till new warmup, minutes";
+param rw u32 mill_cool_down_minutes = 30 "standby time in mill mode till new warmup, minutes";
+
+param rw s32 warmup_stage1_rpm = 2500 "warmup stage 1 rpm";
+param rw u32 warmup_stage1_minutes = 5 "warm up stage 1 runtime, minutes";
+param rw s32 warmup_stage2_rpm = 5000 "warmup stage 2 rpm";
+param rw u32 warmup_stage2_minutes = 5 "warm up stage 2 runtime, minutes";
+param rw s32 warmup_stage3_rpm = 7500 "warmup stage 3 rpm";
+param rw u32 warmup_stage3_minutes = 3 "warm up stage 3 runtime, minutes";
+param rw s32 warmup_stage4_rpm = 8500 "warmup stage 4 rpm";
+param rw u32 warmup_stage4_minutes = 2 "warm up stage 4 runtime, minutes";
+
+//Instance Data
+variable  bool  enable_in_old  = false; 
+variable  int   warmup_state = 0;
+variable  double  state_timer;
+variable  double  cool_down_timer;
+variable  double  blink_timer;
+
+function _;
+
+;;
+
+
+#define BLINK_TIME   0.8
+#define MIN_RAMP_TIME 3000
+#define WARMUP_INIT   0
+#define STAGE1_PRESET 1
+#define STAGE1_WAIT   2 
+#define STAGE2_PRESET 3
+#define STAGE2_WAIT   4
+#define STAGE3_PRESET 5
+#define STAGE3_WAIT   6
+#define STAGE4_PRESET 7
+#define STAGE4_WAIT   8
+#define WARMUP_FINAL  9
+
+FUNCTION(_) {
+
+  double period_sec, period_min;
+  bool  r_edge_enable, f_edge_enable;
+
+  // get period in seconds
+  period_sec = (double)period * 1e-9;
+  period_min = (double)period * 1e-9 /60;
+
+
+  //get enable edges 
+  r_edge_enable = enable_in && !enable_in_old; 
+  f_edge_enable = !enable_in && enable_in_old; 
+  enable_in_old = enable_in; 
+
+  //get spindle mode
+  if (!enable_in) {
+    mode_mill = switch_mode_mill; 
+  }
+
+  //Warm up signal lamp
+  if (warmed_up) {
+    lamp_warmup = 0; 
+  } else {
+    blink_timer += period_sec; 
+    if (blink_timer >= BLINK_TIME) {
+      lamp_warmup = !lamp_warmup && ctrl_voltage;
+      blink_timer =0;
+    }
+  }
+  if (warmup_run) {
+    lamp_warmup = 1; 
+  }
+
+
+  //reset warumup states 
+  if (!enable_in) {
+    cool_down_timer += period_min; 
+  }
+  if (f_edge_enable && warmed_up) {
+    cool_down_timer = 0; 
+  }
+  if (cool_down_timer > mill_cool_down_minutes) {
+    warmed_up_mill = 0; 
+  }
+  if (cool_down_timer > saw_cool_down_minutes) {
+    warmed_up_saw = 0; 
+  }
+
+
+  //is_warmed_up 
+  warmed_up = (mode_mill && warmed_up_mill) || (!mode_mill && warmed_up_saw); 
+  if (warmed_up) {
+    rpm_out = rpm_in;
+  } else {
+    rpm_out = 0; 
+  }
+
+  //warmup cycle
+  //start 
+  if (!warmed_up && ctrl_voltage && r_edge_enable && auto_enable && !warmup_run) {
+    warmup_state = 0;    
+    warmup_run = 1; 
+  }
+
+  //cycle
+  switch (warmup_state) {
+
+    case WARMUP_INIT:
+      if (warmup_run) {
+        warmup_state = STAGE1_PRESET; 
+      }
+      break;
+
+    case STAGE1_PRESET: 
+      rpm_out = warmup_stage1_rpm;
+      state_timer = warmup_stage1_minutes; 
+      warmup_state = STAGE1_WAIT; 
+      break;
+
+    case STAGE1_WAIT: 
+      state_timer -= period_min; 
+      if (state_timer <= 0) {
+        warmup_state = STAGE2_PRESET; 
+      }
+      break;
+
+    case STAGE2_PRESET:
+      if (!mode_mill) {
+        warmup_state = WARMUP_FINAL;
+        break;
+      } 
+      rpm_out = warmup_stage2_rpm;
+      state_timer = warmup_stage2_minutes; 
+      warmup_state = STAGE2_WAIT; 
+      break;
+
+    case STAGE2_WAIT: 
+      state_timer -= period_min; 
+      if (state_timer <= 0) {
+        warmup_state = STAGE3_PRESET; 
+      }
+      break;
+
+    case STAGE3_PRESET: 
+      rpm_out = warmup_stage3_rpm;
+      state_timer = warmup_stage3_minutes; 
+      warmup_state = STAGE3_WAIT; 
+      break;
+
+    case STAGE3_WAIT: 
+      state_timer -= period_min; 
+      if (state_timer <= 0) {
+        warmup_state = STAGE4_PRESET; 
+      }
+      break;
+
+    case STAGE4_PRESET: 
+      rpm_out = warmup_stage4_rpm;
+      state_timer = warmup_stage4_minutes; 
+      warmup_state = STAGE4_WAIT; 
+      break;
+
+    case STAGE4_WAIT: 
+      state_timer -= period_min; 
+      if (state_timer <= 0) {
+        warmup_state = WARMUP_FINAL; 
+      }
+      break;
+
+    case WARMUP_FINAL:
+      if (mode_mill) {
+        warmed_up_mill = 1; 
+      } else {
+        warmed_up_saw = 1; 
+      }
+      warmup_run = 0;
+      warmup_state = WARMUP_INIT; 
+      break;
+
+    default:
+      warmup_state = WARMUP_INIT; 
+
+  }
+
+  if (!enable_in) {
+    rpm_out = 0; 
+    warmup_state = WARMUP_INIT;
+    warmup_run = 0; 
+  }
+
+
+  //write ramp up time
+  if (mode_mill) {
+    accel_time = mill_ramp_up_time * 1000;
+  } else {
+    accel_time = saw_ramp_up_time * 1000;
+  }
+  if (accel_time < MIN_RAMP_TIME) {
+    accel_time = MIN_RAMP_TIME;
+  }
+
+  //write ramp down time
+  if (mode_mill) {
+    deccel_time = mill_ramp_down_time * 1000;
+  } else {
+    deccel_time = saw_ramp_down_time * 1000;
+  }
+  if (deccel_time < MIN_RAMP_TIME) {
+    deccel_time = MIN_RAMP_TIME;
+  }
+
+  //command out
+  enable_out = enable_in; 
+
+  if (warmed_up) {
+    spindle_at_speed_out = spindle_at_speed_in;
+  } else { 
+    spindle_at_speed_out = 0; 
+  }
+  
+  if (mode_mill) {
+    if (rpm_out >= mill_max_rpm) {
+      rpm_out = mill_max_rpm;
+    }    
+    if (rpm_out <= mill_min_rpm) {
+      rpm_out = mill_min_rpm;
+    } 
+  } else {
+    if (rpm_out >= saw_max_rpm) {
+      rpm_out = saw_max_rpm;
+    }    
+    if (rpm_out < 0 ) {
+      rpm_out = 0;
+    }
+  }  
+
+  dbg_warmup_state = warmup_state; 
+}
+

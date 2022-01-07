@@ -15,11 +15,37 @@ net spindle-fwd <= spindle.0.forward
 #net spindle-rev <= spindle.0.reverse
 net spindle-cmd-rpm <= spindle.0.speed-out
 net spindle-cmd <= spindle.0.speed-out-rps
-net spindle-fb <= spindle.0.speed-in
+net spindle-fb => spindle.0.speed-in
 net spindle-at-speed => spindle.0.at-speed
 
 net water-req <= iocontrol.0.coolant-flood
 net mist-req <= iocontrol.0.coolant-mist
+
+###########################################################
+# spindle warm up
+###########################################################
+
+net spindle-enable	=>	sbs-spindle.enable-in
+net spindle-enable-warmup-out <= sbs-spindle.enable-out
+
+net spindle-cmd		=> sbs-spindle.rmp-in
+net spindle-cmd-warmup-out <= sbs-spindle.rmp-out
+
+net power-ok	=> sbs-spindle.ctrl-voltage
+
+net spindle-vel-ramp-up <= sbs-spindle.accel-time
+net spindle-vel-ramp-down <= sbs-spindle.deccel-time
+
+net spindle-mode-mill <= sbs-spindle.mode-mill
+net spindle-warmed-up <= sbs-spindle.warmed-up
+
+net spindle-warmup-run <= sbs-spindle.warmup-run
+
+net spindle-mode-switch => sbs-spindle.switch-mode-mill
+net spindle-warmup-lamp <= sbs-spindle.lamp-warm-up
+
+net spindle-at-speed-request => sbs-spindle.spindle-at-speed-in
+net spindle-at-speed <= sbs-spindle.spindle-at-speed-out
 
 ###########################################################
 # fan and air control

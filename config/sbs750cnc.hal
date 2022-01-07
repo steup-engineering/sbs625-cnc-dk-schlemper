@@ -24,6 +24,7 @@ loadrt sbs_jog
 loadrt sbs_errors
 loadrt sbs_aux
 loadrt sbs_probe
+loadrt sbs_spindle
 loadrt lube_flexxpump names=lube1,lube2
 loadrt valve1to2way names=matprobe-cyl,vac-left-cyl,vac-right-cyl
 
@@ -57,6 +58,8 @@ addf sbs-aux servo-thread
 
 addf lube1 servo-thread
 addf lube2 servo-thread
+
+addf sbs-spindle servo-thread
 
 addf matprobe-cyl servo-thread
 addf vac-left-cyl servo-thread

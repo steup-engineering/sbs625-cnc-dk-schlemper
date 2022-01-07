@@ -24,6 +24,7 @@ net joy-y-neg <= lcec.0.P65A2.din-3
 net joy-z-pos <= lcec.0.P65A2.din-4
 net joy-z-neg <= lcec.0.P65A2.din-5
 
+net spindle-mode-switch <= lcec.0.P65A2.din-7
 net pend-velo-3 <= lcec.0.P65A2.din-8
 net pend-velo-2 <= lcec.0.P65A2.din-9
 net pend-velo-1 <= lcec.0.P65A2.din-10
@@ -40,7 +41,7 @@ net pend-key-ena <= lcec.0.P65A3.din-3
 
 net estop-panel <= lcec.0.P65A7.fsoe-in-0-not
 
-net override-limits <= lcec.0.P65A8.fsoe-in-1
+net override-limits <= lcec.0.P65A8.fsoe-in-0
 
 #
 # main cabinet
@@ -58,8 +59,8 @@ net toolprobe-sens-err <= lcec.0.C50A2.din-12
 net fsoe-com-err <= lcec.0.C50A5.com-err
 net fsoe-fb-err <= lcec.0.C50A5.fb-err
 
-net y-pos-lim-in <= lcec.0.C50A6.fsoe-in-2-not
-net y-neg-lim-in <= lcec.0.C50A6.fsoe-in-3-not
+net y-neg-lim-in <= lcec.0.C50A6.fsoe-in-2-not
+net y-pos-lim-in <= lcec.0.C50A6.fsoe-in-3-not
 
 net power-ok	<= lcec.0.C50A8.fsoe-out-0
 
@@ -97,9 +98,9 @@ net power-ok => lcec.0.P65A4.dout-0
 net error-lamp => lcec.0.P65A4.dout-1
 net horn => lcec.0.P65A4.dout-4
 net error => lcec.0.P65A4.dout-6
-net emc-auto => lcec.0.P65A4.dout-7
-net error => lcec.0.P65A4.dout-6
+#net emc-auto => lcec.0.P65A4.dout-7
 
+net spindle-warmup-lamp => lcec.0.P65A4.dout-7
 #
 # main cabinet
 #
@@ -213,7 +214,6 @@ net z-enable => lcec.0.S17T1_Z.srv-enable
 net z-amp-fault <= lcec.0.S17T1_Z.srv-fault
 net z-amp-ready <= lcec.0.S17T1_Z.srv-enabled
 net z-vel-cmd => lcec.0.S17T1_Z.srv-velo-cmd
-#net emc-on => lcec.0.S17T1_Z.srv-err-reset
 
 # A axis
 setp lcec.0.S15T1_Y_A.ch1.srv-scale [JOINT_3]SCALE
@@ -222,7 +222,6 @@ net a-amp-fault <= lcec.0.S15T1_Y_A.ch1.srv-fault
 net a-amp-ready <= lcec.0.S15T1_Y_A.ch1.srv-enabled
 net a-vel-cmd => lcec.0.S15T1_Y_A.ch1.srv-velo-cmd
 net a-pos-fb <= lcec.0.S15T1_Y_A.ch1.enc-pos-abs
-#net emc-on => lcec.0.S15T1_Y_A.ch1.srv-err-reset
 
 # C axis
 setp lcec.0.S13T1_X_C.ch1.srv-scale [JOINT_4]SCALE
@@ -231,19 +230,19 @@ net c-amp-fault <= lcec.0.S13T1_X_C.ch1.srv-fault
 net c-amp-ready <= lcec.0.S13T1_X_C.ch1.srv-enabled
 net c-vel-cmd => lcec.0.S13T1_X_C.ch1.srv-velo-cmd
 net c-pos-fb <= lcec.0.S13T1_X_C.ch1.enc-pos-abs
-#net c-home <= lcec.0.S13T1_X_C.ch1.enc-on-home-neg
-#net emc-on => lcec.0.S13T1_X_C.ch1.srv-err-reset
 
 # spindle
-#setp lcec.0.S19T1_SAW.srv-pos-scale -1.0
-#net spindle-enable => lcec.0.S50A11.dout-5
-#net emc-on => lcec.0.S19T1_SAW.enable
+
+net spindle-enable-warmup-out => lcec.0.S19T1_SAW.enable
 net spindle-err <= lcec.0.S19T1_SAW.stat-fault
 net spindle-ready <= lcec.0.S19T1_SAW.stat-op-enabled
-net spindle-cmd => lcec.0.S19T1_SAW.vel-rpm-cmd
+net spindle-cmd-warmup-out => lcec.0.S19T1_SAW.vel-rpm-cmd
 net spindle-fb <= lcec.0.S19T1_SAW.vel-fb-rpm
-#net spindle-torque-pct <= lcec.0.S19T1_SAW.srv-torque-fb-pct
+net spindle-torque-pct <= lcec.0.S19T1_SAW.act-current
+net spindle-drive-temp <= lcec.0.S19T1_SAW.drive-temp
 net spindle-rpm-abs <= lcec.0.S19T1_SAW.vel-fb-rpm-abs
-net spindle-at-speed <= lcec.0.S19T1_SAW.stat-at-speed
+net spindle-at-speed-request <= lcec.0.S19T1_SAW.stat-at-speed
+net spindle-vel-ramp-up => lcec.0.S19T1_SAW.vel-ramp-up
+net spindle-vel-ramp-down => lcec.0.S19T1_SAW.vel-ramp-down
 #net emc-on => lcec.0.S19T1_SAW.srv-err-reset
 

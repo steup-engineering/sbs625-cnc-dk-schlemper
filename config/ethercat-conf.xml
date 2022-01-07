@@ -10,7 +10,8 @@
 	<slave idx="7" type="EL1904" name="P65A8"/>
   <slave idx="8" type="AX5206" name="S13T1_X_C">
     <!-- IMPORTANT: in this case (sync1Cycle = n * sync0Cycle) sync1Cycle must be appTimePeriod - sync0Cycle) -->
-    <initCmds filename="initcmds/13t1_xc_initcmds.xml"/>      
+    <initCmds filename="initcmds/13t1_xc_initcmds.xml"/>
+		<modParam name="enableDiag" value="1"/>	
     <dcConf assignActivate="730" sync0Cycle="250000" sync0Shift="0" sync1Cycle="750000" sync1Shift="0"/>
   </slave>
  <slave idx="9" type="AX5206" name="S15T1_Y_A">
