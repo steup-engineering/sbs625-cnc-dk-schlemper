@@ -1,0 +1,14 @@
+#!/bin/sh
+
+OUTDIR="/home/sascha/linuxcnc/pics"
+CAMURL="http://admin:Softpaul86@192.168.130.60/ISAPI/Streaming/channels/101/picture"
+
+if [ -z "$1" ]; then
+  echo "usage: M106 <pic-no>"
+  exit 1
+fi
+
+PICNO=`echo "$1" | cut -d '.' -f 1`
+
+wget --output-document="$OUTDIR/$PICNO.jpg" "$CAMURL"
+
