@@ -22,7 +22,7 @@
 				<IDN>16</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>0400040033005400</Data>
+				<Data>06000600330054008601</Data>
 			</InitCmd>
 			<InitCmd Fixed="1">
 				<Transition>PS</Transition>

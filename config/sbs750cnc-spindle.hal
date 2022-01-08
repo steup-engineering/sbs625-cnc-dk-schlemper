@@ -28,8 +28,8 @@ net mist-req <= iocontrol.0.coolant-mist
 net spindle-enable	=>	sbs-spindle.enable-in
 net spindle-enable-warmup-out <= sbs-spindle.enable-out
 
-net spindle-cmd		=> sbs-spindle.rmp-in
-net spindle-cmd-warmup-out <= sbs-spindle.rmp-out
+net spindle-cmd-rpm	=> sbs-spindle.rpm-in
+net spindle-cmd-warmup-out <= sbs-spindle.rpm-out
 
 net power-ok	=> sbs-spindle.ctrl-voltage
 
@@ -42,10 +42,15 @@ net spindle-warmed-up <= sbs-spindle.warmed-up
 net spindle-warmup-run <= sbs-spindle.warmup-run
 
 net spindle-mode-switch => sbs-spindle.switch-mode-mill
-net spindle-warmup-lamp <= sbs-spindle.lamp-warm-up
+net spindle-warmup-lamp <= sbs-spindle.lamp-warmup
 
 net spindle-at-speed-request => sbs-spindle.spindle-at-speed-in
 net spindle-at-speed <= sbs-spindle.spindle-at-speed-out
+
+net auto-enable => sbs-spindle.auto-enable
+
+setp sbs-spindle.saw-cool-down-minutes 2
+setp sbs-spindle.mill-cool-down-minutes 5
 
 ###########################################################
 # fan and air control

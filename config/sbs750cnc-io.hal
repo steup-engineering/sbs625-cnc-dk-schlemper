@@ -19,8 +19,8 @@ net ec-all-op <= lcec.all-op
 #
 net joy-x-neg <= lcec.0.P65A2.din-0
 net joy-x-pos <= lcec.0.P65A2.din-1
-net joy-y-pos <= lcec.0.P65A2.din-2
-net joy-y-neg <= lcec.0.P65A2.din-3
+net joy-y-neg <= lcec.0.P65A2.din-2
+net joy-y-pos <= lcec.0.P65A2.din-3
 net joy-z-pos <= lcec.0.P65A2.din-4
 net joy-z-neg <= lcec.0.P65A2.din-5
 
@@ -49,7 +49,7 @@ net override-limits <= lcec.0.P65A8.fsoe-in-0
 net air-ok <= lcec.0.C50A2.din-2
 net water-ok <= lcec.0.C50A2.din-3
 	###net inverters-ready <= lcec.0.C50A2.din-4
-	###net auto-enable <= lcec.0.C50A2.din-5-not
+
 	
 net refrig-err <= lcec.0.C50A2.din-7
 net y-home <= lcec.0.C50A2.din-8
@@ -63,6 +63,9 @@ net y-neg-lim-in <= lcec.0.C50A6.fsoe-in-2-not
 net y-pos-lim-in <= lcec.0.C50A6.fsoe-in-3-not
 
 net power-ok	<= lcec.0.C50A8.fsoe-out-0
+#######
+net auto-enable <= lcec.0.C50A8.fsoe-out-3
+##########
 
 #
 # external unit bridge
@@ -97,8 +100,8 @@ net a-pos-lim-in <= lcec.0.S80A6.fsoe-in-1-not
 net power-ok => lcec.0.P65A4.dout-0
 net error-lamp => lcec.0.P65A4.dout-1
 net horn => lcec.0.P65A4.dout-4
-net error => lcec.0.P65A4.dout-6
-#net emc-auto => lcec.0.P65A4.dout-7
+net error => lcec.0.P65A4.dout-5
+net emc-auto => lcec.0.P65A4.dout-6
 
 net spindle-warmup-lamp => lcec.0.P65A4.dout-7
 #

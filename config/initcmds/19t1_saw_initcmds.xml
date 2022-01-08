@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<EtherCATMailbox>
+	<CoE>
+		<InitCmds>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[clear sm pdos (0x1C12)]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>7186</Index>
+				<SubIndex>0</SubIndex>
+				<Data>00</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[clear sm pdos (0x1C13)]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>7187</Index>
+				<SubIndex>0</SubIndex>
+				<Data>00</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[clear pdo 0x1A00 entries]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6656</Index>
+				<SubIndex>0</SubIndex>
+				<Data>00</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1A00 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6656</Index>
+				<SubIndex>1</SubIndex>
+				<Data>10004160</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1A00 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6656</Index>
+				<SubIndex>2</SubIndex>
+				<Data>10004360</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1A00 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6656</Index>
+				<SubIndex>3</SubIndex>
+				<Data>08006160</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1A00 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6656</Index>
+				<SubIndex>4</SubIndex>
+				<Data>08000000</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1A00 entry count]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6656</Index>
+				<SubIndex>0</SubIndex>
+				<Data>04</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[clear pdo 0x1A01 entries]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6657</Index>
+				<SubIndex>0</SubIndex>
+				<Data>00</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1A01 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6657</Index>
+				<SubIndex>1</SubIndex>
+				<Data>10052130</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1A01 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6657</Index>
+				<SubIndex>2</SubIndex>
+				<Data>10012130</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1A01 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6657</Index>
+				<SubIndex>3</SubIndex>
+				<Data>100f2230</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1A01 entry count]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6657</Index>
+				<SubIndex>0</SubIndex>
+				<Data>03</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[clear pdo 0x1A02 entries]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6658</Index>
+				<SubIndex>0</SubIndex>
+				<Data>00</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[clear pdo 0x1A03 entries]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>6659</Index>
+				<SubIndex>0</SubIndex>
+				<Data>00</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[clear pdo 0x1600 entries]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5632</Index>
+				<SubIndex>0</SubIndex>
+				<Data>00</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1600 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5632</Index>
+				<SubIndex>1</SubIndex>
+				<Data>10004060</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1600 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5632</Index>
+				<SubIndex>2</SubIndex>
+				<Data>10004260</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1600 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5632</Index>
+				<SubIndex>3</SubIndex>
+				<Data>08006060</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1600 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5632</Index>
+				<SubIndex>4</SubIndex>
+				<Data>08000000</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1600 entry count]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5632</Index>
+				<SubIndex>0</SubIndex>
+				<Data>04</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[clear pdo 0x1601 entries]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5633</Index>
+				<SubIndex>0</SubIndex>
+				<Data>00</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1601 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5633</Index>
+				<SubIndex>1</SubIndex>
+				<Data>20005060</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1601 entry]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5633</Index>
+				<SubIndex>2</SubIndex>
+				<Data>20004f60</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1601 entry count]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5633</Index>
+				<SubIndex>0</SubIndex>
+				<Data>02</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[clear pdo 0x1602 entries]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5634</Index>
+				<SubIndex>0</SubIndex>
+				<Data>00</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[clear pdo 0x1603 entries]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>5635</Index>
+				<SubIndex>0</SubIndex>
+				<Data>00</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1C12:01 index]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>7186</Index>
+				<SubIndex>1</SubIndex>
+				<Data>0016</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1C12:02 index]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>7186</Index>
+				<SubIndex>2</SubIndex>
+				<Data>0116</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1C12 count]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>7186</Index>
+				<SubIndex>0</SubIndex>
+				<Data>02</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1C13:01 index]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>7187</Index>
+				<SubIndex>1</SubIndex>
+				<Data>001a</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1C13:02 index]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>7187</Index>
+				<SubIndex>2</SubIndex>
+				<Data>011a</Data>
+			</InitCmd>
+			<InitCmd Fixed="1">
+				<Transition>PS</Transition>
+				<Comment><![CDATA[download pdo 0x1C13 count]]></Comment>
+				<Timeout>0</Timeout>
+				<Ccs>1</Ccs>
+				<Index>7187</Index>
+				<SubIndex>0</SubIndex>
+				<Data>02</Data>
+			</InitCmd>
+		</InitCmds>
+	</CoE>
+</EtherCATMailbox>
+			
