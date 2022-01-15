@@ -35,6 +35,7 @@
 		<modParam name="stdInName" value="err-ack"/>
 		<modParam name="stdOutName" value="fb-err"/>
 		<modParam name="stdOutName" value="com-err"/>
+		<modParam name="stdOutName" value="auto-enable"/>
 		<modParam name="fsoeSlaveIdx" value="7"/>
 		<modParam name="fsoeSlaveIdx" value="6"/>
 		<modParam name="fsoeSlaveIdx" value="18"/>

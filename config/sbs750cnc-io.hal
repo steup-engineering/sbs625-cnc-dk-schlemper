@@ -58,14 +58,12 @@ net toolprobe-sens-err <= lcec.0.C50A2.din-12
 
 net fsoe-com-err <= lcec.0.C50A5.com-err
 net fsoe-fb-err <= lcec.0.C50A5.fb-err
+net auto-enable <= lcec.0.C50A5.auto-enable
 
 net y-neg-lim-in <= lcec.0.C50A6.fsoe-in-2-not
 net y-pos-lim-in <= lcec.0.C50A6.fsoe-in-3-not
 
 net power-ok	<= lcec.0.C50A8.fsoe-out-0
-#######
-net auto-enable <= lcec.0.C50A8.fsoe-out-3
-##########
 
 #
 # external unit bridge
