@@ -28,6 +28,7 @@ pin in bit water_out;
 
 pin in bit error;
 pin out bit error_lamp;
+pin out bit power_ok_lamp;
 
 pin in u32 ec_slaves;
 pin in u32 ec_slaves_responding;
@@ -66,6 +67,7 @@ typedef struct {
   int last_ec_link_up;
   int last_ec_all_op;
   long long error_blink_timer;
+  long long power_lamp_blink_timer;
   long long error_delay_timer;
   long long error_water_timer;
 } sbs_err_data;
@@ -88,6 +90,7 @@ EXTRA_SETUP() {
   data.last_ec_all_op = 1;
 
   data.error_blink_timer = ERROR_BLINK_PERIOD;
+  data.power_lamp_blink_timer = ERROR_BLINK_PERIOD;
   data.error_delay_timer = ERROR_DELAY_PERIOD;
   data.error_water_timer = ERROR_WATER_PERIOD;
 
@@ -113,6 +116,21 @@ FUNCTION(_) {
     data.error_blink_timer = ERROR_BLINK_PERIOD;
     error_lamp = 0;
   }
+
+  // blink power ok lamp
+  if (emc_enable_in && !auto_enable) {
+    if (data.power_lamp_blink_timer >= ERROR_BLINK_PERIOD) {
+      data.power_lamp_blink_timer -= ERROR_BLINK_PERIOD;
+      power_ok_lamp = !power_ok_lamp;
+    } else {
+      data.power_lamp_blink_timer += period;
+    }
+  } else {
+    // power lamp = power ok
+    data.power_lamp_blink_timer = ERROR_BLINK_PERIOD;
+    power_ok_lamp = emc_enable_in;
+  }
+
 
   // check if emc is on
   if (!emc_on) {

@@ -64,7 +64,7 @@ net auto-enable <= lcec.0.C50A5.auto-enable
 net y-neg-lim-in <= lcec.0.C50A6.fsoe-in-2-not
 net y-pos-lim-in <= lcec.0.C50A6.fsoe-in-3-not
 
-net power-ok	<= lcec.0.C50A8.fsoe-out-0
+net power-ok	<= lcec.0.C50A8.fsoe-out-2
 
 #
 # external unit bridge
@@ -96,7 +96,7 @@ net a-pos-lim-in <= lcec.0.S80A6.fsoe-in-1-not
 #
 # control panel
 #
-net power-ok => lcec.0.P65A4.dout-0
+net power-ok-lamp => lcec.0.P65A4.dout-0
 net error-lamp => lcec.0.P65A4.dout-1
 net horn => lcec.0.P65A4.dout-4
 net error => lcec.0.P65A4.dout-5

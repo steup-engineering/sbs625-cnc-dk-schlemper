@@ -221,6 +221,7 @@ net emc-running <= sbs-errors.emc-running
 net emc-on => sbs-errors.emc-on
 net emc-auto => sbs-errors.emc-auto
 
+net power-ok-lamp <= sbs-errors.power-ok-lamp
 net auto-enable => sbs-errors.auto-enable
 net spindle-enable-req => sbs-errors.spindle-enable-in
 net spindle-enable <= sbs-errors.spindle-enable-out
