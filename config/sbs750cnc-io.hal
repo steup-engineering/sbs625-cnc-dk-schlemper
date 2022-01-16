@@ -40,6 +40,7 @@ net pend-key-pos <= lcec.0.P65A3.din-2
 net pend-key-ena <= lcec.0.P65A3.din-3
 
 net estop-panel <= lcec.0.P65A7.fsoe-in-0-not
+net estop-pend	<= lcec.0.P65A7.fsoe-in-2-not
 
 net override-limits <= lcec.0.P65A8.fsoe-in-0
 
@@ -127,7 +128,6 @@ net laser-line-is-on => lcec.0.S80A3.dout-7
 #
 # external unit valve island
 #
-#net matprobe-cyl => lcec.0.pneumax.valve-1
 net vac-pod-pull-right-0 => lcec.0.pneumax.valve-8
 net vac-pod-pull-right-1 => lcec.0.pneumax.valve-2
 net vac-pod-pull-right-2 => lcec.0.pneumax.valve-4
@@ -199,6 +199,7 @@ net x-enable => lcec.0.S13T1_X_C.ch0.srv-enable
 net x-amp-fault <= lcec.0.S13T1_X_C.ch0.srv-fault
 net x-amp-ready <= lcec.0.S13T1_X_C.ch0.srv-enabled
 net x-vel-cmd => lcec.0.S13T1_X_C.ch0.srv-velo-cmd
+net x-diag	<= lcec.0.S13T1_X_C.ch0.srv-diag
 #net emc-on => lcec.0.S13T1_X_C.ch0.srv-err-reset
 
 # Y axis
@@ -207,6 +208,7 @@ net y-enable => lcec.0.S15T1_Y_A.ch0.srv-enable
 net y-amp-fault <= lcec.0.S15T1_Y_A.ch0.srv-fault
 net y-amp-ready <= lcec.0.S15T1_Y_A.ch0.srv-enabled
 net y-vel-cmd => lcec.0.S15T1_Y_A.ch0.srv-velo-cmd
+net y-diag	<= lcec.0.S15T1_Y_A.ch0.srv-diag
 #net emc-on => lcec.0.S15T1_Y_A.ch0.srv-err-reset
 
 # Z axis
@@ -215,6 +217,7 @@ net z-enable => lcec.0.S17T1_Z.srv-enable
 net z-amp-fault <= lcec.0.S17T1_Z.srv-fault
 net z-amp-ready <= lcec.0.S17T1_Z.srv-enabled
 net z-vel-cmd => lcec.0.S17T1_Z.srv-velo-cmd
+net z-diag	<= lcec.0.S17T1_Z.srv-diag
 
 # A axis
 setp lcec.0.S15T1_Y_A.ch1.srv-scale [JOINT_3]SCALE
@@ -223,6 +226,7 @@ net a-amp-fault <= lcec.0.S15T1_Y_A.ch1.srv-fault
 net a-amp-ready <= lcec.0.S15T1_Y_A.ch1.srv-enabled
 net a-vel-cmd => lcec.0.S15T1_Y_A.ch1.srv-velo-cmd
 net a-pos-fb <= lcec.0.S15T1_Y_A.ch1.enc-pos-abs
+net a-diag	<= lcec.0.S15T1_Y_A.ch1.srv-diag
 
 # C axis
 setp lcec.0.S13T1_X_C.ch1.srv-scale [JOINT_4]SCALE
@@ -231,7 +235,7 @@ net c-amp-fault <= lcec.0.S13T1_X_C.ch1.srv-fault
 net c-amp-ready <= lcec.0.S13T1_X_C.ch1.srv-enabled
 net c-vel-cmd => lcec.0.S13T1_X_C.ch1.srv-velo-cmd
 net c-pos-fb <= lcec.0.S13T1_X_C.ch1.enc-pos-abs
-
+#net c-diag	<= lcec.0.S13T1_X_C.ch1.srv-diag
 # spindle
 
 net spindle-enable-warmup-out => lcec.0.S19T1_SAW.enable
@@ -245,5 +249,8 @@ net spindle-rpm-abs <= lcec.0.S19T1_SAW.vel-fb-rpm-abs
 net spindle-at-speed-request <= lcec.0.S19T1_SAW.stat-at-speed
 net spindle-vel-ramp-up => lcec.0.S19T1_SAW.vel-ramp-up
 net spindle-vel-ramp-down => lcec.0.S19T1_SAW.vel-ramp-down
+net spindle-error-code <= lcec.0.S19T1_SAW.error-code
+net spindle-warn-code <= lcec.0.S19T1_SAW.warn-code
+
 #net emc-on => lcec.0.S19T1_SAW.srv-err-reset
 

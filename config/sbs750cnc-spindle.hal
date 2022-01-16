@@ -53,6 +53,41 @@ setp sbs-spindle.saw-cool-down-minutes 2
 setp sbs-spindle.mill-cool-down-minutes 5
 
 ###########################################################
+# spindle config
+###########################################################
+# saw
+setp sbs-spindle.saw-ramp-up-time [SPINDLE]SAW_RAMP_UP_TIME
+setp sbs-spindle.saw-ramp-down-time [SPINDLE]SAW_RAMP_DOWN_TIME
+
+setp sbs-spindle.saw-max-rpm [SPINDLE]SAW_MAX_RPM
+
+setp sbs-spindle.saw-cool-down-minutes [SPINDLE]SAW_COOL_DOWN_MINUTES
+
+
+# mill
+setp sbs-spindle.mill-ramp-up-time [SPINDLE]MILL_RAMP_UP_TIME
+setp sbs-spindle.mill-ramp-down-time [SPINDLE]MILL_RAMP_DOWN_TIME
+
+setp sbs-spindle.mill-max-rpm [SPINDLE]MILL_MAX_RPM
+setp sbs-spindle.mill-min-rpm [SPINDLE]MILL_MIN_RPM
+
+setp sbs-spindle.mill-cool-down-minutes [SPINDLE]MILL_COOL_DOWN_MINUTES
+
+# warmup
+setp sbs-spindle.warmup-stage1-rpm [SPINDLE]WARMUP_STAGE1_RPM
+setp sbs-spindle.warmup-stage1-minutes [SPINDLE]WARMUP_STAGE1_MINUTES
+
+setp sbs-spindle.warmup-stage2-rpm [SPINDLE]WARMUP_STAGE2_RPM
+setp sbs-spindle.warmup-stage2-minutes [SPINDLE]WARMUP_STAGE2_MINUTES
+
+setp sbs-spindle.warmup-stage3-rpm [SPINDLE]WARMUP_STAGE3_RPM
+setp sbs-spindle.warmup-stage3-minutes [SPINDLE]WARMUP_STAGE3_MINUTES
+
+setp sbs-spindle.warmup-stage4-rpm [SPINDLE]WARMUP_STAGE4_RPM
+setp sbs-spindle.warmup-stage4-minutes [SPINDLE]WARMUP_STAGE4_MINUTES
+
+
+###########################################################
 # fan and air control
 ###########################################################
 

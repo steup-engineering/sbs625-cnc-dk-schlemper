@@ -33,10 +33,10 @@ pin out bit spindle_at_speed_out;
 pin out s32 dbg_warmup_state;
 
 //parameter
-param rw u32 saw_ramp_up_time  = 10.0 "accel time in saw mode to max rpm";
-param rw u32 saw_ramp_down_time  = 10.0 "deccel time in saw mode to zero";
-param rw u32 mill_ramp_up_time  = 10.0 "accel time in mill mode to max rpm";
-param rw u32 mill_ramp_down_time  = 10.0 "deccel time in mill mode to zero";
+param rw u32 saw_ramp_up_time  = 10 "accel time in saw mode to max rpm";
+param rw u32 saw_ramp_down_time  = 10 "deccel time in saw mode to zero";
+param rw u32 mill_ramp_up_time  = 10 "accel time in mill mode to max rpm";
+param rw u32 mill_ramp_down_time  = 10 "deccel time in mill mode to zero";
 
 param rw s32 saw_max_rpm  = 3000 "max rpm in saw mode";
 param rw s32 mill_max_rpm = 8000 "max rpm in mill mode";
