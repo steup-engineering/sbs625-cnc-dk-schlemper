@@ -16,8 +16,8 @@ loadrt [KINS]KINEMATICS
 #autoconverted  bridgesawkins
 loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS num_dio=16 
 
-#loadusr -W lcec_conf ethercat-conf.xml
-#loadrt lcec
+loadusr -W lcec_conf ethercat-conf.xml
+loadrt lcec
 
 loadrt sbs_fsoe
 loadrt sbs_jog
@@ -35,7 +35,7 @@ loadrt timedelay names=spindle-fan-dly,spindle-air-dly
 # Functions
 ###########################################################
 
-#addf lcec.read-all servo-thread
+addf lcec.read-all servo-thread
 
 addf sbs-fsoe servo-thread
 addf sbs-probe servo-thread
@@ -65,5 +65,5 @@ addf matprobe-cyl servo-thread
 addf vac-left-cyl servo-thread
 addf vac-right-cyl servo-thread
 
-#addf lcec.write-all servo-thread
+addf lcec.write-all servo-thread
 

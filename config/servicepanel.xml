@@ -401,7 +401,7 @@
 	    		<u32 halpin="spindle-warn-code"/>
 				<tablerow/>
 	    		<label text="Drive Temp"/>
-	    		<u32 halpin="spindle-temp"/>
+	    		<number halpin="spindle-temp"/>
 				<tablerow/>
 	    		<label text="Over Temp"/>
 					<led>
