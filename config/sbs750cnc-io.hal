@@ -114,6 +114,8 @@ net fsoe-err-ack => lcec.0.C50A5.err-ack
 net water-clean => lcec.0.C50A10.dout-1
 net water-main => lcec.0.C50A10.dout-2
 net table-lock-is-on => lcec.0.C50A10.dout-3
+net table-arms-out-up => lcec.0.C50A10.dout-5
+net table-arms-out-down => lcec.0.C50A10.dout-4
 
 #
 # external unit bridge
@@ -241,7 +243,7 @@ net c-diag	<= lcec.0.S13T1_X_C.ch1.srv-diag
 # spindle
 
 net spindle-enable-warmup-out => lcec.0.S19T1_SAW.enable
-net spindle-err <= lcec.0.S19T1_SAW.stat-fault
+#net spindle-err <= lcec.0.S19T1_SAW.stat-fault
 net spindle-ready <= lcec.0.S19T1_SAW.stat-op-enabled
 net spindle-cmd-warmup-out => lcec.0.S19T1_SAW.vel-rpm-cmd
 net spindle-fb <= lcec.0.S19T1_SAW.vel-fb-rpm
