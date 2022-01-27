@@ -86,3 +86,63 @@ net vac-manu-3r <= pyvcp.vac-manu-3r
 
 net error <= axisui.has-notifications
 
+#######Service Panel################
+net x-amp-fault => pyvcp.x-error
+net x-diag => pyvcp.x-err-code
+net x-neg-lim-in => pyvcp.x-limit-neg
+net x-pos-lim-in => pyvcp.x-limit-pos
+net x-home => pyvcp.x-home
+
+net y-amp-fault => pyvcp.y-error
+net y-diag => pyvcp.y-err-code
+net y-neg-lim-in => pyvcp.y-limit-neg
+net y-pos-lim-in => pyvcp.y-limit-pos
+net y-home => pyvcp.y-home
+
+net z-amp-fault => pyvcp.z-error
+net z-diag => pyvcp.z-err-code
+net z-neg-lim-in => pyvcp.z-limit-neg
+net z-pos-lim-in => pyvcp.z-limit-pos
+net z-home => pyvcp.z-home
+
+net a-amp-fault => pyvcp.a-error
+net a-diag => pyvcp.a-err-code
+net a-neg-lim-in => pyvcp.a-limit-neg
+net a-pos-lim-in => pyvcp.a-limit-pos
+
+net c-amp-fault => pyvcp.c-error
+net c-diag => pyvcp.c-err-code
+
+net spindle-err => pyvcp.spindle-fault
+net spindle-error-code => pyvcp.spindle-err-code
+net spindel-warn-code => pyvcp.spindle-warn-code
+net spindle-overtemp => pyvcp.spindle-overtemp
+net spindle-drive-temp => pyvcp.spindle-temp
+
+net vac-pod-left-hp => pyvcp.vac-left-in
+net vac-pod-left-wp => pyvcp.vac-left-out
+net vac-pod-right-hp => pyvcp.vac-right-in
+net vac-pod-right-wp => pyvcp.vac-right-out
+net matprobe-hp => pyvcp.mat-probe-in
+net matprobe-wp => pyvcp.mat-probe-out
+net matprobe-sens => pyvcp.mat-probe
+net toolprobe-sens => pyvcp.tool-probe
+net toolprobe-sens-err => pyvcp.tool-probe-err
+
+net refrig-err => pyvcp.refrig-err
+net lube1-error => pyvcp.lube1-err
+net lube2-error => pyvcp.lube2-err
+
+net fsoe-fb-err => pyvcp.fsoe-fb-err
+net fsoe-com-err => pyvcp.fsoe-com-err
+net power-ok => pyvcp.ctrl-voltage
+net auto-enable => pyvcp.auto-enable
+net door-switch => pyvcp.door-switch
+net estop-panel => pyvcp.estop-panel
+net estop-pend => pyvcp.estop-pend
+net override-limits => pyvcp.override-limits
+net override-door => pyvcp.override-door
+
+
+
+

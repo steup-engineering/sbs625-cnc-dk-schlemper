@@ -610,21 +610,15 @@
 		  		<on_color>"yellow"</on_color>
 		  		<off_color>"red"</off_color>
 				</led>
+			<tablerow/>
+    		<label text="Tool Probe Error"/>
+				<led>
+				  <halpin>"tool-probe-err"</halpin>
+		  		<size>15</size>
+		  		<on_color>"yellow"</on_color>
+		  		<off_color>"red"</off_color>
+				</led>
 			</table>
-			<tabs>
-				<names> ["test1" , "test 2"] </names>
-				<vbox>
-		   		<label>
-		       	<text>"Tool Probe"</text>
-		      </label>
-				</vbox>
-				<vbox>
-		   		<label>
-		       	<text>"Till Probe"</text>
-		      </label>
-				</vbox>
-
-			</tabs>
 		</labelframe>
 		<labelframe text="Safty">
 			<table flexible_rows="[2]" >
@@ -655,7 +649,7 @@
 				<tablerow/>
 	    		<label text="COM-Error"/>
 					<led>
-				    <halpin>"fsoe-com-error"</halpin>
+				    <halpin>"fsoe-com-err"</halpin>
 		  		  <size>15</size>
 		  		  <on_color>"yellow"</on_color>
 		  		  <off_color>"red"</off_color>
@@ -684,6 +678,23 @@
 		  		  <on_color>"yellow"</on_color>
 		  		  <off_color>"red"</off_color>
 					</led>
+				<tablerow/>
+	    		<label text="Override Limits"/>
+					<led>
+				    <halpin>"override-limits"</halpin>
+		  		  <size>15</size>
+		  		  <on_color>"yellow"</on_color>
+		  		  <off_color>"red"</off_color>
+					</led>
+				<tablerow/>
+	    		<label text="Override Door"/>
+					<led>
+				    <halpin>"override-door"</halpin>
+		  		  <size>15</size>
+		  		  <on_color>"yellow"</on_color>
+		  		  <off_color>"red"</off_color>
+					</led>
+
 			</table>
 		</labelframe>
 		<labelframe text="Diag">
@@ -691,7 +702,7 @@
 				<tablerow/>
 	    		<label text="Refrig-Error"/>
 					<led>
-				    <halpin>"refrigg-err"</halpin>
+				    <halpin>"refrig-err"</halpin>
 		  		  <size>15</size>
 		  		  <on_color>"yellow"</on_color>
 		  		  <off_color>"red"</off_color>

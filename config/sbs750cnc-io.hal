@@ -43,6 +43,7 @@ net estop-panel <= lcec.0.P65A7.fsoe-in-0-not
 net estop-pend	<= lcec.0.P65A7.fsoe-in-2-not
 
 net override-limits <= lcec.0.P65A8.fsoe-in-0
+net override-door <= lcec.0.P65A8.fsoe-in-1
 
 #
 # main cabinet
@@ -61,6 +62,7 @@ net fsoe-com-err <= lcec.0.C50A5.com-err
 net fsoe-fb-err <= lcec.0.C50A5.fb-err
 net auto-enable <= lcec.0.C50A5.auto-enable
 
+net door-switch <= lcec.0.C50A6.fsoe-in-0-not
 net y-neg-lim-in <= lcec.0.C50A6.fsoe-in-2-not
 net y-pos-lim-in <= lcec.0.C50A6.fsoe-in-3-not
 
@@ -235,7 +237,7 @@ net c-amp-fault <= lcec.0.S13T1_X_C.ch1.srv-fault
 net c-amp-ready <= lcec.0.S13T1_X_C.ch1.srv-enabled
 net c-vel-cmd => lcec.0.S13T1_X_C.ch1.srv-velo-cmd
 net c-pos-fb <= lcec.0.S13T1_X_C.ch1.enc-pos-abs
-#net c-diag	<= lcec.0.S13T1_X_C.ch1.srv-diag
+net c-diag	<= lcec.0.S13T1_X_C.ch1.srv-diag
 # spindle
 
 net spindle-enable-warmup-out => lcec.0.S19T1_SAW.enable
