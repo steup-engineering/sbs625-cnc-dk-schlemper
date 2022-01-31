@@ -25,6 +25,7 @@ pin in bit ps_pot_err;
 pin in bit air_ok;
 pin in bit water_ok;
 pin in bit water_out;
+pin in u32 spindle_error_code;
 
 pin in bit error;
 pin out bit error_lamp;
@@ -49,6 +50,7 @@ function _;
 #define ERROR_BLINK_PERIOD 500000000LL
 #define ERROR_DELAY_PERIOD 50000000LL
 #define ERROR_WATER_PERIOD 3000000000LL
+#define SPINDLE_ERROR_STO  76
 
 typedef struct {
   int last_estop_panel;
@@ -180,7 +182,7 @@ FUNCTION(_) {
   }
   data.last_lube2_err = lube2_err;
 
-  if (spindle_err) {
+  if (spindle_err && spindle_error_code != SPINDLE_ERROR_STO) {
     emc_enable_out = 0;
     if (!data.last_spindle_err) {
       rtapi_print_msg(RTAPI_MSG_ERR, "Spindle drive error!\n");

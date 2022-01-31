@@ -1,5 +1,5 @@
 
-COMP = ../../../build/linuxcnc/bin/halcompile --compile --userspace
+COMP = halcompile --compile --userspace
 
 all: M100 M101 M102 M103 M104 M105
 

@@ -84,6 +84,8 @@ function _;
 #define PROBE_CYL_TIMEOUT 10000000000LL
 #define VAC_CYL_TIMEOUT 5000000000LL
 
+#define DEBOUNCE_TIMEOUT 100000000LL
+
 typedef struct {
   int32_t last_req;
 
@@ -129,7 +131,7 @@ void handle_vac(long long period, vac_data *vac, hal_s32_t req, hal_bit_t cyl_up
     // check down only once, since it will get low on touch of vacuum pod
     if (cyl_down || vac->ack) {
       vac->ack = 1;
-      vac->cyl_on_timer = 0;
+      vac->cyl_on_timer = DEBOUNCE_TIMEOUT;
     } else {
       if (vac->cyl_on_timer > 0) {
         vac->cyl_on_timer -= period;
@@ -143,7 +145,7 @@ void handle_vac(long long period, vac_data *vac, hal_s32_t req, hal_bit_t cyl_up
 
     if (cyl_up) {
       vac->ack = 0;
-      vac->cyl_off_timer = 0;
+      vac->cyl_off_timer = DEBOUNCE_TIMEOUT;
     } else {
       if (vac->cyl_off_timer > 0) {
         vac->cyl_off_timer -= period;
@@ -255,7 +257,7 @@ FUNCTION(_) {
 
     if (matprobe_cyl_down) {
       matprobe_ack = 1;
-      data.matprobe_cyl_on_timer = 0;
+      data.matprobe_cyl_on_timer = DEBOUNCE_TIMEOUT;
     } else {
       if (data.matprobe_cyl_on_timer > 0) {
         data.matprobe_cyl_on_timer -= period;
@@ -269,7 +271,7 @@ FUNCTION(_) {
 
     if (matprobe_cyl_up) {
       matprobe_ack = 0;
-      data.matprobe_cyl_off_timer = 0;
+      data.matprobe_cyl_off_timer = DEBOUNCE_TIMEOUT;
     } else {
       if (data.matprobe_cyl_off_timer > 0) {
         data.matprobe_cyl_off_timer -= period;

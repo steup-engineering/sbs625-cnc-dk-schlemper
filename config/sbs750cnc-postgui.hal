@@ -23,6 +23,8 @@ net mancut-right <= pyvcp.mancut-right
 net toolprobe-blade <= pyvcp.toolprobe-blade
 net toolprobe-mill <= pyvcp.toolprobe-mill
 
+net cam-snapshot <= pyvcp.cam-snapshot
+
 net laser-cross-on <= pyvcp.laser-cross-on
 net laser-cross-off <= pyvcp.laser-cross-off
 net laser-cross-is-on => pyvcp.laser-cross-is-on
@@ -42,9 +44,6 @@ net table-touch-y <= pyvcp.table-touch-y
 net table-arms-on <= pyvcp.table-arms-on
 net table-arms-off <= pyvcp.table-arms-off
 net table-arms-is-on => pyvcp.table-arms-is-on
-net table-magnet-on <= pyvcp.table-magnet-on
-net table-magnet-off <= pyvcp.table-magnet-off
-net table-magnet-is-on => pyvcp.table-magnet-is-on
 net table-lock-on <= pyvcp.table-lock-on
 net table-lock-off <= pyvcp.table-lock-off
 net table-lock-is-on => pyvcp.table-lock-is-on
@@ -120,11 +119,11 @@ net spindle-overtemp => pyvcp.spindle-overtemp
 net spindle-drive-temp => pyvcp.spindle-temp
 
 net vac-pod-left-hp => pyvcp.vac-left-in
-net vac-pod-left-wp => pyvcp.vac-left-out
+net vac-pod-left-ap => pyvcp.vac-left-out
 net vac-pod-right-hp => pyvcp.vac-right-in
-net vac-pod-right-wp => pyvcp.vac-right-out
+net vac-pod-right-ap => pyvcp.vac-right-out
 net matprobe-hp => pyvcp.mat-probe-in
-net matprobe-wp => pyvcp.mat-probe-out
+net matprobe-ap => pyvcp.mat-probe-out
 net matprobe-sens => pyvcp.mat-probe
 net toolprobe-sens => pyvcp.tool-probe
 net toolprobe-sens-err => pyvcp.tool-probe-err

@@ -3,7 +3,7 @@
 	<tabs>
 		<names> ["Work" , "Service"] </names>
   <vbox>
-    <labelframe text="Säge">
+    <labelframe text="Spindel">
       <label text="Motordrehzahl UPM"/>
       <bar>
         <halpin>"spindle-rpm"</halpin>
@@ -31,6 +31,7 @@
         <halpin>"water-disable"</halpin>
         <text>"Wasser aus"</text>
       </checkbutton>
+
     </labelframe>
     <labelframe text="Tisch">
       <table>
@@ -53,25 +54,7 @@
             <text>"ab"</text>
           </button>
         <tablerow/>
-          <label text="Haltemagnet:"/>
-          <button>
-            <width>2</width>
-            <halpin>"table-magnet-on"</halpin>
-            <text>"ein"</text>
-          </button>
-           <led>
-             <halpin>"table-magnet-is-on"</halpin>
-             <size>20</size>
-             <on_color>"red"</on_color>
-             <off_color>"gray"</off_color>
-          </led>
-          <button>
-            <width>2</width>
-            <halpin>"table-magnet-off"</halpin>
-            <text>"aus"</text>
-          </button>
-        <tablerow/>
-          <label text="Raste:"/>
+          <label text="Tischanschlag:"/>
           <button>
             <width>2</width>
             <halpin>"table-lock-on"</halpin>
@@ -169,6 +152,13 @@
       </hbox>
       <hbox>
         <button>
+          <width>14</width>
+          <halpin>"cam-snapshot"</halpin>
+          <text>"Aufnahmen Kamera"</text>
+        </button>
+      </hbox>
+      <hbox>
+        <button>
           <width>4</width>
           <halpin>"mancut-left"</halpin>
           <text><![CDATA["<<--"]]></text>
@@ -202,27 +192,6 @@
       <table>
         <tablerow/>
           <checkbutton>
-            <halpin>"vac-manu-0l"</halpin>
-            <text>"1L"</text>
-          </checkbutton>
-          <label text="1L"/>
-          <label text=" # "/>
-          <label text="1R"/>
-          <checkbutton>
-            <halpin>"vac-manu-0r"</halpin>
-            <text>"1R"</text>
-          </checkbutton>
-        <tablerow/>
-          <label text="1L"/>
-          <label text="1L"/>
-          <label text=" # "/>
-          <label text="2R"/>
-          <checkbutton>
-            <halpin>"vac-manu-1r"</halpin>
-            <text>"2R"</text>
-          </checkbutton>
-        <tablerow/>
-          <checkbutton>
             <halpin>"vac-manu-1l"</halpin>
             <text>"2L"</text>
           </checkbutton>
@@ -238,6 +207,27 @@
           <checkbutton>
             <halpin>"vac-manu-3r"</halpin>
             <text>"4R"</text>
+          </checkbutton>
+        <tablerow/>
+          <label text="1L"/>
+          <label text="1L"/>
+          <label text=" # "/>
+          <label text="2R"/>
+          <checkbutton>
+            <halpin>"vac-manu-1r"</halpin>
+            <text>"2R"</text>
+          </checkbutton>
+        <tablerow/>
+          <checkbutton>
+            <halpin>"vac-manu-0l"</halpin>
+            <text>"1L"</text>
+          </checkbutton>
+          <label text="1L"/>
+          <label text=" # "/>
+          <label text="1R"/>
+          <checkbutton>
+            <halpin>"vac-manu-0r"</halpin>
+            <text>"1R"</text>
           </checkbutton>
       </table>
     </labelframe>
@@ -429,7 +419,7 @@
 		  		  <on_color>"yellow"</on_color>
 		  		  <off_color>"red"</off_color>
 					</led>
-					<u32 halpin="x-err-code"/>
+					<u32 halpin="x-err-code" format="8x"/>
 					<led>
 				    <halpin>"x-limit-pos"</halpin>
 		  		  <size>15</size>
@@ -450,7 +440,7 @@
 		  		  <on_color>"yellow"</on_color>
 		  		  <off_color>"red"</off_color>
 					</led>
-					<u32 halpin="y-err-code"/>
+					<u32 halpin="y-err-code" format="8x"/>
 					<led>
 				    <halpin>"y-limit-pos"</halpin>
 		  		  <size>15</size>
@@ -471,7 +461,7 @@
 		  		  <on_color>"yellow"</on_color>
 		  		  <off_color>"red"</off_color>
 					</led>
-					<u32 halpin="z-err-code"/>
+					<u32 halpin="z-err-code" format="8x"/>
 					<led>
 				    <halpin>"z-limit-pos"</halpin>
 		  		  <size>15</size>
@@ -492,7 +482,7 @@
 		  		  <on_color>"yellow"</on_color>
 		  		  <off_color>"red"</off_color>
 					</led>
-					<u32 halpin="a-err-code"/>
+					<u32 halpin="a-err-code" format="8x"/>
 					<led>
 				    <halpin>"a-limit-pos"</halpin>
 		  		  <size>15</size>
@@ -513,7 +503,7 @@
 		  		  <on_color>"yellow"</on_color>
 		  		  <off_color>"red"</off_color>
 					</led>
-					<u32 halpin="c-err-code"/>
+					<u32 halpin="c-err-code" format="8x"/>
 			</table>			
     </labelframe>
 		<labelframe text="Sensors">

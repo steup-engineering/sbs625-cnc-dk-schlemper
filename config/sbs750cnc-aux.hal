@@ -208,6 +208,7 @@ net vac-manu-pickup => halui.mdi-command-22
 net vac-manu-release => halui.mdi-command-23
 net mancut-left => halui.mdi-command-24
 net mancut-right => halui.mdi-command-25
+net cam-snapshot => halui.mdi-command-26
 
 net mancut-stop => halui.program.stop
 
@@ -230,6 +231,7 @@ net estop-panel => sbs-errors.estop-panel
 net lube1-err => sbs-errors.lube1-err
 net lube2-err => sbs-errors.lube2-err
 net spindle-err => sbs-errors.spindle-err
+net spindle-error-code => sbs-errors.spindle-error-code
 net ps-pot-err => sbs-errors.ps-pot-err
 
 net air-ok => sbs-errors.air-ok
@@ -401,10 +403,6 @@ net table-arms-off => sbs-aux.table-arms-off
 net table-arms-is-on <= sbs-aux.table-arms-is-on
 net table-arms-out-up <= sbs-aux.table-arms-out-up
 net table-arms-out-down <= sbs-aux.table-arms-out-down
-net table-magnet-on => sbs-aux.table-magnet-on
-net table-magnet-off => sbs-aux.table-magnet-off
-net table-magnet-is-on <= sbs-aux.table-magnet-is-on
-net table-magnet-out <= sbs-aux.table-magnet-out
 net table-lock-on => sbs-aux.table-lock-on
 net table-lock-off => sbs-aux.table-lock-off
 net table-lock-is-on <= sbs-aux.table-lock-is-on

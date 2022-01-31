@@ -28,6 +28,8 @@ loadrt sbs_spindle
 loadrt lube_flexxpump names=lube1,lube2
 loadrt valve1to2way names=matprobe-cyl,vac-left-cyl,vac-right-cyl
 
+loadrt posdiff names=y-posdiff
+
 loadrt pid names=x-pid,y-pid,z-pid,a-pid,c-pid 
 loadrt timedelay names=spindle-fan-dly,spindle-air-dly
 
@@ -64,6 +66,8 @@ addf sbs-spindle servo-thread
 addf matprobe-cyl servo-thread
 addf vac-left-cyl servo-thread
 addf vac-right-cyl servo-thread
+
+addf y-posdiff servo-thread
 
 addf lcec.write-all servo-thread
 

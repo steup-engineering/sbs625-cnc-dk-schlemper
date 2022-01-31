@@ -79,7 +79,7 @@ net vac-pod-right-ap <= lcec.0.S80A2.din-6
 net vac-pod-right-hp <= lcec.0.S80A2.din-7
 net matprobe-hp <= lcec.0.S80A2.din-9
 net matprobe-ap <= lcec.0.S80A2.din-8
-net matprobe-sens <= lcec.0.S80A2.din-11-not
+net matprobe-sens <= lcec.0.S80A2.din-11
 net z-home <= lcec.0.S80A2.din-12
 net x-home <= lcec.0.S80A2.din-13
 
@@ -181,8 +181,8 @@ net x-pos-fb <= lcec.0.S80A4.enc-0-pos
 
 # Y axis
 setp lcec.0.C50A4.enc-0-pos-scale [JOINT_1]ENC_SCALE
-net y-pos-fb <= lcec.0.C50A4.enc-0-pos
-#net y-pos-fb <= lcec.0.S14T1.srv-pos-fb
+net y-pos-fb-enc <= lcec.0.C50A4.enc-0-pos
+net y-pos-fb <= lcec.0.S15T1_Y_A.ch0.enc-pos
 
 # Z axis
 setp lcec.0.S80A4.enc-1-pos-scale [JOINT_2]ENC_SCALE
@@ -243,7 +243,7 @@ net c-diag	<= lcec.0.S13T1_X_C.ch1.srv-diag
 # spindle
 
 net spindle-enable-warmup-out => lcec.0.S19T1_SAW.enable
-#net spindle-err <= lcec.0.S19T1_SAW.stat-fault
+net spindle-err <= lcec.0.S19T1_SAW.stat-fault
 net spindle-ready <= lcec.0.S19T1_SAW.stat-op-enabled
 net spindle-cmd-warmup-out => lcec.0.S19T1_SAW.vel-rpm-cmd
 net spindle-fb <= lcec.0.S19T1_SAW.vel-fb-rpm

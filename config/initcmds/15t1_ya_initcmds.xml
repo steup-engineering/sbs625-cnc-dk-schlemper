@@ -1089,7 +1089,7 @@
 				<IDN>100</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>64000000</Data>
+				<Data>50000000</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>

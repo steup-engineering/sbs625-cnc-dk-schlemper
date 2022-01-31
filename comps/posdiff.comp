@@ -1,0 +1,32 @@
+component posdiff "position difference calulator";
+
+author "Sascha Ittner";
+license "GPL";
+
+pin in bit emc_on;
+
+pin in float fb_mot;
+pin in float fb_ext;
+
+pin out float error;
+
+variable double ref_mot = 0.0;
+variable double ref_ext = 0.0;
+
+function _;
+
+;;
+
+#define sec_to_nano(x) ((int64_t) (x * 1e9))
+
+FUNCTION(_) {
+  if (! emc_on) {
+    ref_mot = fb_mot;
+    ref_ext = fb_ext;
+    error = 0.0;
+    return;
+  }
+
+  error = (fb_ext - ref_ext) - (fb_mot - ref_mot);
+}
+

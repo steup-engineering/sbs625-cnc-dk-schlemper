@@ -1,7 +1,7 @@
 #!/bin/sh
 
-OUTDIR="/home/sascha/linuxcnc/pics"
-CAMURL="http://admin:Softpaul86@192.168.130.60/ISAPI/Streaming/channels/101/picture"
+OUTDIR="/home/linuxcnc/linuxcnc/pics"
+CAMURL="http://admin:NHxdZ5iZA36pAFv@192.168.2.12/ISAPI/Streaming/channels/101/picture"
 
 if [ -z "$1" ]; then
   echo "usage: M106 <pic-no>"

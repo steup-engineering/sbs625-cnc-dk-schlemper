@@ -1,0 +1,27 @@
+o<cam-snapshot> sub
+  G53 G0 Z0
+
+  G53 G0 X1000 Y-200
+  G4 P1.0
+  M106 P1
+
+  G53 G0 X2000 Y-200
+  G4 P1.0
+  M106 P2
+
+  G53 G0 X3000 Y-200
+  G4 P1.0
+  M106 P3
+
+  G53 G0 X3000 Y-1700
+  G4 P1.0
+  M106 P6
+
+  G53 G0 X2000 Y-1700
+  G4 P1.0
+  M106 P5
+
+  G53 G0 X1000 Y-1700
+  G4 P1.0
+  M106 P4
+o<cam-snapshot> endsub

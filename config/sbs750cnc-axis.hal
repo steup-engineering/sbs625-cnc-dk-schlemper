@@ -62,6 +62,11 @@ net y-pos-joint <= joint.1.pos-fb
 net y-homed <= joint.1.homed
 net y-homing <= joint.1.homing
 
+net emc-on => y-posdiff.emc-on
+net y-pos-fb-enc => y-posdiff.fb-ext
+net y-pos-fb => y-posdiff.fb-mot
+
+
 ###########################################################
 # Z axis
 ###########################################################
