@@ -12,7 +12,7 @@ o<touch-line-x> sub
     m2
   o<l01> endif
   o<l02> if [ABS[#<pos_c> - #<TOUCH_C_OFFSET>] GT #<EPSILON>]
-    (MSG, _{C must be at 270 for touchoff})
+    (MSG, _{C must be at 90 for touchoff})
     m2
   o<l02> endif
 

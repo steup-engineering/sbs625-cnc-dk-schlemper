@@ -22,7 +22,7 @@ o<touch-cross-x> sub
     #<CROSS_OFFSET_Y> = #2014
   o<l03> endif
   o<l10> if [#<CROSS_OFFSET_X> EQ 0.0 AND #<CROSS_OFFSET_Y> EQ 0.0]
-    (MSG, _{C must be at 0 or 270 for touchoff})
+    (MSG, _{C must be at 0 or 90 for touchoff})
     m2
   o<l10> endif
 
