@@ -85,8 +85,8 @@ net x-home <= lcec.0.S80A2.din-13
 
 net x-neg-lim-in <= lcec.0.S80A5.fsoe-in-0-not
 net x-pos-lim-in <= lcec.0.S80A5.fsoe-in-1-not
-net z-neg-lim-in <= lcec.0.S80A5.fsoe-in-2-not
-net z-pos-lim-in <= lcec.0.S80A5.fsoe-in-3-not
+net z-pos-lim-in <= lcec.0.S80A5.fsoe-in-2-not
+net z-neg-lim-in <= lcec.0.S80A5.fsoe-in-3-not
 
 net a-neg-lim-in <= lcec.0.S80A6.fsoe-in-0-not
 net a-pos-lim-in <= lcec.0.S80A6.fsoe-in-1-not
