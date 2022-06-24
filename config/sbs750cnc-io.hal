@@ -240,8 +240,9 @@ net c-amp-ready <= lcec.0.S13T1_X_C.ch1.srv-enabled
 net c-vel-cmd => lcec.0.S13T1_X_C.ch1.srv-velo-cmd
 net c-pos-fb <= lcec.0.S13T1_X_C.ch1.enc-pos-abs
 net c-diag	<= lcec.0.S13T1_X_C.ch1.srv-diag
-# spindle
 
+# spindle
+setp lcec.0.S19T1_SAW.vel-scale [SPINDLE]SCALE
 net spindle-enable-warmup-out => lcec.0.S19T1_SAW.enable
 net spindle-err <= lcec.0.S19T1_SAW.stat-fault
 net spindle-ready <= lcec.0.S19T1_SAW.stat-op-enabled
