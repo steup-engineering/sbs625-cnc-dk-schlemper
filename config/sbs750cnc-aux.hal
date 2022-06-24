@@ -409,10 +409,11 @@ net table-lock-is-on <= sbs-aux.table-lock-is-on
 
 net water-disable => sbs-aux.water-disable
 net water-req => sbs-aux.water-req
-net water-main <= sbs-aux.water-main
-net water-out <= sbs-aux.water-out
 net mist-req => sbs-aux.mist-req
+
+net water-out <= sbs-aux.water-out
 net mist-out <= sbs-aux.mist-out
+
 net water-clean-req => sbs-aux.clean-req
 net water-clean <= sbs-aux.clean-out
 

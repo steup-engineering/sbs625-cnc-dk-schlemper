@@ -69,7 +69,6 @@ pin in bit water_req;
 pin in bit mist_req;
 pin in bit clean_req;
 pin in bit water_disable;
-pin out bit water_main;
 pin out bit water_out;
 pin out bit mist_out;
 pin out bit clean_out;
@@ -169,7 +168,6 @@ FUNCTION(_) {
   }
 
   // disable outputs
-  water_main = 0;
   water_out = 0;
   mist_out = 0;
   clean_out = 0;
@@ -265,8 +263,7 @@ FUNCTION(_) {
 
   // water
   if (!water_disable) {
-    water_main = (water_req || mist_req || clean_req);
-    water_out = water_req;
+    water_out = water_req || clean_req;
     mist_out = mist_req;
     clean_out = clean_req;
   }
