@@ -25,13 +25,15 @@ o<vac-pod-pick> sub
   #<VAC_PUSH_DELAY> = #2039
   #<VAC_PULL_DELAY> = #2040
   #<VAC_RELEASE_DELAY> = #2041
-  #<VAC_CLEAN_DIST_X> = #2042
-  #<VAC_CLEAN_DIST_Y> = #2043
   #<VAC_CLEAN_FEED> = #2044
   #<VAC_PICK_DIST> = #2046
   #<VAC_SAFE_DIST> = #2047
   #<VAC_SAFE_FEED> = #2048
   #<VAC_TOUCH_REF> = #2049
+  #<VAC_CLEAN_OFFSET_Y> = #2050
+  #<VAC_CLEAN_DIST_Y> = #2051
+  #<VAC_CLEAN_OFFSET_X_LEFT> = #2052
+  #<VAC_CLEAN_OFFSET_X_RIGHT> = #2053
 
   ( check if ack is alredy active )
   M66 P1
@@ -47,6 +49,37 @@ o<vac-pod-pick> sub
   #<pick_y> = #5421
   #<pick_z> = #5422
 
+  ( disable push and pull outputs)
+  M65 P1
+  M65 P2
+
+  ( move to pickup position )
+  G0 X[#<pick_x>] Y[#<pick_y> + #<VAC_CLEAN_OFFSET_Y>]
+
+  ( activate cleaning water)
+  M64 P0
+
+  ( cleaning move )
+  F#<VAC_CLEAN_FEED>
+  o<l21> if [#<mask_left> GT 0.0 AND #<mask_right> LE 0.0]
+    G0 X[#<pick_x> + #<VAC_CLEAN_OFFSET_X_LEFT>]
+    G1 Y[#<pick_y> + #<VAC_CLEAN_OFFSET_Y> + #<VAC_CLEAN_DIST_Y>]
+  o<l21> endif
+  o<l22> if [#<mask_left> LE 0.0 AND #<mask_right> GT 0.0]
+    G0 X[#<pick_x> + #<VAC_CLEAN_OFFSET_X_RIGHT>]
+    G1 Y[#<pick_y> + #<VAC_CLEAN_OFFSET_Y> + #<VAC_CLEAN_DIST_Y>]
+  o<l22> endif
+  o<l23> if [#<mask_left> GT 0.0 AND #<mask_right> GT 0.0]
+    G0 X[#<pick_x> + #<VAC_CLEAN_OFFSET_X_LEFT>]
+    G1 Y[#<pick_y> + #<VAC_CLEAN_OFFSET_Y> + #<VAC_CLEAN_DIST_Y>]
+    G0 X[#<pick_x> + #<VAC_CLEAN_OFFSET_X_RIGHT>]
+    G1 Y[#<pick_y> + #<VAC_CLEAN_OFFSET_Y>]
+  o<l23> endif
+  G0 X#<pick_x> Y#<pick_y>
+
+  ( deactivate cleaning water)
+  M65 P0
+
   ( move to save Z )
   #<safe_z> = [#<ref_z> + #<VAC_TOUCH_OFFSET>]
   o<l01> if [#<safe_z> GT 0.0]
@@ -54,30 +87,8 @@ o<vac-pod-pick> sub
   o<l01> endif
   G53 G0 Z[#<safe_z>]
 
-  ( move to pickup position )
-  G0 X[#<pick_x>] Y[#<pick_y> + #<VAC_CLEAN_DIST_Y>]
-
   ( activate cylinder )
   M104 P#<mask_left> Q#<mask_right>
-
-  ( disable push and pull outputs)
-  M65 P1
-  M65 P2
-
-  ( activate cleaning water)
-  M64 P0
-
-  ( cleaning move )
-  F#<VAC_CLEAN_FEED>
-  G1 X[#<pick_x> + #<VAC_CLEAN_DIST_X>] Y[#<pick_y> + #<VAC_CLEAN_DIST_Y>]
-  G1 X[#<pick_x> + #<VAC_CLEAN_DIST_X>] Y[#<pick_y> - #<VAC_CLEAN_DIST_Y>]
-  G1 X[#<pick_x> - #<VAC_CLEAN_DIST_X>] Y[#<pick_y> - #<VAC_CLEAN_DIST_Y>]
-  G1 X[#<pick_x> - #<VAC_CLEAN_DIST_X>] Y[#<pick_y> + #<VAC_CLEAN_DIST_Y>]
-  G1 X[#<pick_x>] Y[#<pick_y> + #<VAC_CLEAN_DIST_Y>]
-  G0 X#<pick_x> Y#<pick_y>
-
-  ( deactivate cleaning water)
-  M65 P0
 
   ( activate air cleaning )
   M64 P1

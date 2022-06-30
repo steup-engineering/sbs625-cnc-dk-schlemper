@@ -7,13 +7,15 @@ o<vac-pod-release> sub
   #<VAC_PUSH_DELAY> = #2039
   #<VAC_PULL_DELAY> = #2040
   #<VAC_RELEASE_DELAY> = #2041
-  #<VAC_CLEAN_DIST_X> = #2042
-  #<VAC_CLEAN_DIST_Y> = #2043
   #<VAC_CLEAN_FEED> = #2044
   #<VAC_PICK_DIST> = #2046
   #<VAC_SAFE_DIST> = #2047
   #<VAC_SAFE_FEED> = #2048
   #<VAC_TOUCH_REF> = #2049
+  #<VAC_CLEAN_OFFSET_Y> = #2050
+  #<VAC_CLEAN_DIST_Y> = #2051
+  #<VAC_CLEAN_OFFSET_X_LEFT> = #2052
+  #<VAC_CLEAN_OFFSET_X_RIGHT> = #2053
 
   ( check if ack is really active )
   M66 P1
