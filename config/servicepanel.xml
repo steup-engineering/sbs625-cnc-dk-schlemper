@@ -609,6 +609,11 @@
 		  		<off_color>"red"</off_color>
 				</led>
 			</table>
+            <button>
+              <width>6</width>
+              <halpin>"vac-manu-reset"</halpin>
+              <text>"Vacuum reset"</text>
+            </button>
 		</labelframe>
 		<labelframe text="Safty">
 			<table flexible_rows="[2]" >
@@ -709,14 +714,6 @@
 	    		<label text="Lube2-Error"/>
 					<led>
 				    <halpin>"lube2-err"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="XXXX"/>
-					<led>
-				    <halpin>"xxxx-error"</halpin>
 		  		  <size>15</size>
 		  		  <on_color>"yellow"</on_color>
 		  		  <off_color>"red"</off_color>

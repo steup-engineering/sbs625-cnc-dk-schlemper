@@ -1,0 +1,18 @@
+o<vac-pod-reset> sub
+  ( deactivate mist/flood water)
+  M9
+
+  ( deactivate cleaning water)
+  M65 P0
+
+  ( deactivate pushing )
+  M65 P1
+
+  ( deactivate vacuum )
+  M65 P2
+
+  ( deactivate cylinder )
+  M104 P0 Q0
+
+o<vac-pod-reset> endsub
+

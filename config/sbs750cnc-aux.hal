@@ -209,6 +209,7 @@ net vac-manu-release => halui.mdi-command-23
 net mancut-left => halui.mdi-command-24
 net mancut-right => halui.mdi-command-25
 net cam-snapshot => halui.mdi-command-26
+net vac-manu-reset => halui.mdi-command-27
 
 net mancut-stop => halui.program.stop
 
