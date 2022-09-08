@@ -429,7 +429,7 @@
 				<IDN>207</IDN>
 				<Elements>64</Elements>
 				<Attribute>0</Attribute>
-				<Data>2800</Data>
+				<Data>7800</Data>
 			</InitCmd>
 			<InitCmd>
 				<Transition>PS</Transition>
