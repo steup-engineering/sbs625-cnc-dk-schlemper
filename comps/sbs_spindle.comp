@@ -39,8 +39,11 @@ param rw u32 mill_ramp_up_time  = 10 "accel time in mill mode to max rpm";
 param rw u32 mill_ramp_down_time  = 10 "deccel time in mill mode to zero";
 
 param rw s32 saw_max_rpm  = 3000 "max rpm in saw mode";
+param rw s32 saw_min_rpm  = 0    "min rpm in saw mode";
 param rw s32 mill_max_rpm = 8000 "max rpm in mill mode";
-param rw s32 mill_min_rpm = 0 "max rpm in mill mode";
+param rw s32 mill_min_rpm = 0 "min rpm in mill mode";
+
+param rw bit mill_rpm_invert = 0 "invert rpm for mill mode";
 
 param rw u32 saw_cool_down_minutes = 60 "standby time in saw mode till new warmup, minutes";
 param rw u32 mill_cool_down_minutes = 30 "standby time in mill mode till new warmup, minutes";
@@ -226,6 +229,10 @@ FUNCTION(_) {
 
   }
 
+  if (warmup_run && mode_mill && mill_rpm_invert) {
+    rpm_out = rpm_out * -1;
+  }
+
   if (!enable_in) {
     rpm_out = 0; 
     warmup_state = WARMUP_INIT;
@@ -263,18 +270,27 @@ FUNCTION(_) {
   }
   
   if (mode_mill) {
-    if (rpm_out >= mill_max_rpm) {
-      rpm_out = mill_max_rpm;
-    }    
-    if (rpm_out <= mill_min_rpm) {
-      rpm_out = mill_min_rpm;
-    } 
+    if (mill_rpm_invert) {
+      if (rpm_out <= mill_max_rpm) {
+        rpm_out = mill_max_rpm;
+      }    
+      if (rpm_out >= mill_min_rpm) {
+        rpm_out = mill_min_rpm;
+      }
+    } else {
+      if (rpm_out >= mill_max_rpm) {
+        rpm_out = mill_max_rpm;
+      }    
+      if (rpm_out <= mill_min_rpm) {
+        rpm_out = mill_min_rpm;
+      } 
+    }
   } else {
     if (rpm_out >= saw_max_rpm) {
       rpm_out = saw_max_rpm;
     }    
-    if (rpm_out < 0 ) {
-      rpm_out = 0;
+    if (rpm_out <= saw_min_rpm) {
+      rpm_out = saw_min_rpm;
     }
   }  
 
