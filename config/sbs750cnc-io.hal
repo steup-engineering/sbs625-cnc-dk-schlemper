@@ -67,7 +67,7 @@ net y-neg-lim-in <= lcec.0.C50A6.fsoe-in-2-not
 net y-pos-lim-in <= lcec.0.C50A6.fsoe-in-3-not
 
 net power-ok	<= lcec.0.C50A8.fsoe-out-2
-
+net sto-ax      <= lcec.0.C50A8.fsoe-out-3
 #
 # external unit bridge
 #

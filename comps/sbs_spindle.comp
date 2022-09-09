@@ -126,9 +126,11 @@ FUNCTION(_) {
   }
   if (cool_down_timer > mill_cool_down_minutes) {
     warmed_up_mill = 0; 
+    cool_down_timer = 0;
   }
   if (cool_down_timer > saw_cool_down_minutes) {
     warmed_up_saw = 0; 
+    cool_down_timer = 0;
   }
 
 
