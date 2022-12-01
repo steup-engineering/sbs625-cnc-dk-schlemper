@@ -197,6 +197,7 @@ net z-pos-fb <= lcec.0.S80A4.enc-1-pos
 
 # X axis
 setp lcec.0.S13T1_X_C.ch0.srv-scale [JOINT_0]SCALE
+net sto-ax => lcec.0.S13T1_X_C.ch0.srv-drive-on
 net x-enable => lcec.0.S13T1_X_C.ch0.srv-enable
 net x-amp-fault <= lcec.0.S13T1_X_C.ch0.srv-fault
 net x-amp-ready <= lcec.0.S13T1_X_C.ch0.srv-enabled
@@ -206,6 +207,7 @@ net x-diag	<= lcec.0.S13T1_X_C.ch0.srv-diag
 
 # Y axis
 setp lcec.0.S15T1_Y_A.ch0.srv-scale [JOINT_1]SCALE
+net sto-ax => lcec.0.S15T1_Y_A.ch0.srv-drive-on
 net y-enable => lcec.0.S15T1_Y_A.ch0.srv-enable
 net y-amp-fault <= lcec.0.S15T1_Y_A.ch0.srv-fault
 net y-amp-ready <= lcec.0.S15T1_Y_A.ch0.srv-enabled
@@ -215,6 +217,7 @@ net y-diag	<= lcec.0.S15T1_Y_A.ch0.srv-diag
 
 # Z axis
 setp lcec.0.S17T1_Z.srv-scale [JOINT_2]SCALE
+net sto-ax => lcec.0.S17T1_Z.srv-drive-on
 net z-enable => lcec.0.S17T1_Z.srv-enable
 net z-amp-fault <= lcec.0.S17T1_Z.srv-fault
 net z-amp-ready <= lcec.0.S17T1_Z.srv-enabled
@@ -223,6 +226,7 @@ net z-diag	<= lcec.0.S17T1_Z.srv-diag
 
 # A axis
 setp lcec.0.S15T1_Y_A.ch1.srv-scale [JOINT_3]SCALE
+net sto-ax => lcec.0.S15T1_Y_A.ch1.srv-drive-on
 net a-enable => lcec.0.S15T1_Y_A.ch1.srv-enable
 net a-amp-fault <= lcec.0.S15T1_Y_A.ch1.srv-fault
 net a-amp-ready <= lcec.0.S15T1_Y_A.ch1.srv-enabled
@@ -232,6 +236,7 @@ net a-diag	<= lcec.0.S15T1_Y_A.ch1.srv-diag
 
 # C axis
 setp lcec.0.S13T1_X_C.ch1.srv-scale [JOINT_4]SCALE
+net sto-ax => lcec.0.S13T1_X_C.ch1.srv-drive-on
 net c-enable => lcec.0.S13T1_X_C.ch1.srv-enable
 net c-amp-fault <= lcec.0.S13T1_X_C.ch1.srv-fault
 net c-amp-ready <= lcec.0.S13T1_X_C.ch1.srv-enabled
