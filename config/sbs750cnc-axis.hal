@@ -114,6 +114,8 @@ net a-pos-fb => a-pid.feedback
 net a-vel-cmd <= a-pid.output
 
 # axis interface
+net a-home => joint.3.home-sw-in
+net a-index-ena <= joint.3.index-enable
 net a-enable <= joint.3.amp-enable-out
 net a-amp-fault => joint.3.amp-fault-in
 net a-pos-cmd <= joint.3.motor-pos-cmd
@@ -143,6 +145,7 @@ net c-vel-cmd <= c-pid.output
 
 # axis interface
 net c-home => joint.4.home-sw-in
+net c-index-ena <= joint.4.index-enable
 net c-enable <= joint.4.amp-enable-out
 net c-amp-fault => joint.4.amp-fault-in
 net c-pos-cmd <= joint.4.motor-pos-cmd

@@ -246,7 +246,7 @@ net vac-cyl-right-err => sbs-errors.vac-cyl-right-err
 net error => sbs-errors.error
 net error-lamp <= sbs-errors.error-lamp
 
-setp sbs-errors.ec-slaves 30
+setp sbs-errors.ec-slaves 32
 net ec-slaves-responding => sbs-errors.ec-slaves-responding
 net ec-link-up => sbs-errors.ec-link-up
 net ec-all-op => sbs-errors.ec-all-op
