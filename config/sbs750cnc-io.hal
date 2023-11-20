@@ -122,7 +122,9 @@ net table-arms-out-down => lcec.0.C50A10.dout-4
 #
 net lube1-command => lcec.0.S80A3.dout-0
 net lube2-command => lcec.0.S80A3.dout-1
+net vac-pod-left-cy  => lcec.0.S80A3.dout-2
 net water-clean => lcec.0.S80A3.dout-3
+net vac-pod-right-cyl => lcec.0.S80A3.dout-4
 net spindle-fan => lcec.0.S80A3.dout-5
 net laser-cross-is-on => lcec.0.S80A3.dout-6
 net laser-line-is-on => lcec.0.S80A3.dout-7
