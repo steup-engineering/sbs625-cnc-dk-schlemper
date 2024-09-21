@@ -228,19 +228,20 @@ net z-diag	<= lcec.0.S17T1_Z.srv-diag
 
 # A axis
 setp lcec.0.S15T1_Y_A.ch1.srv-scale [JOINT_3]SCALE
-setp lcec.0.S15T1_Y_A.ch1.enc-raw-home [JOINT_3]HOME_RAW
+#EXTENC setp lcec.0.S15T1_Y_A.ch1.enc-raw-home [JOINT_3]HOME_RAW
 net sto-ax => lcec.0.S15T1_Y_A.ch1.srv-drive-on
 net a-enable => lcec.0.S15T1_Y_A.ch1.srv-enable
 net a-amp-fault <= lcec.0.S15T1_Y_A.ch1.srv-fault
 net a-amp-ready <= lcec.0.S15T1_Y_A.ch1.srv-enabled
 net a-vel-cmd => lcec.0.S15T1_Y_A.ch1.srv-velo-cmd
-#net a-pos-fb <= lcec.0.S15T1_Y_A.ch1.enc-pos
+#EXTENC net a-pos-fb <= lcec.0.S15T1_Y_A.ch1.enc-pos
+net a-pos-fb <= lcec.0.S15T1_Y_A.ch1.enc-pos-abs
 net a-diag	<= lcec.0.S15T1_Y_A.ch1.srv-diag
 net a-home	<= lcec.0.S15T1_Y_A.ch1.enc-on-home-neg
 
-setp lcec.0.S80A4B.enc-pos-scale [JOINT_3]ENC_SCALE
-net a-index-ena => lcec.0.S80A4B.enc-index-c-enable
-net a-pos-fb <= lcec.0.S80A4B.enc-pos
+#EXTENC setp lcec.0.S80A4B.enc-pos-scale [JOINT_3]ENC_SCALE
+#EXTENC net a-index-ena => lcec.0.S80A4B.enc-index-c-enable
+#EXTENC net a-pos-fb <= lcec.0.S80A4B.enc-pos
 
 # C axis
 setp lcec.0.S13T1_X_C.ch1.srv-scale [JOINT_4]SCALE

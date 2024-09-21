@@ -115,7 +115,7 @@ net a-vel-cmd <= a-pid.output
 
 # axis interface
 net a-home => joint.3.home-sw-in
-net a-index-ena <= joint.3.index-enable
+#EXTENC net a-index-ena <= joint.3.index-enable
 net a-enable <= joint.3.amp-enable-out
 net a-amp-fault => joint.3.amp-fault-in
 net a-pos-cmd <= joint.3.motor-pos-cmd

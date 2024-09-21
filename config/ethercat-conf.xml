@@ -63,6 +63,7 @@
     <slave idx="28" type="EL5151" name="S80A4B"/>
     <slave idx="29" type="EL1904" name="S80A5"/>
     <slave idx="30" type="EL1904" name="S80A6"/>
+
     <!-- Pneumax Valve Island -->
     <slave idx="31" type="generic" vid="0000017a" pid="0008bc74" name="pneumax">
       <syncManager idx="0" dir="out"></syncManager>
