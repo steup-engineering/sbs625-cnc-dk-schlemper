@@ -33,6 +33,8 @@ loadrt posdiff names=y-posdiff
 loadrt pid names=x-pid,y-pid,z-pid,a-pid,c-pid 
 loadrt timedelay names=spindle-fan-dly,spindle-air-dly
 
+loadrt timedelta
+
 ###########################################################
 # Functions
 ###########################################################
@@ -70,4 +72,9 @@ addf vac-right-cyl servo-thread
 addf y-posdiff servo-thread
 
 addf lcec.write-all servo-thread
+
+addf timedelta.0 servo-thread
+
+net jitter <= timedelta.0.jitter
+net jitter-reset => timedelta.0.reset
 
