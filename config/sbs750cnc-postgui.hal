@@ -144,6 +144,6 @@ net estop-pend => pyvcp.estop-pend
 net override-limits => pyvcp.override-limits
 net override-door => pyvcp.override-door
 
-
-
+net jitter => pyvcp.jitter
+net jitter-reset => pyvcp.jitter-reset
 

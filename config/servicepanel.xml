@@ -1,8 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <pyvcp>
-	<tabs>
-		<names> ["Work" , "Service"] </names>
-  <vbox>
+  <tabs>
+    <names> ["Work" , "Service"] </names>
+  <hbox>
+   <vbox>
     <labelframe text="Spindel">
       <label text="Motordrehzahl UPM"/>
       <bar>
@@ -73,6 +74,7 @@
           </button>
       </table>
     </labelframe>
+
     <labelframe text="Manuelle Steuerung">
       <hbox>
         <button>
@@ -175,6 +177,9 @@
         </button>
       </hbox>
     </labelframe>
+
+   </vbox>
+   <vbox>
 
     <labelframe text="Sauger">
       <hbox>
@@ -366,360 +371,372 @@
           </led>
       </table>
     </labelframe>
-  </vbox>
+   </vbox>
+  </hbox>
 <!-- Service Panel -->
-	<vbox>
-		<labelframe text="Spindel Drive">
-			<table flexible_rows="[3]" flexible_columns="[1,2]">
-				<tablesticky sticky="new"/>
-				<tablerow/>
-	    		<label>
-	        	<text>"Error"</text>
-	        </label>
-					<led>
-				    <halpin>"spindle-fault"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-		    	<label text="Error Code"/>
-	    		<tablesticky sticky="nsew"/>
-	    		<u32 halpin="spindle-err-code"/>
-				<tablerow/>
-	    		<label text="Warn Code"/>
-	    		<u32 halpin="spindle-warn-code"/>
-				<tablerow/>
-	    		<label text="Drive Temp"/>
-	    		<number halpin="spindle-temp"/>
-				<tablerow/>
-	    		<label text="Over Temp"/>
-					<led>
-				    <halpin>"spindle-overtemp"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-			</table>
-		</labelframe>
-		<labelframe text="Axis Drives">
-			<table flexible_rows="[4]" flexible_columns="[1,3]">
-				<tablesticky sticky="new"/>
-				<tablerow/>
-	    		<label text=""/>
-	    		<label text="Error"/>
-	        <label text="Err-Code"/>
-	    		<label text="Lim +"/>
-	        <label text="Lim -"/>
-				<tablerow/>
-	    		<label text="X"/>
-					<led>
-				    <halpin>"x-error"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<u32 halpin="x-err-code" format="8x"/>
-					<led>
-				    <halpin>"x-limit-pos"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<led>
-				    <halpin>"x-limit-neg"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Y"/>
-					<led>
-				    <halpin>"y-error"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<u32 halpin="y-err-code" format="8x"/>
-					<led>
-				    <halpin>"y-limit-pos"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<led>
-				    <halpin>"y-limit-neg"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Z"/>
-					<led>
-				    <halpin>"z-error"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<u32 halpin="z-err-code" format="8x"/>
-					<led>
-				    <halpin>"z-limit-pos"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<led>
-				    <halpin>"z-limit-neg"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="A"/>
-					<led>
-				    <halpin>"a-error"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<u32 halpin="a-err-code" format="8x"/>
-					<led>
-				    <halpin>"a-limit-pos"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<led>
-				    <halpin>"a-limit-neg"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="C"/>
-					<led>
-				    <halpin>"c-error"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<u32 halpin="c-err-code" format="8x"/>
-			</table>			
+  <hbox>
+   <vbox>
+    <labelframe text="Spindel Drive">
+      <table flexible_rows="[3]" flexible_columns="[1,2]">
+        <tablesticky sticky="new"/>
+        <tablerow/>
+          <label>
+            <text>"Error"</text>
+          </label>
+          <led>
+            <halpin>"spindle-fault"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Error Code"/>
+          <tablesticky sticky="nsew"/>
+          <u32 halpin="spindle-err-code"/>
+        <tablerow/>
+          <label text="Warn Code"/>
+          <u32 halpin="spindle-warn-code"/>
+        <tablerow/>
+          <label text="Drive Temp"/>
+          <number halpin="spindle-temp"/>
+        <tablerow/>
+          <label text="Over Temp"/>
+          <led>
+            <halpin>"spindle-overtemp"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+      </table>
     </labelframe>
-		<labelframe text="Sensors">
-			<table flexible_rows="[2]" >
-				<tablerow/>
-	    		<label text=" "/>
-	    		<label text="X"/>
-	    		<label text="Y"/>
-	    		<label text="Z"/>
-				<tablerow/>
-	    		<label text="HOME"/>
-					<led>
-				    <halpin>"x-home"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<led>
-				    <halpin>"y-home"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<led>
-				    <halpin>"z-home"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-			</table>
-			<table flexible_rows="[2]" >
-				<tablerow/>
-	    		<label text=" "/>
-	    		<label text="IN"/>
-	    		<label text="OUT"/>
-				<tablerow/>
-	    		<label text="Vaccum Left"/>
-					<led>
-				    <halpin>"vac-left-in"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<led>
-				    <halpin>"vac-left-out"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Vaccum Right"/>
-					<led>
-				    <halpin>"vac-right-in"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<led>
-				    <halpin>"vac-right-out"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Mat Probe"/>
-					<led>
-				    <halpin>"mat-probe-in"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-					<led>
-				    <halpin>"mat-probe-out"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-			</table>
-   		<label text=" "/>
-			<table>
-			<tablerow/>
-    		<label text="Material Probe"/>
-				<led>
-				  <halpin>"mat-probe"</halpin>
-		  		<size>15</size>
-		  		<on_color>"yellow"</on_color>
-		  		<off_color>"red"</off_color>
-				</led>
-			<tablerow/>
-    		<label text="Tool Probe"/>
-				<led>
-				  <halpin>"tool-probe"</halpin>
-		  		<size>15</size>
-		  		<on_color>"yellow"</on_color>
-		  		<off_color>"red"</off_color>
-				</led>
-			<tablerow/>
-    		<label text="Tool Probe Error"/>
-				<led>
-				  <halpin>"tool-probe-err"</halpin>
-		  		<size>15</size>
-		  		<on_color>"yellow"</on_color>
-		  		<off_color>"red"</off_color>
-				</led>
-			</table>
+    <labelframe text="Axis Drives">
+      <table flexible_rows="[4]" flexible_columns="[1,3]">
+        <tablesticky sticky="new"/>
+        <tablerow/>
+          <label text=""/>
+          <label text="Error"/>
+          <label text="Err-Code"/>
+          <label text="Lim +"/>
+          <label text="Lim -"/>
+        <tablerow/>
+          <label text="X"/>
+          <led>
+            <halpin>"x-error"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <u32 halpin="x-err-code" format="8x"/>
+          <led>
+            <halpin>"x-limit-pos"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <led>
+            <halpin>"x-limit-neg"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Y"/>
+          <led>
+            <halpin>"y-error"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <u32 halpin="y-err-code" format="8x"/>
+          <led>
+            <halpin>"y-limit-pos"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <led>
+            <halpin>"y-limit-neg"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Z"/>
+          <led>
+            <halpin>"z-error"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <u32 halpin="z-err-code" format="8x"/>
+          <led>
+            <halpin>"z-limit-pos"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <led>
+            <halpin>"z-limit-neg"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="A"/>
+          <led>
+            <halpin>"a-error"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <u32 halpin="a-err-code" format="8x"/>
+          <led>
+            <halpin>"a-limit-pos"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <led>
+            <halpin>"a-limit-neg"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="C"/>
+          <led>
+            <halpin>"c-error"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <u32 halpin="c-err-code" format="8x"/>
+      </table>      
+    </labelframe>
+    <labelframe text="Sensors">
+      <table flexible_rows="[2]" >
+        <tablerow/>
+          <label text=" "/>
+          <label text="X"/>
+          <label text="Y"/>
+          <label text="Z"/>
+        <tablerow/>
+          <label text="HOME"/>
+          <led>
+            <halpin>"x-home"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <led>
+            <halpin>"y-home"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <led>
+            <halpin>"z-home"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+      </table>
+      <table flexible_rows="[2]" >
+        <tablerow/>
+          <label text=" "/>
+          <label text="IN"/>
+          <label text="OUT"/>
+        <tablerow/>
+          <label text="Vaccum Left"/>
+          <led>
+            <halpin>"vac-left-in"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <led>
+            <halpin>"vac-left-out"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Vaccum Right"/>
+          <led>
+            <halpin>"vac-right-in"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <led>
+            <halpin>"vac-right-out"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Mat Probe"/>
+          <led>
+            <halpin>"mat-probe-in"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+          <led>
+            <halpin>"mat-probe-out"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+      </table>
+       <label text=" "/>
+      <table>
+      <tablerow/>
+        <label text="Material Probe"/>
+        <led>
+          <halpin>"mat-probe"</halpin>
+          <size>15</size>
+          <on_color>"yellow"</on_color>
+          <off_color>"red"</off_color>
+        </led>
+      <tablerow/>
+        <label text="Tool Probe"/>
+        <led>
+          <halpin>"tool-probe"</halpin>
+          <size>15</size>
+          <on_color>"yellow"</on_color>
+          <off_color>"red"</off_color>
+        </led>
+      <tablerow/>
+        <label text="Tool Probe Error"/>
+        <led>
+          <halpin>"tool-probe-err"</halpin>
+          <size>15</size>
+          <on_color>"yellow"</on_color>
+          <off_color>"red"</off_color>
+        </led>
+      </table>
             <button>
               <width>6</width>
               <halpin>"vac-manu-reset"</halpin>
               <text>"Vacuum reset"</text>
             </button>
-		</labelframe>
-		<labelframe text="Safty">
-			<table flexible_rows="[2]" >
-				<tablerow/>
-	    		<label text="CTRL-Voltage"/>
-					<led>
-				    <halpin>"ctrl-voltage"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Auto-Enable"/>
-					<led>
-				    <halpin>"auto-enable"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="FB-Error"/>
-					<led>
-				    <halpin>"fsoe-fb-err"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="COM-Error"/>
-					<led>
-				    <halpin>"fsoe-com-err"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Door Switch"/>
-					<led>
-				    <halpin>"door-switch"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Estop-Panel"/>
-					<led>
-				    <halpin>"estop-panel"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Estop Pendant"/>
-					<led>
-				    <halpin>"estop-pend"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Override Limits"/>
-					<led>
-				    <halpin>"override-limits"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Override Door"/>
-					<led>
-				    <halpin>"override-door"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
+    </labelframe>
+    </vbox>
+    <vbox>
+    <labelframe text="Safty">
+      <table flexible_rows="[2]" >
+        <tablerow/>
+          <label text="CTRL-Voltage"/>
+          <led>
+            <halpin>"ctrl-voltage"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Auto-Enable"/>
+          <led>
+            <halpin>"auto-enable"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="FB-Error"/>
+          <led>
+            <halpin>"fsoe-fb-err"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="COM-Error"/>
+          <led>
+            <halpin>"fsoe-com-err"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Door Switch"/>
+          <led>
+            <halpin>"door-switch"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Estop-Panel"/>
+          <led>
+            <halpin>"estop-panel"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Estop Pendant"/>
+          <led>
+            <halpin>"estop-pend"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Override Limits"/>
+          <led>
+            <halpin>"override-limits"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Override Door"/>
+          <led>
+            <halpin>"override-door"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
 
-			</table>
-		</labelframe>
-		<labelframe text="Diag">
-			<table flexible_rows="[2]" >
-				<tablerow/>
-	    		<label text="Refrig-Error"/>
-					<led>
-				    <halpin>"refrig-err"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Lube1-Error"/>
-					<led>
-				    <halpin>"lube1-err"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-				<tablerow/>
-	    		<label text="Lube2-Error"/>
-					<led>
-				    <halpin>"lube2-err"</halpin>
-		  		  <size>15</size>
-		  		  <on_color>"yellow"</on_color>
-		  		  <off_color>"red"</off_color>
-					</led>
-			</table>
-		</labelframe>
-	</vbox>
-	</tabs>
+      </table>
+    </labelframe>
+    <labelframe text="Diag">
+      <table flexible_rows="[2]" >
+        <tablerow/>
+          <label text="Refrig-Error"/>
+          <led>
+            <halpin>"refrig-err"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Lube1-Error"/>
+          <led>
+            <halpin>"lube1-err"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+        <tablerow/>
+          <label text="Lube2-Error"/>
+          <led>
+            <halpin>"lube2-err"</halpin>
+            <size>15</size>
+            <on_color>"yellow"</on_color>
+            <off_color>"red"</off_color>
+          </led>
+      </table>
+    </labelframe>
+    <labelframe text="Jitter">
+      <s32 halpin="jitter"/>
+      <button>
+        <halpin>"jitter-reset"</halpin>
+        <text>"reset"</text>
+      </button>
+    </labelframe>
+    </vbox>
+  </hbox>
+  </tabs>
 </pyvcp>
